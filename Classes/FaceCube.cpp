@@ -21,7 +21,11 @@ Color FaceCube::edgeColor[12][2] = { { U, R }, { U, F }, { U, L }, { U, B }, { D
     { F, R }, { F, L }, { B, L }, { B, R } };
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/**
+ *  用默认的54个字符的字符串给f[54]
+ */
 FaceCube::FaceCube(){
+    // 9 * 6
     std::string s = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
     for (int i = 0; i < 54; i++) {
         switch (s[i]) {
@@ -50,9 +54,11 @@ FaceCube::FaceCube(){
     
 }
 
-
-// Construct a facelet cube from a string
+/**
+ * Construct a facelet cube from a string
+ */
 FaceCube::FaceCube(std::string cubeString){
+    // 可以采用委托构造的方式，这样就不用写重复的代码了
     for (int i = 0; i < cubeString.size(); i++) {
         switch (cubeString[i]) {
             case 'U':
@@ -79,7 +85,9 @@ FaceCube::FaceCube(std::string cubeString){
     }
 }
 
-
+/**
+ *	将f[54]的内容重新转化成字符串，得到FaceCube的一个表示
+ */
 // Gives string representation of a facelet cube
 std::string FaceCube::to_String(){
     std::string s = "";
@@ -112,7 +120,11 @@ std::string FaceCube::to_String(){
 }
 
 
-// Gives CubieCube representation of a faceletcube
+/**
+ * Gives CubieCube representation of a faceletcube
+ *
+ * @see CubieCube#toFaceCube()
+ */
 //-------------------------------
 std::auto_ptr<CubieCube> FaceCube::toCubieCube(){
     std::auto_ptr<CubieCube> ccRet(new CubieCube());

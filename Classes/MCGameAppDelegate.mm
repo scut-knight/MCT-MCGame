@@ -24,6 +24,9 @@
 
 @synthesize window;
 
+/**
+ *	返回一个游戏App类的单件，确保只有一个实例被创建
+ */
 + (MCGameAppDelegate*)sharedMCGameAppDelegate{
     static MCGameAppDelegate *sharedMCGameAppDelegate;
     @synchronized(self)

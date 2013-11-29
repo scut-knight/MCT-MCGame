@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+/**
+ *	字体处理
+ */
 @interface MCFonts : NSObject
 +(UIFont*)customFontWithSize:(int)size;
 @end

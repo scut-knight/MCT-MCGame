@@ -2172,6 +2172,7 @@
 				New_Setting = "";
 				PRODUCT_NAME = MCGame;
 				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -2192,6 +2193,7 @@
 				New_Setting = "";
 				PRODUCT_NAME = MCGame;
 				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;

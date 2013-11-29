@@ -31,79 +31,102 @@ void CoordCube::initAllStaticVariables() {
     NSString *filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"twistMove"];
     FILE *fp;
     fp=fopen([filePath UTF8String],"rb");
-    fread(twistMove, sizeof(short), sizeof(twistMove)/sizeof(short), fp);
-    fclose(fp);
+    
+    if (fp) {
+        fread(twistMove, sizeof(short), sizeof(twistMove)/sizeof(short), fp);
+        fclose(fp);
+    }
+    
     
     // Init flipMove
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"flipMove"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(flipMove, sizeof(short), sizeof(flipMove)/sizeof(short), fp);
-    fclose(fp);
+    if (fp) {
+        fread(flipMove, sizeof(short), sizeof(flipMove)/sizeof(short), fp);
+        fclose(fp);
+    }
     
     // Init FRtoBR_Move
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"FRtoBR_Move"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(FRtoBR_Move, sizeof(short), sizeof(FRtoBR_Move)/sizeof(short), fp);
-    fclose(fp);
+    if (fp) {
+        fread(FRtoBR_Move, sizeof(short), sizeof(FRtoBR_Move)/sizeof(short), fp);
+        fclose(fp);
+    }
     
     // Init URFtoDLF_Move
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"URFtoDLF_Move"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(URFtoDLF_Move, sizeof(short), sizeof(URFtoDLF_Move)/sizeof(short), fp);
-    fclose(fp);
+    if (fp) {
+        fread(URFtoDLF_Move, sizeof(short), sizeof(URFtoDLF_Move)/sizeof(short), fp);
+        fclose(fp);
+    }
     
     // Init URtoDF_Move
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"URtoDF_Move"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(URtoDF_Move, sizeof(short), sizeof(URtoDF_Move)/sizeof(short), fp);
-    fclose(fp);
+    if (fp) {
+        fread(URtoDF_Move, sizeof(short), sizeof(URtoDF_Move)/sizeof(short), fp);
+        fclose(fp);
+    }
     
     // Init URtoUL_Move
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"URtoUL_Move"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(URtoUL_Move, sizeof(short), sizeof(URtoUL_Move)/sizeof(short), fp);
-    fclose(fp);
+    if (fp) {
+        fread(URtoUL_Move, sizeof(short), sizeof(URtoUL_Move)/sizeof(short), fp);
+        fclose(fp);
+    }
     
     // Init UBtoDF_Move
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"UBtoDF_Move"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(UBtoDF_Move, sizeof(short), sizeof(UBtoDF_Move)/sizeof(short), fp);
-    fclose(fp);
+    if (fp) {
+        fread(UBtoDF_Move, sizeof(short), sizeof(UBtoDF_Move)/sizeof(short), fp);
+        fclose(fp);
+    }
     
     // for i, j <336 the six edges UR,UF,UL,UB,DR,DF are not in the
     // UD-slice and the index is <20160
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"MergeURtoULandUBtoDF"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(MergeURtoULandUBtoDF, sizeof(short), sizeof(MergeURtoULandUBtoDF)/sizeof(short), fp);
-    fclose(fp);
-    
+    if (fp) {
+        fread(MergeURtoULandUBtoDF, sizeof(short), sizeof(MergeURtoULandUBtoDF)/sizeof(short), fp);
+        fclose(fp);
+    }
     
     // Init Slice_URFtoDLF_Parity_Prun
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Slice_URFtoDLF_Parity_Prun"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(Slice_URFtoDLF_Parity_Prun, sizeof(unsigned char), sizeof(Slice_URFtoDLF_Parity_Prun)/sizeof(unsigned char), fp);
-    fclose(fp);
-    
+    if (fp) {
+        fread(Slice_URFtoDLF_Parity_Prun, sizeof(unsigned char), sizeof(Slice_URFtoDLF_Parity_Prun)/sizeof(unsigned char), fp);
+        fclose(fp);
+    }
+
     // Init Slice_URtoDF_Parity_Prun
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Slice_URtoDF_Parity_Prun"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(Slice_URtoDF_Parity_Prun, sizeof(unsigned char), sizeof(Slice_URtoDF_Parity_Prun)/sizeof(unsigned char), fp);
-    fclose(fp);
-    
+    if (fp) {
+        fread(Slice_URtoDF_Parity_Prun, sizeof(unsigned char), sizeof(Slice_URtoDF_Parity_Prun)/sizeof(unsigned char), fp);
+        fclose(fp);
+    }
     
     // Init Slice_Twist_Prun
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Slice_Twist_Prun"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(Slice_Twist_Prun, sizeof(unsigned char), sizeof(Slice_Twist_Prun)/sizeof(unsigned char), fp);
-    fclose(fp);
-    
+    if (fp) {
+        fread(Slice_Twist_Prun, sizeof(unsigned char),
+              sizeof(Slice_Twist_Prun)/sizeof(unsigned char), fp);
+        fclose(fp);
+    }
     
     // Init Slice_Flip_Prun
     filePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Slice_Flip_Prun"];
     fp=fopen([filePath UTF8String],"rb");
-    fread(Slice_Flip_Prun, sizeof(unsigned char), sizeof(Slice_Flip_Prun)/sizeof(unsigned char), fp);
-    fclose(fp);
-    
+    if (fp) {
+        fread(Slice_Flip_Prun, sizeof(unsigned char), sizeof(Slice_Flip_Prun)/sizeof(unsigned char), fp);
+        fclose(fp);
+    }
 }
 
 
@@ -134,7 +157,7 @@ void CoordCube::move(int m) {
         URtoDF = MergeURtoULandUBtoDF[URtoUL][UBtoDF];
 }
 
-//----------------------------------
+#pragma mark - Pruning
 
 void CoordCube::setPruning(unsigned char table[], int index, unsigned char value) {
     if ((index & 1) == 0)

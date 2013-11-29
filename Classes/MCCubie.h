@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "Global.h"
 #import "MCCubieDelegate.h"
-
+/**
+ *	普通立方体
+ */
 @interface MCCubie : NSObject<NSCoding, MCCubieDelegate>
 
 @property(nonatomic)struct Point3i coordinateValue;

@@ -6,6 +6,16 @@
 //  Copyright (c) 2012 Urban Apps. All rights reserved.
 //
 
+/**
+ *  @file
+ *  开源项目UAModalPanel，介绍可以看下面的网址
+ *  English:
+ *  @see	https://github.com/UrbanApps/UAModalPanel
+ *  中文：
+ *  @see    http://www.oschina.net/p/uamodalpanel
+ *  简单来说，UAModalPanel提供了一个内容丰富，功能强大的模式面板，用户可以自定义模式面板的形式和内容
+ */
+
 #import <Foundation/Foundation.h>
 #import "UARoundedRectView.h"
 

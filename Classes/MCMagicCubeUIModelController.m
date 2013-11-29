@@ -367,6 +367,7 @@
                 default:
                     break;
             }
+            //center 是魔方中间的小立方块
             Cube *center = [array27Cube objectAtIndex:13];
             MCPoint tmpp = MCPointMatrixMultiply(start, center.matrix);
             vec3 start_v = vec3(tmpp.x,tmpp.y,tmpp.z);

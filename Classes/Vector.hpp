@@ -1,3 +1,7 @@
+/**
+ *  @file
+ *  该文件定义了2维至4维的矢量，并且typedef成"类型名+vec+维数"的形式
+ */
 #pragma once
 #include <cmath>
 using namespace std;
@@ -5,10 +9,16 @@ const double Pi = 4 * std::atan(1.0f);
 const double TwoPi = 2 * Pi;
 
 template <typename T>
+/**
+ *	二维矢量
+ */
 struct Vector2 {
     Vector2() {}
     Vector2(T x, T y) : x(x), y(y) {}
     
+    /**
+     *  点乘
+     */
     T Dot(const Vector2& v) const
     {
         return x * v.x + y * v.y;
@@ -29,6 +39,10 @@ struct Vector2 {
     {
         return Vector2(x * s, y * s);
     }
+    
+    /**
+     *  单位化
+     */
     void Normalize()
     {
         float s = 1.0f / Length();
@@ -41,6 +55,10 @@ struct Vector2 {
         v.Normalize();
         return v;
     }
+    
+    /**
+     *  返回长度的平方
+     */
     T LengthSquared() const
     {
         return x * x + y * y;
@@ -49,6 +67,7 @@ struct Vector2 {
     {
         return sqrt(LengthSquared());
     }
+    
     operator Vector2<float>() const
     {
         return Vector2<float>(x, y);
@@ -57,11 +76,28 @@ struct Vector2 {
     {
         return x == v.x && y == v.y;
     }
+    
+    /**
+     *	返回本矢量和指定矢量之间的一个矢量
+     *
+     *	@param	t	比例系数
+     *	@param	v	结束矢量
+     *
+     *	@return	新的矢量
+     */
     Vector2 Lerp(float t, const Vector2& v) const
     {
         return Vector2(x * (1 - t) + v.x * t,
                        y * (1 - t) + v.y * t);
     }
+    
+    /**
+     *	将任意类型数据写入向量
+     *
+     *	@param	pData	将要写入的数据
+     *
+     *	@return	写入的数据的类型的指针，指向向量的下一个内存位置
+     */
     template <typename P>
     P* Write(P* pData)
     {
@@ -75,9 +111,16 @@ struct Vector2 {
 };
 
 template <typename T>
+/**
+ *	三维矢量
+ */
 struct Vector3 {
     Vector3() {}
     Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
+    
+    /**
+     *	单位化
+     */
     void Normalize()
     {
         float s = 1.0f / std::sqrt(x * x + y * y + z * z);
@@ -102,12 +145,20 @@ struct Vector3 {
         v.Normalize();
         return v;
     }
+    
+    /**
+     *  叉乘
+     */
     Vector3 Cross(const Vector3& v) const
     {
         return Vector3(y * v.z - z * v.y,
                        z * v.x - x * v.z,
                        x * v.y - y * v.x);
     }
+    
+    /**
+     *	点乘
+     */
     T Dot(const Vector3& v) const
     {
         return x * v.x + y * v.y + z * v.z;
@@ -117,28 +168,33 @@ struct Vector3 {
     {
         return Vector3(x + v.x, y + v.y,  z + v.z);
     }
+    
     void operator+=(const Vector3& v)
     {
         x += v.x;
         y += v.y;
         z += v.z;
     }
+    
     void operator-=(const Vector3& v)
     {
         x -= v.x;
         y -= v.y;
         z -= v.z;
     }
+    
     void operator/=(T s)
     {
         x /= s;
         y /= s;
         z /= s;
     }
+    
     Vector3 operator-(const Vector3& v) const
     {
         return Vector3(x - v.x, y - v.y,  z - v.z);
     }
+    
     Vector3 operator-() const
     {
         return Vector3(-x, -y, -z);
@@ -155,16 +211,38 @@ struct Vector3 {
     {
         return x == v.x && y == v.y && z == v.z;
     }
+    
+    /**
+     *	返回本矢量和指定矢量之间的一个矢量
+     *
+     *	@param	t	比例系数
+     *	@param	v	结束矢量
+     *
+     *	@return	新的矢量
+     */
     Vector3 Lerp(float t, const Vector3& v) const
     {
         return Vector3(x * (1 - t) + v.x * t,
                        y * (1 - t) + v.y * t,
                        z * (1 - t) + v.z * t);
     }
+    
+    /**
+     *	返回结构体中x变量的地址，相当于结构体的起始地址
+     *	@return	T类型指针常量，注意不是const Vector3*
+     */
     const T* Pointer() const
     {
         return &x;
     }
+    
+    /**
+     *	将任意类型数据写入向量
+     *
+     *	@param	pData	将要写入的数据
+     *
+     *	@return	写入的数据的类型的指针，指向向量的下一个内存位置
+     */
     template <typename P>
     P* Write(P* pData)
     {
@@ -172,12 +250,16 @@ struct Vector3 {
         *pVector++ = *this;
         return (P*) pVector;
     }
+    
     T x;
     T y;
     T z;
 };
 
 template <typename T>
+/**
+ *	四维矢量
+ */
 struct Vector4 {
     Vector4() {}
     Vector4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
@@ -185,6 +267,15 @@ struct Vector4 {
     {
         return x * v.x + y * v.y + z * v.z + w * v.w;
     }
+    
+    /**
+     *	返回本矢量和指定矢量之间的一个矢量
+     *
+     *	@param	t	比例系数
+     *	@param	v	结束矢量
+     *
+     *	@return	新的矢量
+     */
     Vector4 Lerp(float t, const Vector4& v) const
     {
         return Vector4(x * (1 - t) + v.x * t,
@@ -192,6 +283,11 @@ struct Vector4 {
                        z * (1 - t) + v.z * t,
                        w * (1 - t) + v.w * t);
     }
+    
+    /**
+     *	返回结构体中x变量的地址，相当于结构体的起始地址
+     *	@return	T类型指针常量，注意不是const Vector3*
+     */
     const T* Pointer() const
     {
         return &x;

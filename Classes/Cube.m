@@ -19,6 +19,7 @@
 #import "data.hpp"
 #import "MCStringDefine.h"
 #import "MCStringDefine.h"
+
 @implementation Cube
 @synthesize cube6faces_direction_indicator;
 @synthesize isNeededToShowSpaceDirection;

@@ -17,23 +17,27 @@ using namespace TP;
 class FaceCube;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//Cube on the cubie level
+/**
+ * Cube on the cubie level(在two-phase算法中魔方的块表示)
+ */
 class CubieCube {
 public:
 	// initialize to Id-Cube
     
-	// corner permutation
+    // permutation和orientation数组的大小相同
+	/// corner permutation
 	Corner cp[8] = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB};
     
-	// corner orientation
+	/// corner orientation
 	unsigned char co[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     
-	// edge permutation
+	/// edge permutation
 	Edge ep[12] = { UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR };
     
-	// edge orientation
+	/// edge orientation
 	unsigned char eo[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    
+
+#pragma mark - static member
 	// ************************************** Moves on the cubie level ***************************************************
 
     static Corner cpU[];
@@ -66,10 +70,12 @@ public:
     static Edge epB[];
     static unsigned char eoB[];
     
-	// this CubieCube array represents the 6 basic cube moves
+    /**
+	 *  this CubieCube array represents the 6 basic cube moves
+     */
 	static CubieCube moveCube[6];
     
-    
+#pragma mark - functions
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Initial all static variables
     static void initAllStaticVariables();
@@ -100,17 +106,19 @@ public:
 
     std::auto_ptr<FaceCube> toFaceCube();
     
-
-	// Multiply this CubieCube with another cubiecube b, restricted to the corners.<br>
-	// Because we also describe reflections of the whole cube by permutations, we get a complication with the corners. The
-	// orientations of mirrored corners are described by the numbers 3, 4 and 5. The composition of the orientations
-	// cannot
-	// be computed by addition modulo three in the cyclic group C3 any more. Instead the rules below give an addition in
-	// the dihedral group D3 with 6 elements.<br>
-	//
-	// NOTE: Because we do not use symmetry reductions and hence no mirrored cubes in this simple implementation of the
-	// Two-Phase-Algorithm, some code is not necessary here.
-	//
+    /**
+     * 顶角与顶角相乘
+     *
+	 * Multiply this CubieCube with another cubiecube b, restricted to the corners.<br>
+	 * Because we also describe reflections of the whole cube by permutations, we get a complication with the corners. The
+	 * orientations of mirrored corners are described by the numbers 3, 4 and 5. The composition of the orientations
+	 * cannot
+	 * be computed by addition modulo three in the cyclic group C3 any more. Instead the rules below give an addition in
+	 * the dihedral group D3 with 6 elements.<br>
+	 *
+	 * NOTE: Because we do not use symmetry reductions and hence no mirrored cubes in this simple implementation of the
+     * Two-Phase-Algorithm, some code is not necessary here.
+	*/
 	void cornerMultiply(CubieCube &b);
     
 
@@ -124,64 +132,75 @@ public:
 
 	// Compute the inverse CubieCube
 	void invCubieCube(CubieCube &c);
-    
+
+#pragma mark - get and set coordinates
     // ********************************************* Get and set coordinates *********************************************
-    
-	// return the twist of the 8 corners. 0 <= twist < 3^7
+    /**
+     * return the twist of the 8 corners. 0 <= twist < 3^7
+     */
 	short getTwist();
     
 
 	void setTwist(short twist);
     
-
-	// return the flip of the 12 edges. 0<= flip < 2^11
+    /**
+     * return the flip of the 12 edges. 0<= flip < 2^11
+     */
 	short getFlip();
     
 
 	void setFlip(short flip);
     
-
-	// Parity of the corner permutation
+    /**
+	 * Parity of the corner permutation
+     */
 	short cornerParity();
     
-
-	// Parity of the edges permutation. Parity of corners and edges are the same if the cube is solvable.
+    /**
+	 * Parity of the edges permutation. Parity of corners and edges are the same if the cube is solvable.
+     */
 	short edgeParity();
     
-
-	// permutation of the UD-slice edges FR,FL,BL and BR
+    /**
+	 * permutation of the UD-slice edges FR,FL,BL and BR
+     */
 	short getFRtoBR();
     
 
 	void setFRtoBR(short idx);
     
-
-	// Permutation of all corners except DBL and DRB
+    /**
+     * Permutation of all corners except DBL and DRB
+     */
 	short getURFtoDLF();
     
 
 	void setURFtoDLF(short idx);
     
-
-	// Permutation of the six edges UR,UF,UL,UB,DR,DF.
+    /**
+	 * Permutation of the six edges UR,UF,UL,UB,DR,DF.
+     */
 	int getURtoDF();
     
 
 	void setURtoDF(int idx);
     
-
-	// Permutation of the six edges UR,UF,UL,UB,DR,DF
+    /**
+	 * Permutation of the six edges UR,UF,UL,UB,DR,DF
+     */
 	static int getURtoDF(short idx1, short idx2);
     
-
-	// Permutation of the three edges UR,UF,UL
+    /**
+	 * Permutation of the three edges UR,UF,UL
+     */
 	short getURtoUL();
     
 
 	void setURtoUL(short idx);
     
-
-	// Permutation of the three edges UB,DR,DF
+    /**
+	 * Permutation of the three edges UB,DR,DF
+     */
 	short getUBtoDF();
     
 
@@ -200,14 +219,22 @@ public:
 
 	void setURtoBR(int idx);
     
-
-	// Check a cubiecube for solvability. Return the error code.
-	// 0: Cube is solvable
-	// -2: Not all 12 edges exist exactly once
-	// -3: Flip error: One edge has to be flipped
-	// -4: Not all corners exist exactly once
-	// -5: Twist error: One corner has to be twisted
-	// -6: Parity error: Two corners ore two edges have to be exchanged
+    /**
+     *  验证魔方此时是否可解
+	 * (Check a cubiecube for solvability. Return the error code.)
+     *
+	 * 0: Cube is solvable
+     *
+	 * -2: Not all 12 edges exist exactly once
+     *
+	 * -3: Flip error: One edge has to be flipped
+     *
+	 * -4: Not all corners exist exactly once
+     *
+	 * -5: Twist error: One corner has to be twisted
+     *
+	 * -6: Parity error: Two corners ore two edges have to be exchanged
+     */
 	int verify();
     
 };

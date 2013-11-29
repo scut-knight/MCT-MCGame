@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "Global.h"
-
+/**
+ *	魔方所需的动作控制
+ */
 @protocol MCMagicCubeOperationDelegate <NSObject>
 
-//rotate operation with axis, layer, direction
+/// rotate operation with axis, layer, direction
 - (BOOL)rotateOnAxis:(AxisType)axis onLayer:(int)layer inDirection:(LayerRotationDirectionType)direction;
 
-//rotate with Singmaster Notation
+/// rotate with Singmaster Notation
 - (BOOL)rotateWithSingmasterNotation:(SingmasterNotation)notation;
 
 

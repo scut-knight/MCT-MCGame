@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+/**
+ *	背景音乐控制类
+ */
 @interface SoundSettingController : NSObject{
     AVAudioPlayer *backgroundPlayer;
 }

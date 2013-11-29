@@ -12,7 +12,12 @@
 #import "MCTransformUtil.h"
 
 
-
+/**
+ *	处理队列，包括该队列完成事件。
+ *  该类遵从<QueueCompleteDelegate>,将一个MCWorkingMemory赋予该类的成员workingMemory。
+ *  借此把该类实现的onQueueComplete应用到那个MCWorkingMemory上
+ *  这应该算是装饰器的做法，非常巧妙
+ */
 @interface MCActionPerformer : NSObject <QueueCompleteDelegate>
 
 @property (nonatomic, retain) MCWorkingMemory *workingMemory;

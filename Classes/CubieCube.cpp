@@ -9,6 +9,7 @@
 #include "CubieCube.h"
 #include "FaceCube.h"
 
+// 下面的内容是初始化静态成员变量
 CubieCube CubieCube::moveCube[6];
 
 Corner CubieCube::cpU[] = { UBR, URF, UFL, ULB, DFR, DLF, DBL, DRB };
@@ -41,7 +42,9 @@ unsigned char CubieCube::coB[] = { 0, 0, 1, 2, 0, 0, 2, 1 };
 Edge CubieCube::epB[] = { UR, UF, UL, BR, DR, DF, DL, BL, FR, FL, UB, DB };
 unsigned char CubieCube::eoB[] = { 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1 };
 
-
+/**
+ *	初始化六个moveCube，将它们各自静态成员变量的值设置成上面静态成员变量的值
+ */
 void CubieCube::initAllStaticVariables() {
     memcpy(moveCube[0].cp, cpU, sizeof(cpU));
     memcpy(moveCube[0].co, coU, sizeof(coU));
@@ -76,10 +79,14 @@ void CubieCube::initAllStaticVariables() {
     
 }
 
-
+/**
+ *	默认构造函数什么都不做，因为没有必要
+ */
 CubieCube::CubieCube() {}
 
-
+/**
+ *	这个构造函数使用深复制，改变cp[],co[],ep[],eo[]
+ */
 CubieCube::CubieCube(Corner cp[], unsigned char co[], Edge ep[], unsigned char eo[]) {
     for (int i = 0; i < 8; i++) {
         this->cp[i] = cp[i];
@@ -91,7 +98,9 @@ CubieCube::CubieCube(Corner cp[], unsigned char co[], Edge ep[], unsigned char e
     }
 }
 
-
+/**
+ *  计算从n个选取k个的组合数
+ */
 int CubieCube::Cnk(int n, int k){
     int i, j, s;
     if (n < k)
@@ -106,23 +115,31 @@ int CubieCube::Cnk(int n, int k){
 }
 
 
-
+/**
+ *  left 到 right 之间每个元素进一步，然后交换left和right
+ */
 void CubieCube::rotateLeft(Corner arr[], int l, int r) {
     Corner temp = arr[l];
+    // 注意下面的l是left
     for (int i = l; i < r; i++)
         arr[i] = arr[i + 1];
     arr[r] = temp;
 }
 
-
+/**
+ *  left 到 right 之间每个元素退一步，然后交换left和right
+ */
 void CubieCube::rotateRight(Corner arr[], int l, int r) {
     Corner temp = arr[r];
+    // 注意下面的l是left
     for (int i = r; i > l; i--)
         arr[i] = arr[i - 1];
     arr[l] = temp;
 }
 
-
+/**
+ *  left 到 right 之间每个元素进一步，然后交换left和right
+ */
 void CubieCube::rotateLeft(Edge arr[], int l, int r) {
     Edge temp = arr[l];
     for (int i = l; i < r; i++)
@@ -130,7 +147,9 @@ void CubieCube::rotateLeft(Edge arr[], int l, int r) {
     arr[r] = temp;
 }
 
-
+/**
+ *  left 到 right 之间每个元素退一步，然后交换left和right
+ */
 void CubieCube::rotateRight(Edge arr[], int l, int r) {
     Edge temp = arr[r];
     for (int i = r; i > l; i--)
@@ -140,6 +159,11 @@ void CubieCube::rotateRight(Edge arr[], int l, int r) {
 
 
 //---------------------------
+/**
+ *	将CubieCube转化成FaceCube
+ *
+ *	@return	一个智能指针，因为返回的FaceCube对象是在函数体内new出来的，所以要用智能指针管理内存的释放
+ */
 std::auto_ptr<FaceCube> CubieCube::toFaceCube() {
     std::auto_ptr<FaceCube> fcRet(new FaceCube());
     
@@ -161,7 +185,6 @@ std::auto_ptr<FaceCube> CubieCube::toFaceCube() {
     
     return fcRet;
 }
-
 
 void CubieCube::cornerMultiply(CubieCube &b) {
     Corner cPerm[8] = {URF};
@@ -209,7 +232,11 @@ void CubieCube::cornerMultiply(CubieCube &b) {
     }
 }
 
-
+/**
+ *  边与边相乘
+ *
+ *  Multiply this CubieCube with another cubiecube b, restricted to the edges
+ */
 void CubieCube::edgeMultiply(CubieCube &b) {
     Edge ePerm[12] = {UR};
     unsigned char eOri[12] = {0};
@@ -224,13 +251,20 @@ void CubieCube::edgeMultiply(CubieCube &b) {
     }
 }
 
-
+/**
+ *  调用cornerMultiply，实现顶角与顶角相乘
+ */
 void CubieCube::multiply(CubieCube &b) {
     cornerMultiply(b);
 }
 
-
+/**
+ *	计算逆转了的魔方
+ *
+ *	@param	c	传入的CubieCube，注意改变的是传入的CubieCube
+ */
 void CubieCube::invCubieCube(CubieCube &c) {
+    // CubieCube中各个数组的值可以视作一个索引
     for (int i = 0; i < 12; i++) {
         c.ep[ep[i]] = (Edge)i;
     }
@@ -258,18 +292,24 @@ void CubieCube::invCubieCube(CubieCube &c) {
     
 }
 
-
 short CubieCube::getTwist() {
     short ret = 0;
-    for (int i = URF; i < DRB; i++)
+    for (int i = URF/* i = 0*/; i < DRB/* i < 7*/; i++)
         ret = (short) (3 * ret + co[i]);
     return ret;
 }
 
-
+/**
+ *  用twist设置co[DRB]也就是co[7]的值
+ */
 void CubieCube::setTwist(short twist) {
     int twistParity = 0;
-    for (int i = DRB - 1; i >= URF; i--) {
+    for (int i = DRB - 1/* i = 6*/; i >= URF/* i >= 0*/; i--) {
+        /*
+         等价于
+         co[i] = (unsigned char)(twist % 3);
+         twistParity += co[i];
+         */
         twistParity += co[i] = (unsigned char) (twist % 3);
         twist /= 3;
     }
@@ -284,7 +324,11 @@ short CubieCube::getFlip() {
     return ret;
 }
 
-
+/**
+ *	用flip设置eo[BR]的值
+ *
+ *	@param	flip	由12条边计算出来的flip值
+ */
 void CubieCube::setFlip(short flip) {
     int flipParity = 0;
     for (int i = BR - 1; i >= UR; i--) {

@@ -8,17 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "MCCubieDelegate.h"
-
+/**
+ *	立方体外表颜色处理
+ *  这个类不产生实例，仅仅作为一组相关函数的集合
+ */
 @interface MCCubieColorConstraintUtil : NSObject
 
-
-// Return colors that can be filled in this orientation of the cubie.
 + (NSMutableArray *)avaiableColorsOfCubie:(NSObject<MCCubieDelegate> *)cubie inOrientation:(FaceOrientationType)orientation;
 
 
 + (void)fillRightFaceColorAtCubie:(NSObject<MCCubieDelegate> *)cubie inOrientation:(FaceOrientationType)orientation;
 
-// Get the right orientations in CW order.
 + (NSArray *)getFaceOrientationsInColokWiseOrderAtCornerPosition:(struct Point3i)point;
 
 @end

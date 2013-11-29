@@ -11,14 +11,18 @@
 #import "MCBasicElement.h"
 #import "MCMagicCubeDataSouceDelegate.h"
 #import "MCWorkingMemory.h"
-
+/**
+ *	协助魔方转向的类，比如生成转换动作，描述目前状态
+ *  其中大量提及了SingmasterNotation等在Global.h定义的枚举类
+ *  这个类不产生实例，仅仅作为一组相关函数的集合
+ *  @see Global.h
+ */
 @interface MCTransformUtil : NSObject
 
 + (FaceOrientationType)getContraryOrientation:(FaceOrientationType)orientation;
 
 + (NSString *)getRotationTagFromSingmasterNotation:(SingmasterNotation)notation;
 
-// Transfer RotateNotationType containing axis, layer, direction and RotationType(Single, Double or Trible) to SingmasterNotation
 + (SingmasterNotation)getSingmasterNotationFromAxis:(AxisType)axis layer:(int)layer direction:(LayerRotationDirectionType)direction;
 
 

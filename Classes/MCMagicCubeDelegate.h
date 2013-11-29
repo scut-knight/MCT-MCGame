@@ -11,7 +11,9 @@
 #import "MCCubieDelegate.h"
 #import "MCMagicCubeDataSouceDelegate.h"
 #import "MCMagicCubeOperationDelegate.h"
-
+/**
+ *	魔方应该遵守的协议（combine MCMagicCubeDataSourceDelegate with MCMagicCubeOperationDelegate）
+ */
 @protocol MCMagicCubeDelegate <MCMagicCubeDataSouceDelegate, MCMagicCubeOperationDelegate>
 
 @end

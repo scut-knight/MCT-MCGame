@@ -29,6 +29,7 @@
         pretranslation = MCPointMake(0.0, 0.0, 0.0);
         prerotation = MCPointMake(0.0, 0.0, 0.0);
 		scale = MCPointMake(1.0, 1.0, 1.0);
+        // matrix = new CGFloat[16];
 		matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
 		active = NO;
 		meshBounds = CGRectZero;
@@ -47,6 +48,7 @@
 // called once when the object is first created.
 -(void)awake
 {
+    // do nothing
 }
 
 // called once every frame

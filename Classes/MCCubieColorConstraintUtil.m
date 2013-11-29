@@ -10,6 +10,9 @@
 
 @implementation MCCubieColorConstraintUtil
 
+/**
+ *  Return colors that can be filled in this orientation of the cubie.
+ */
 + (NSMutableArray *)avaiableColorsOfCubie:(NSObject<MCCubieDelegate> *)cubie
                             inOrientation:(FaceOrientationType)orientation{
     // If cubie has no colors, all colors are avaiable.
@@ -37,6 +40,7 @@
         // Increase num of completed colors
         completedColorsNum++;
         for (int i = 0; i < 6; i++) {
+        // flip all the valuable colors
             counterTable[i] = !counterTable[i];
         }
         if (faceColor % 2 == 0) {
@@ -82,7 +86,12 @@
     return avaiableColors;
 }
 
-
+/**
+ *	填充颜色
+ *
+ *	@param	cubie	满足条件的立方体
+ *	@param	orientation	朝向
+ */
 + (void)fillRightFaceColorAtCubie:(NSObject<MCCubieDelegate> *)cubie inOrientation:(FaceOrientationType)orientation{
     NSMutableArray *avaiableColors = [MCCubieColorConstraintUtil avaiableColorsOfCubie:cubie
                                                                          inOrientation:orientation];
@@ -201,7 +210,18 @@
 
 }
 
-
+/**
+ * Get the right orientations in CW（顺时针） order.
+ * _FaceOrientationType {
+ Up      = 0,
+ Down    = 1,
+ Front   = 2,
+ Back    = 3,
+ Left    = 4,
+ Right   = 5,
+ WrongOrientation    = 6
+ } FaceOrientationType;
+ */
 + (NSArray *)getFaceOrientationsInColokWiseOrderAtCornerPosition:(struct Point3i)point{
     switch (point.x) {
         case -1:
@@ -211,8 +231,10 @@
                 {
                     switch (point.z) {
                         case -1:
+                        // -1,-1,-1 is Back Left Down
                             return @[@3, @4, @1];
                             break;
+                        // -1,-1,1 is Left Front Down
                         case 1:
                             return @[@4, @2, @1];
                     }
@@ -222,9 +244,11 @@
                 {
                     switch (point.z) {
                         case -1:
+                            // -1,1,-1 is Back Up Left
                             return @[@3, @0, @4];
                             break;
                         case 1:
+                            // -1,1,-1 is Left Up Front
                             return @[@4, @0, @2];
                     }
                 }
@@ -238,9 +262,11 @@
                 {
                     switch (point.z) {
                         case -1:
+                            // 1,-1,-1 is Down Right Back
                             return @[@1, @5, @3];
                             break;
                         case 1:
+                            // 1,-1,1 is Front Right Down
                             return @[@2, @5, @1];
                     }
                 }
@@ -249,16 +275,18 @@
                 {
                     switch (point.z) {
                         case -1:
+                            // 1,1,-1 is Right Up Back
                             return @[@5, @0, @3];
                             break;
                         case 1:
+                            // 1,1,1 is Front Up Right
                             return @[@2, @0, @5];
-                    }
-                }
-            }
-        }
+                    }// end point.z
+                }// end case 1
+            }// end point.y
+        }// end case 1
             break;
-    }
+    }// end point.x
     return nil;
 }
 
