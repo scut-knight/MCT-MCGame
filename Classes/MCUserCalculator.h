@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
+/**
+ *	用户行为记录
+ */
 @interface MCUserCalculator : NSObject
 
 -(NSInteger) calculateScoreForMove:(NSInteger)move Time:(double)time;

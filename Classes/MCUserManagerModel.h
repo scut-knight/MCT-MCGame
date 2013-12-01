@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "MCUser.h"
-
+/**
+ *	用户管理系统的数据模型
+ */
 @interface MCUserManagerModel : NSObject
 
 @property (retain, nonatomic) MCUser *currentUser;
