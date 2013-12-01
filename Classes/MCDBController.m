@@ -50,7 +50,9 @@ static MCDBController* sharedSingleton_ = nil;
 {
     return self;
 }
-
+/**
+ *	重载retainCount函数，防止生成副本
+ */
 - (NSUInteger)retainCount
 {
     return NSIntegerMax; // 返回最大的整数值，导致retain计数不成功
@@ -253,7 +255,7 @@ static MCDBController* sharedSingleton_ = nil;
             int totalFinish = sqlite3_column_int(stmt, 6);
             
             MCUser *user = [[MCUser alloc] initWithUserID:userid UserName:name UserSex:sex totalMoves:totalmoves totalGameTime:totalGameTime totalLearnTime:totalLearnTime totalFinish:totalFinish];
-            // 实际上只查询一个MCUser
+            // 每次只处理一个MCUser，因为SQLite3每次查询操作只返回一行结果，当然也可以使用sqlite3_get_table来返回多行数据集
             [allUser addObject:user];
             [name release];
             [sex release];
@@ -310,7 +312,11 @@ static MCDBController* sharedSingleton_ = nil;
     //post notification to user manager controller
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DBInsertScoreSuccess" object:nil];
 }
-
+/**
+ *	查询最高的五个得分
+ *
+ *	@return	最高分在NSMutableArray[0]
+ */
 - (NSMutableArray *)queryTopScore
 {
     NSMutableArray *topScore = [[NSMutableArray alloc] init];
@@ -356,6 +362,13 @@ static MCDBController* sharedSingleton_ = nil;
     return [topScore autorelease];
 }
 
+/**
+ *	查询userID对应用户的最高的五个得分
+ *
+ *	@param	_userID	用户ID，注意这里不是用用户名
+ *
+ *	@return	带有五个得分的NSMutableArray
+ */
 - (NSMutableArray *)queryMyScore:(NSInteger)_userID
 {
     NSMutableArray *myScore = [[NSMutableArray alloc] init];
@@ -370,6 +383,7 @@ static MCDBController* sharedSingleton_ = nil;
     
     sqlite3_stmt *stmt;
     if (sqlite3_prepare_v2(database, [queryMyScoreSQL UTF8String], -1, &stmt, nil) == SQLITE_OK) {
+        // 如果查询结束，sqlite3_step(stmt)将返回SQLITE_DONE
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             //read a row
             int scoreid = sqlite3_column_int(stmt, 0);
@@ -401,7 +415,11 @@ static MCDBController* sharedSingleton_ = nil;
     return [myScore autorelease];
 
 }
-
+/**
+ *	先查找得分对应的user，并修改user的totalxxx等数据，并更新用户数据
+ *
+ *	@param	_score	新的得分
+ */
 - (void)insertScoreUpdateUser:(MCScore *)_score
 {
     if (sqlite3_open([[self dataFilePath] UTF8String], &database) != SQLITE_OK) {
@@ -410,7 +428,7 @@ static MCDBController* sharedSingleton_ = nil;
     }
     
     //select the user to update
-    NSString *selectUserSQL = [[NSString alloc] initWithFormat:@"SELECT total_moves,total_game_time,total_finish FROM user WHERE user.userID = %d",_score.userID];
+    NSString *selectUserSQL = [[NSString alloc] initWithFormat:@"SELECT total_moves,total_game_time,total_finish FROM user WHERE user.userID = %d",_score.userID];// 这就是为什么得分要记录对应的userID
     int _totalmoves = 0;
     double _totalGameTime = 0;
     int _totalFinish = 0;
@@ -487,7 +505,11 @@ static MCDBController* sharedSingleton_ = nil;
     [_learn release];
 }
 
-
+/**
+ *	先查找学习记录对应的user，并修改user的totalxxx等数据，并更新用户数据
+ *
+ *	@param	_learn   新的学习记录
+ */
 - (void)insertLearnUpdateUser:(MCLearn *)_learn
 {
     [_learn retain];

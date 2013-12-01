@@ -11,7 +11,9 @@
 #define userFile @"userFile.txt"
 
 @implementation MCUserManagerController
-
+/**
+ *	标记是否已经生成了一个实例
+ */
 static MCUserManagerController* sharedSingleton_ = nil;
 
 @synthesize userModel;
@@ -20,6 +22,11 @@ static MCUserManagerController* sharedSingleton_ = nil;
 
 #pragma mark -
 #pragma mark single instance methods
+/**
+ *	唯一的公有构造方式，防止产生多个实例
+ *
+ *	@return	该单件的唯一实例
+ */
 + (MCUserManagerController *)sharedInstance
 {
     if (sharedSingleton_ == nil) {
@@ -28,30 +35,40 @@ static MCUserManagerController* sharedSingleton_ = nil;
     }
     return sharedSingleton_;
 }
-
+/**
+ *	重载allocWithZone函数，防止生成副本
+ */
 +(id)allocWithZone:(NSZone *)zone
 {
     return [MCUserManagerController sharedInstance];
 }
 
-
+/**
+ *  重载copy函数，防止生成副本
+ */
 - (id)copy
 {
     return self;
 }
-
+/**
+ *	重载retain函数，防止生成副本
+ */
 -(id)retain
 {
     return self;
 }
 
-
+/**
+ *	重载retainCount函数，防止生成副本
+ */
 - (NSUInteger)retainCount
 {
-    return NSIntegerMax;
+    return NSIntegerMax;// 返回最大的整数值，导致retain计数不成功
 }
 
-
+/**
+ *	@return	用户数据文件的路径
+ */
 - (NSString *)dataFilePath 
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -60,7 +77,9 @@ static MCUserManagerController* sharedSingleton_ = nil;
     return [documentDirectory stringByAppendingPathComponent:userFile];
 }
 
-
+/**
+ *	调用时从数据库中获取所有用户，并切换到最后用户(当前用户)
+ */
 - (id)init
 {
     if (self = [super init]) {
@@ -70,6 +89,7 @@ static MCUserManagerController* sharedSingleton_ = nil;
         
         //init all users from database
         [self updateAllUser];
+        // 注意当前用户是从userfile中获取的
         NSData *lastUser = [[NSData alloc] initWithContentsOfFile:[self dataFilePath]];
         NSString *lastName = [[NSString alloc] initWithData:lastUser encoding:NSStringEncodingConversionExternalRepresentation];
         [self changeCurrentUser:lastName];
@@ -100,6 +120,13 @@ static MCUserManagerController* sharedSingleton_ = nil;
 
 #pragma mark -
 #pragma mark user methods
+/**
+ *	以_name新建一个新的用户，用户的各项信息均为空值
+ *
+ *	@param	_name	新用户的用户名
+ *
+ *	@return	如果用户已存在，返回NO；否则插入新用户并且返回YES
+ */
 - (BOOL)createNewUser:(NSString *)_name
 {
     for (MCUser* user in userModel.allUser) {
@@ -127,7 +154,11 @@ static MCUserManagerController* sharedSingleton_ = nil;
     [self saveCurrentUser];
     [self updateMyScore];
 }
-
+/**
+ *	一旦更新成功，改变当前用户为已更新的用户
+ *
+ *	@param	_notification	观察者发送过来的信息包
+ */
 - (void) insertUserSuccess:(NSNotification*)_notification
 {
     //after insert successful, update information
@@ -151,6 +182,12 @@ static MCUserManagerController* sharedSingleton_ = nil;
 
 #pragma mark
 #pragma mark score methods
+/**
+ *	通过步数和时间来更新得分，并且更新数据库
+ *
+ *	@param	_move	使用步数
+ *	@param	_time	消耗时间
+ */
 - (void)createNewScoreWithMove:(NSInteger)_move Time:(double)_time
 {
     NSInteger _score = [calculator calculateScoreForMove:_move Time:_time];
@@ -165,7 +202,11 @@ static MCUserManagerController* sharedSingleton_ = nil;
     
     [newScore release];
 }
-
+/**
+ *	一旦更新成功，改变当前用户数据
+ *
+ *	@param	_notification	观察者发送过来的信息包
+ */
 - (void) insertScoreSuccess
 {
     //after insert successful, update information
@@ -179,6 +220,13 @@ static MCUserManagerController* sharedSingleton_ = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UserManagerSystemUpdateScore" object:nil];
 }
 
+#pragma mark -learn methods
+/**
+ *	通过步数和时间来更新学习记录，并且更新数据库
+ *
+ *	@param	_move	使用步数
+ *	@param	_time	消耗时间
+ */
 - (void) createNewLearnWithMove:(NSInteger)_move Time:(double)_time
 {
     NSDate *date = [[NSDate alloc] init];
@@ -190,7 +238,11 @@ static MCUserManagerController* sharedSingleton_ = nil;
     
     [newLearn release];
 }
-
+/**
+ *	一旦更新成功，改变当前用户数据
+ *
+ *	@param	_notification	观察者发送过来的信息包
+ */
 - (void) insertLearnSuccess
 {
     //after insert learn record. update information
@@ -207,7 +259,9 @@ static MCUserManagerController* sharedSingleton_ = nil;
     self.userModel.topScore = [database queryTopScore];
     NSLog(@"update top score");
 }
-
+/**
+ *	更新当前用户的最高的五个得分
+ */
 - (void)updateMyScore
 {
     self.userModel.myScore = [database queryMyScore:userModel.currentUser.userID];
@@ -215,7 +269,9 @@ static MCUserManagerController* sharedSingleton_ = nil;
 }
 
 
-
+/**
+ *	将当前用户数据写入userfile。
+ */
 - (void)saveCurrentUser
 {
     if (userModel.currentUser.name != nil) {
