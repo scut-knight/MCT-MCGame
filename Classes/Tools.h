@@ -15,7 +15,9 @@
 #include "FaceCube.h"
 
 using namespace std;
-
+/**
+ * 包括工具函数 verify(string s) and randomCube()
+ */
 class Tools {
 public:
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

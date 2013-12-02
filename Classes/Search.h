@@ -22,29 +22,29 @@ using namespace std;
 class Search {
 public:
     
-	static int ax[31]; // The axis of the move
-	static int po[31]; // The power of the move
+	static int ax[31]; /// The axis of the move
+	static int po[31]; /// The power of the move
     
-	static int flip[31]; // phase1 coordinates
+	static int flip[31]; /// phase1 coordinates
 	static int twist[31];
 	static int slice[31];
     
-	static int parity[31]; // phase2 coordinates
+	static int parity[31]; /// phase2 coordinates
 	static int URFtoDLF[31];
 	static int FRtoBR[31];
 	static int URtoUL[31];
 	static int UBtoDF[31];
 	static int URtoDF[31];
     
-	static int minDistPhase1[31]; // IDA* distance do goal estimations
+	static int minDistPhase1[31]; /// IDA* distance do goal estimations
 	static int minDistPhase2[31];
     
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// generate the solution string from the array data
+	/// generate the solution string from the array data
 	static string solutionToString(int length);
     
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// generate the solution string from the array data including a separator between phase1 and phase2 moves
+	/// generate the solution string from the array data including a separator between phase1 and phase2 moves
 	static string solutionToString(int length, int depthPhase1);
     
     
@@ -79,8 +79,10 @@ public:
 	static string solution(string facelets, int maxDepth, long timeOut, bool useSeparator);
     
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// Apply phase2 of algorithm and return the combined phase1 and phase2 depth. In phase2, only the moves
-	// U,D,R2,F2,L2 and B2 are allowed.
+    /**
+	 * Apply phase2 of algorithm and return the combined phase1 and phase2 depth. In phase2, only the moves
+	 * U,D,R2,F2,L2 and B2 are allowed.
+	 */
 	static int totalDepth(int depthPhase1, int maxDepth);
 };
 
