@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-
+/**
+ *	游戏主类，负责应用的加载
+ */
 @interface MCGameAppDelegate : NSObject <UIApplicationDelegate> {
 	UIWindow *window;
 }

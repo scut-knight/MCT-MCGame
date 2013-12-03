@@ -7,14 +7,21 @@
 //
 
 #import "MCGL.h"
-
-//the model matrix
+/**
+ * the model matrix，模型矩阵栈
+ */
 static stack<mat4> modelMatrix;
-//the view matrix
+/**
+ *	the view matrix，视图矩阵
+ */
 static mat4 viewMatrix;
-//the projection matrix
+/**
+ *	the projection matrix 投射矩阵
+ */
 static mat4 projectionMatrix;
-//the current matrixMode, GL_MODELVIEW default
+/**
+ *	the current matrixMode, GL_MODELVIEW default.默认的矩阵模式是GL_MODELVIEW
+ */
 GLenum matrixMode = GL_MODELVIEW;
 
 
@@ -53,78 +60,112 @@ GLenum matrixMode = GL_MODELVIEW;
     return YES;
 }
 
+/**
+ *	将一个4*4矩阵与4*4矩阵相乘，并将结果储存在result[16]中
+ *
+ *  Because of some differences on multiple operation between normal mathmatic operation and opengl, I retain it.
+ *
+ *	@param	result[16]	储存运算结果的float类型数组
+ *	@param	matrix1	4*4矩阵
+ *	@param	matrix2	4*4矩阵
+ */
 void multiplyMatrices4by4OpenGL_FLOAT(float *result, const float *matrix1, const float *matrix2){
+    // 0,4,8,12
     result[0]=matrix1[0]*matrix2[0]+
     matrix1[4]*matrix2[1]+
     matrix1[8]*matrix2[2]+
     matrix1[12]*matrix2[3];
+    
     result[4]=matrix1[0]*matrix2[4]+
     matrix1[4]*matrix2[5]+
     matrix1[8]*matrix2[6]+
     matrix1[12]*matrix2[7];
+    
     result[8]=matrix1[0]*matrix2[8]+
     matrix1[4]*matrix2[9]+
     matrix1[8]*matrix2[10]+
     matrix1[12]*matrix2[11];
+    
     result[12]=matrix1[0]*matrix2[12]+
     matrix1[4]*matrix2[13]+
     matrix1[8]*matrix2[14]+
     matrix1[12]*matrix2[15];
+    // 1,5,9,13
     result[1]=matrix1[1]*matrix2[0]+
     matrix1[5]*matrix2[1]+
     matrix1[9]*matrix2[2]+
     matrix1[13]*matrix2[3];
+    
     result[5]=matrix1[1]*matrix2[4]+
     matrix1[5]*matrix2[5]+
     matrix1[9]*matrix2[6]+
     matrix1[13]*matrix2[7];
+    
     result[9]=matrix1[1]*matrix2[8]+
     matrix1[5]*matrix2[9]+
     matrix1[9]*matrix2[10]+
     matrix1[13]*matrix2[11];
+    
     result[13]=matrix1[1]*matrix2[12]+
     matrix1[5]*matrix2[13]+
     matrix1[9]*matrix2[14]+
     matrix1[13]*matrix2[15];
+    // 2,6,10,14
     result[2]=matrix1[2]*matrix2[0]+
     matrix1[6]*matrix2[1]+
     matrix1[10]*matrix2[2]+
     matrix1[14]*matrix2[3];
+    
     result[6]=matrix1[2]*matrix2[4]+
     matrix1[6]*matrix2[5]+
     matrix1[10]*matrix2[6]+
     matrix1[14]*matrix2[7];
+    
     result[10]=matrix1[2]*matrix2[8]+
     matrix1[6]*matrix2[9]+
     matrix1[10]*matrix2[10]+
     matrix1[14]*matrix2[11];
+    
     result[14]=matrix1[2]*matrix2[12]+
     matrix1[6]*matrix2[13]+
     matrix1[10]*matrix2[14]+
     matrix1[14]*matrix2[15];
+    // 3,7,11,15
     result[3]=matrix1[3]*matrix2[0]+
     matrix1[7]*matrix2[1]+
     matrix1[11]*matrix2[2]+
     matrix1[15]*matrix2[3];
+    
     result[7]=matrix1[3]*matrix2[4]+
     matrix1[7]*matrix2[5]+
     matrix1[11]*matrix2[6]+
     matrix1[15]*matrix2[7];
+    
     result[11]=matrix1[3]*matrix2[8]+
     matrix1[7]*matrix2[9]+
     matrix1[11]*matrix2[10]+
     matrix1[15]*matrix2[11];
+    
     result[15]=matrix1[3]*matrix2[12]+
     matrix1[7]*matrix2[13]+
     matrix1[11]*matrix2[14]+
     matrix1[15]*matrix2[15];
 }
 
+/**
+ *	将一个4*4矩阵与四维向量相乘，并将结果储存在一个向量中
+ *
+ *  Because of some differences on multiple operation between normal mathmatic operation and opengl, I retain it.
+ *
+ *	@param	resultvector	结果向量
+ *	@param	matrix	4*4矩阵
+ *	@param	pvector	四维向量
+ */
 void multiplyMatrixByVector4by4OpenGL_FLOAT(float *resultvector, const float *matrix, const float *pvector){
-    resultvector[0]=matrix[0]*pvector[0]+matrix[4]*pvector[1]+matrix[8]*pvector[2]+matrix[12]*pvector[3];
-    resultvector[1]=matrix[1]*pvector[0]+matrix[5]*pvector[1]+matrix[9]*pvector[2]+matrix[13]*pvector[3];
-    resultvector[2]=matrix[2]*pvector[0]+matrix[6]*pvector[1]+matrix[10]*pvector[2]+matrix[14]*pvector[3];
-    resultvector[3]=matrix[3]*pvector[0]+matrix[7]*pvector[1]+matrix[11]*pvector[2]+matrix[15]*pvector[3];
+    resultvector[0] = matrix[0]*pvector[0]+matrix[4]*pvector[1]+matrix[8]*pvector[2]+matrix[12]*pvector[3];
+    resultvector[1] = matrix[1]*pvector[0]+matrix[5]*pvector[1]+matrix[9]*pvector[2]+matrix[13]*pvector[3];
+    resultvector[2] = matrix[2]*pvector[0]+matrix[6]*pvector[1]+matrix[10]*pvector[2]+matrix[14]*pvector[3];
+    resultvector[3] = matrix[3]*pvector[0]+matrix[7]*pvector[1]+matrix[11]*pvector[2]+matrix[15]*pvector[3];
 }
 
 int glhInvertMatrixf2(const float *m, float *out){

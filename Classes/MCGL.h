@@ -14,22 +14,45 @@
 #import "Quaternion.hpp"
 using namespace std;
 
+/**
+ *	交换两个double类型变量
+ */
 #define SWAP_ROWS_DOUBLE(a, b) { double *_tmp = a; (a)=(b); (b)=_tmp; }
+/**
+ *	交换两个float类型变量
+ */
 #define SWAP_ROWS_FLOAT(a, b) { float *_tmp = a; (a)=(b); (b)=_tmp; }
+/**
+ *	等价于m[c][r]
+ */
 #define MAT(m,r,c) (m)[(c)*4+(r)]
 
+/**
+ *	用于openGLES处理的类
+ *
+ *  openGLES内容密集，小心:}   不过我会细加讲解，至少比起魔方的解法，openGLES还是易学很多。
+ *
+ *  这里用的是openGLES3.0。官方API文档参见下面链接：
+ *  @see http://www.khronos.org/opengles/sdk/docs/man3/
+ */
 @interface MCGL : NSObject
 
-//You can use this function for get the vertex in the 3D space(world coordinate).
-//You should give the screen location and the Z depth(between 0 and 1, included).
-//If the Z is 0, it will return the vertex on the near plane. If 1,the far plane.
-//The renturn value will store in parameter object below.
+/**
+ *You can use this function for get the vertex in the 3D space(world coordinate).
+ *You should give the screen location and the Z depth(between 0 and 1, included).
+ *If the Z is 0, it will return the vertex on the near plane. If 1,the far plane.
+ *The renturn value will store in parameter object below.
+ *
+ *
+ */
 +(BOOL)unProjectfWithScreenX:(float)winx
                      screenY:(float)winy
                       depthZ:(float)winz
                 returnObject:(float*)object;
-
-//the function like glMatrixMode.
+/**
+ *  the function like glMatrixMode.
+ *
+ */
 +(void)matrixMode:(GLenum)mode;
 
 //the function like glLoadIdentity().
@@ -61,10 +84,8 @@ using namespace std;
 //the function like glPopMatrix.
 +(void)popMatrix;
 
-//Because of some differences on multiple operation between normal mathmatic operation and opengl, I retain it.
 void multiplyMatrices4by4OpenGL_FLOAT(float *result, const  float *matrix1, const float *matrix2);
 
-//Because of some differences on multiple operation between normal mathmatic operation and opengl, I retain it.
 void multiplyMatrixByVector4by4OpenGL_FLOAT(float *resultvector, const float *matrix, const float *pvector);
 
 //This code comes directly from GLU except that it is for float.

@@ -5,10 +5,13 @@
 //  Created by kwan terry on 13-6-1.
 //
 //
-
+/**
+ *	这个头文件define了特别的字符串，比如状态信息等
+ */
 #ifndef MCGame_MCStringDefine_h
 #define MCGame_MCStringDefine_h
 
+#pragma mark - ui element
 //homepage ui element 
 #define TextureKey_learnButtonDown @"learnButtonDown"
 #define TextureKey_learnButtonUp @"learnButtonUp"
@@ -54,7 +57,7 @@
 #define TextureKey_zero @"zero2"
 
 
-
+#pragma mark - message and configuration
 
 //教学系统部分提示
 #define Disaccord_Msg @"转错了哈,转回去吧^_^"

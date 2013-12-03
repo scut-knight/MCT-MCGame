@@ -37,14 +37,17 @@
 	return sharedMCGameAppDelegate;
 }
 
-
+/**
+ *	初始化应用场景
+ */
 - (void)applicationDidFinishLaunching:(UIApplication *)application 
 {   
-    //laod external OBJ 3D model into appliaction
+    //load external OBJ 3D model into appliaction
     NSString *filename = [[NSBundle mainBundle] pathForResource:@"RadiusOneCubeWithPic" ofType:@"obj"];
     MCOBJLoader *tmp = [MCOBJLoader sharedMCOBJLoader];
     [tmp loadObjFromFile:filename objkey:nil];
     
+    // load soundsetting
     SoundSettingController * soundcontroller = [SoundSettingController sharedsoundSettingController];
     [soundcontroller loadSounds];
     [soundcontroller loadSoundConfiguration];
