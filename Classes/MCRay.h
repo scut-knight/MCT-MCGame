@@ -63,7 +63,8 @@
  * You can transform the ray from world coordinate into model world coordinate by use the inverse of the current modelview.
  * If you want to check intersection many times, don't forget that before what is transformed should be the copy object.
  *
- *  利用当前模型矩阵把射线从world坐标系转换成在模型坐标系下的形式。修改了vOrigin和vDirection
+ *  利用当前模型矩阵把射线从world坐标系转换成在模型坐标系下的形式。修改了vOrigin和vDirection。
+ *  注意：如果要多次检查交点，不要忘记在变换之前使用被变换矩阵的一个副本。
  *
  *  @param matrix 当前模型矩阵的逆
  */

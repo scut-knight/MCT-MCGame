@@ -1,4 +1,9 @@
 #pragma once
+/**
+ * @file
+ *
+ * 这里定义了openGLES所需的矩阵类型，是十分重要的一部分。
+ */
 #include "Vector.hpp"
 
 template <typename T>

@@ -405,6 +405,8 @@ int glhInvertMatrixf2(const float *m, float *out){
     projectionMatrix.w.w = 0;
     //load the matrix
     //glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
+    
+    // 应用投影变换
     glMultMatrixf(projectionMatrix.Pointer());
     glTranslatef(0.0, 0.0, -180.0);
 
@@ -447,7 +449,7 @@ int glhInvertMatrixf2(const float *m, float *out){
 }
 
 
-//it has some problems
+//it has some problems 为啥捏？
 +(void)lookAtEyefv:(vec3)eye
           centerfv:(vec3)center
               upfv:(vec3)up{
@@ -491,13 +493,23 @@ int glhInvertMatrixf2(const float *m, float *out){
 }
 
 +(void)pushMatrix{
+    if(modelMatrix.empty())
+        return;
+    // newMatrix 中存储的是当前矩阵的值
     mat4 newMatrix = modelMatrix.top();
+    // 此时有两个矩阵保存着当前矩阵的值，一个是modelMatrix.top(),也就是当前矩阵。
+    // 另一个是modelMatrix.top()下面的矩阵，是保存了起来的当前矩阵的值
     modelMatrix.push(newMatrix);
 }
 
 +(void)popMatrix{
+    if(modelMatrix.size() <= 1)
+        return;
     modelMatrix.pop();
+    // 先加载视图矩阵，进行视图变换
     glLoadMatrixf(viewMatrix.Pointer());
+    // glMultMatrixf函数接受一个矩阵，并把它与当前加载的矩阵(这里是viewMatrix)相乘
+    // 然后把结果存储在矩阵堆栈的顶部，也就是成为当前的模型矩阵
     glMultMatrixf(modelMatrix.top().Pointer());
 }
 
