@@ -38,9 +38,7 @@
         else{
             char *errorMsg;
             // Create the pattern table if not exist
-            NSString *createPatternSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(PRE_STATE CHAR(20) NOT NULL,
-                                                                                 KEY CHAR(20) NOT NULL, PATTERN TEXT NOT NULL);", 
-                                                                                                    DB_PATTERN_TABLE_NAME];
+            NSString *createPatternSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(PRE_STATE CHAR(20) NOT NULL,KEY CHAR(20) NOT NULL, PATTERN TEXT NOT NULL);",DB_PATTERN_TABLE_NAME];
             if (sqlite3_exec(database, [createPatternSQL UTF8String], NULL, NULL, &errorMsg) != SQLITE_OK) {
                 sqlite3_close(database);
                 NSLog(@"error creating table: %s", errorMsg);
@@ -48,36 +46,29 @@
             
             // Create the rule table if not exist
             
-            NSString *createRuleSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(MEHOD INTEGER NOT NULL, 
-                                                    PRE_STATE CHAR(20) NOT NULL, RULE_IF CHAR(20) NOT NULL, RULE_THEN TEXT NOT NULL);", 
-                                                                                                DB_RULE_TABLE_NAME];
+            NSString *createRuleSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(MEHOD INTEGER NOT NULL, PRE_STATE CHAR(20) NOT NULL, RULE_IF CHAR(20) NOT NULL, RULE_THEN TEXT NOT NULL);", DB_RULE_TABLE_NAME];
             if (sqlite3_exec(database, [createRuleSQL UTF8String], NULL, NULL, &errorMsg) != SQLITE_OK) {
                 sqlite3_close(database);
                 NSLog(@"error creating table: %s", errorMsg);
             }
             
             // Create the state table if no exist
-            NSString *createStateSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(MEHOD INTEGER NOT NULL, 
-                                                PRE_STATE CHAR(20) NOT NULL, PATTERN TEXT NOT NULL, AFTER_STATE CHAR(20) NOT NULL);",
-                                                                                                 DB_STATE_TABLE_NAME];
+            NSString *createStateSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(MEHOD INTEGER NOT NULL, PRE_STATE CHAR(20) NOT NULL, PATTERN TEXT NOT NULL, AFTER_STATE CHAR(20) NOT NULL);",                                                               DB_STATE_TABLE_NAME];
             if (sqlite3_exec(database, [createStateSQL UTF8String], NULL, NULL, &errorMsg) != SQLITE_OK) {
                 sqlite3_close(database);
                 NSLog(@"error creating table: %s", errorMsg);
             }
             
             // Create the special pattern table if not exist
-            NSString *createSpecialPatternSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (PRE_STATE CHAR(20) NOT NULL, 
-                                                                                        KEY CHAR(20) NOT NULL, PATTERN TEXT NOT NULL);",
-                                                                                                         DB_SPECIAL_PATTERN_TABLE_NAME];
+            NSString *createSpecialPatternSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (PRE_STATE CHAR(20) NOT NULL,KEY CHAR(20) NOT NULL, PATTERN TEXT NOT NULL);",
+                                                DB_SPECIAL_PATTERN_TABLE_NAME];
             if (sqlite3_exec(database, [createSpecialPatternSQL UTF8String], NULL, NULL, &errorMsg) != SQLITE_OK) {
                 sqlite3_close(database);
                 NSLog(@"error creating table: %s", errorMsg);
             }
             
             // Create the special rule table if not exist
-            NSString *createSpecialRuleSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(MEHOD INTEGER NOT NULL, 
-                                                    PRE_STATE CHAR(20) NOT NULL, RULE_IF CHAR(20) NOT NULL, RULE_THEN TEXT NOT NULL);",
-                                                                                                     DB_SPECIAL_RULE_TABLE_NAME];
+            NSString *createSpecialRuleSQL = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(MEHOD INTEGER NOT NULL, PRE_STATE CHAR(20) NOT NULL, RULE_IF CHAR(20) NOT NULL, RULE_THEN TEXT NOT NULL);",DB_SPECIAL_RULE_TABLE_NAME];
             if (sqlite3_exec(database, [createSpecialRuleSQL UTF8String], NULL, NULL, &errorMsg) != SQLITE_OK) {
                 sqlite3_close(database);
                 NSLog(@"error creating table: %s", errorMsg);
@@ -195,8 +186,7 @@
     }
     else{
         NSMutableDictionary *states = [NSMutableDictionary dictionaryWithCapacity:GENERAL_STATES_NUM];
-        NSString *stateQuery = [NSString stringWithFormat:@"SELECT PRE_STATE, PATTERN, 
-                                                        AFTER_STATE FROM STATES WHERE MEHOD=%i", method];
+        NSString *stateQuery = [NSString stringWithFormat:@"SELECT PRE_STATE, PATTERN,AFTER_STATE FROM STATES WHERE MEHOD=%i", method];
         sqlite3_stmt *stmt;
         if (sqlite3_prepare_v2(database, [stateQuery UTF8String], -1, &stmt, nil) == SQLITE_OK) {
             while (sqlite3_step(stmt) == SQLITE_ROW) {

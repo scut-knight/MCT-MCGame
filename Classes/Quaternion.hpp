@@ -4,9 +4,12 @@
 template <typename T>
 /**
  *	四元数
+ *
  *  如在这里的其他数学模型一样，支持旋转、缩放、点乘等基础操作，此外还可以转换成矢量或矩阵
  *  一个四元数（Quaternion）描述了一个旋转轴和一个旋转角度。
  *  当用一个四元数乘以一个向量时，实际上就是让该向量围绕着这个四元数所描述的旋转轴，转动这个四元数所描述的角度而得到的向量。
+ *
+ *  @see http://www.cppblog.com/kongque/archive/2010/08/18/123824.html
  */
 struct QuaternionT {
     T x;
@@ -111,6 +114,21 @@ inline T QuaternionT<T>::Dot(const QuaternionT<T>& q) const
     return x * q.x + y * q.y + z * q.z + w * q.w;
 }
 
+/**
+ *	转换成矩阵形式，用于矩阵乘法。
+ *
+ *  Quaternion x,y,z,w
+ *
+ *  Matrix(注意后置的2是²的意思，如果不能正常显示) = 
+ *
+ * 1 - 2y² - 2z²   2xy - 2wz      2xz + 2wy
+ *
+ * 2xy + 2wz      1 - 2x² - 2z²   2yz - 2wx
+ *
+ * 2xz - 2wy      2yz + 2wx      1 - 2x² - 2y²
+ *
+ *	@return	三阶矩阵
+ */
 template <typename T>
 inline Matrix3<T> QuaternionT<T>::ToMatrix() const
 {
@@ -130,6 +148,9 @@ inline Matrix3<T> QuaternionT<T>::ToMatrix() const
     return m;
 }
 
+/**
+ *  直接返回由四元数四个维度x,y,z,w构成的向量
+ */
 template <typename T>
 inline Vector4<T> QuaternionT<T>::ToVector() const
 {

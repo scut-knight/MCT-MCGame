@@ -36,6 +36,8 @@
 
 /**
  * the explosive force applied to the smaller rocks after a big rock has been smashed
+ * 
+ * 现在已经没有用了。
  */
 //以下四项在其他文件没有用到
 #define SMASH_SPEED_FACTOR 40
@@ -130,10 +132,12 @@ typedef enum {
 
 
 #pragma mark cubre mesh
-// 以下内容均应该曾经用于测试，所以现在已经没用了。
+// 以下内容均被用于.mm文件中，却被编译器错误地当作未使用变量。所以不要除去这一部分
+
 static NSInteger MCCubreVertexStride = 3;
 static NSInteger MCCubreColorStride = 4;
 static NSInteger MCCubreOutlineVertexesCount = 36;
+ 
 static CGFloat MCCubreOutlineVertexes[108] = {    
     //Define the front face
     -0.5,0.5,0.5,//left top
@@ -285,5 +289,4 @@ static CGFloat MCCubreColorValues_line[192] =
     1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0,
     1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0,
     1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0, 1.0,0.0,0.0,1.0} ;
-
 

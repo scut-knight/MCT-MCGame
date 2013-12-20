@@ -16,13 +16,18 @@
  *	3D 点 (拥有一系列内联函数用于点与点的运算)
  *
  *  这里多次出现CGFloat[16]。CGFloat[16] 是用于矩阵变换的4*4矩阵。为什么是4*4？
- *  在关于OpenGL的描述中，我们知道OpenGL有两种矩阵，一种是模型视图矩阵，另一种是投影矩阵
+ *  在关于OpenGL的描述中，我们知道OpenGL有三种矩阵，一种是模型视图矩阵，另一种是投影矩阵，还有一种是纹理矩阵。
+ *
  *  比如在下面华中科技大学的计算机图形学对OpenGL的描述中：
+ *
  *  http://cs.hust.edu.cn/webroot/courses/csgraphics/jiaocai.php?bookpage=7_h
+ *
  *  这里有一句：“模型视图矩阵是一个4×4的矩阵，用于指定场景的视图变换和几何变换。”
+ *
  *  另，按维基百科的说法，n维空间的仿射变换与透视投影可以用n+1维的线性变换表示，所以3维空间的变换可以用4*4矩阵表示
  *  你可能会感到奇怪，4x4矩阵有4个分量，前三个分量应该与空间的三个维度有关，那么第四个分量是做什么的？
  *  下面的网址会帮助你解答这个疑问：
+ *
  *  http://www.opengl-tutorial.org/zh-hans/beginners-tutorials-zh/tutorial-3-matrices-zh/
  *  
  */

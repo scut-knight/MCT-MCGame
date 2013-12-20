@@ -149,10 +149,20 @@ struct Matrix4 {
         tmp.z = x.z * in.x + y.z * in.y + z.z * in.z;
         out = tmp;
     }
+    
+    /**
+     *  返回一个指向该矩阵的指针
+     */
     const T* Pointer() const
     {
         return &x.x;
     }
+    
+    /**
+     *	静态函数
+     *
+     *	@return	返回一个由Matrix4()构造的默认4*4矩阵
+     */
     static Matrix4<T> Identity()
     {
         return Matrix4();
@@ -162,7 +172,7 @@ struct Matrix4 {
      *	转换第四个维度(用于矩阵变换的维度)
      *	@return	新的四维矩阵
      */
-    static Matrix4<T> Translate(T x, T y, T z)
+    static Matrix4<T> Translate(const T x,const T y,const T z)
     {
         Matrix4 m;
         m.x.x = 1; m.x.y = 0; m.x.z = 0; m.x.w = 0;
@@ -202,6 +212,13 @@ struct Matrix4 {
         return m;
     }
     
+    /**
+     *  Frustum 平锥头体(又名，视锥体)。
+     *
+     *  透过透射投影的方法，将软件中的3D画面投影成眼前的2D画面。这里软件中的三维坐标相当于平锥头体的底部，屏幕的二维坐标相当于平锥头体的顶面。
+     *
+     *  这里采用了6个参数来构造一个投影矩阵。
+     */
     static Matrix4<T> Frustum(T left, T right, T bottom, T top, T near, T far)
     {
         T a = 2 * near / (right - left);
@@ -217,6 +234,9 @@ struct Matrix4 {
         m.w.x = 0; m.w.y = 0; m.w.z = f; m.w.w = 1;
         return m;
     }
+    /**
+     *	内部有四个public的4维向量
+     */
     vec4 x;
     vec4 y;
     vec4 z;

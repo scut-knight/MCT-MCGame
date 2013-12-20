@@ -92,7 +92,7 @@
 };
 
 /**
- *	set volume for background sound and restore it in soundConfiguration
+ *	set volume for background sound and restore it in soundConfiguration.设置背景音量并存储在音量配置中
  *
  *	@param	volume	:(float)
  */
@@ -137,6 +137,9 @@
     }
 };
 
+/**
+ *	旋转声音开关
+ */
 -(void)rotateSoundFlipSwitch{
     // reverse the _RotateEffectSwitch
     NSNumber *flip = [[NSNumber alloc]initWithBool:(![[self _RotateEffectSwitch] boolValue])];

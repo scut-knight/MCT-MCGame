@@ -8,7 +8,8 @@
 
 #import "MCGL.h"
 /**
- * the model matrix，模型矩阵栈
+ * the model matrix，模型矩阵栈。
+ * 一个矩阵栈的存在是为了维护不同坐标下的一系列矩阵。可以通过push和pop操作来进行坐标场景的变换。不过更加受推荐的方法是利用投影矩阵。
  */
 static stack<mat4> modelMatrix;
 /**
@@ -42,7 +43,7 @@ GLenum matrixMode = GL_MODELVIEW;
     //and store in A[16]
     multiplyMatrices4by4OpenGL_FLOAT(A, projectionMatrix.Pointer(), viewMatrix.Pointer());
     //Now compute the inverse of matrix A
-    if(glhInvertMatrixf2(A, m)==0)
+    if(glhInvertMatrixf2(A, m) == 0) // 如果计算A的倒置矩阵失败，直接退出
         return NO;
     //Transformation of normalized coordinates between -1 and 1
     in[0]=(screenX-(float)viewport[0])/(float)viewport[2]*2.0-1.0;
@@ -168,23 +169,51 @@ void multiplyMatrixByVector4by4OpenGL_FLOAT(float *resultvector, const float *ma
     resultvector[3] = matrix[3]*pvector[0]+matrix[7]*pvector[1]+matrix[11]*pvector[2]+matrix[15]*pvector[3];
 }
 
+/**
+ *  This code comes directly from GLU except that it is for float.
+ *
+ *	转置输入的float类型矩阵，并作为输出矩阵输出。转置的原理是：
+ *
+ *      (A E) = (E A-1)
+ * 
+ *      在需要转置的矩阵的下方(或右方)增加一个单位矩阵E，再将新的矩阵化为上方(或左方)是单位矩阵E的形式。
+ *
+ *	@param	m	输入矩阵[4][4]，注意不改变输入矩阵的值
+ *	@param	out	输出矩阵[4][4],注意要事先为输出矩阵分配内存
+ *
+ *	@return	返回1如果成功；否则返回0，说明该矩阵不存在逆矩阵
+ */
 int glhInvertMatrixf2(const float *m, float *out){
     float wtmp[4][8];
     float m0, m1, m2, m3, s;
     float *r0, *r1, *r2, *r3;
     r0 = wtmp[0], r1 = wtmp[1], r2 = wtmp[2], r3 = wtmp[3];
+    /*
+     wtmp 0         1           2           3
+     0-3  m[0][0-3] m[1][0-3]   m[2][0-3]   m[3][0-3]
+     4    1.0       0.0         0.0         0.0
+     5    0.0       1.0         0.0         0.0
+     6    0.0       0.0         1.0         0.0
+     7    0.0       0.0         0.0         1.0
+     */
     r0[0] = MAT(m, 0, 0), r0[1] = MAT(m, 0, 1),
     r0[2] = MAT(m, 0, 2), r0[3] = MAT(m, 0, 3),
     r0[4] = 1.0, r0[5] = r0[6] = r0[7] = 0.0,
+    
     r1[0] = MAT(m, 1, 0), r1[1] = MAT(m, 1, 1),
     r1[2] = MAT(m, 1, 2), r1[3] = MAT(m, 1, 3),
     r1[5] = 1.0, r1[4] = r1[6] = r1[7] = 0.0,
+    
     r2[0] = MAT(m, 2, 0), r2[1] = MAT(m, 2, 1),
     r2[2] = MAT(m, 2, 2), r2[3] = MAT(m, 2, 3),
     r2[6] = 1.0, r2[4] = r2[5] = r2[7] = 0.0,
+    
     r3[0] = MAT(m, 3, 0), r3[1] = MAT(m, 3, 1),
     r3[2] = MAT(m, 3, 2), r3[3] = MAT(m, 3, 3),
     r3[7] = 1.0, r3[4] = r3[5] = r3[6] = 0.0;
+    
+    // 通过初等列变换来实现单位矩阵的转换
+    // 查找第一行的最大值，并进行列的交换，以方便化简出单位矩阵。如果第一列全为0，则不存在矩阵的逆
     /* choose pivot - or die */
     if (fabsf(r3[0]) > fabsf(r2[0]))
         SWAP_ROWS_FLOAT(r3, r2);
@@ -198,7 +227,7 @@ int glhInvertMatrixf2(const float *m, float *out){
     m1 = r1[0] / r0[0];
     m2 = r2[0] / r0[0];
     m3 = r3[0] / r0[0];
-    s = r0[1];
+    s = r0[1];  //比例因子
     r1[1] -= m1 * s;
     r2[1] -= m2 * s;
     r3[1] -= m3 * s;
@@ -234,6 +263,7 @@ int glhInvertMatrixf2(const float *m, float *out){
         r2[7] -= m2 * s;
         r3[7] -= m3 * s;
     }
+    // 以下同理
     /* choose pivot - or die */
     if (fabsf(r3[1]) > fabsf(r2[1]))
         SWAP_ROWS_FLOAT(r3, r2);
@@ -268,6 +298,7 @@ int glhInvertMatrixf2(const float *m, float *out){
         r2[7] -= m2 * s;
         r3[7] -= m3 * s;
     }
+    
     /* choose pivot - or die */
     if (fabsf(r3[2]) > fabsf(r2[2]))
         SWAP_ROWS_FLOAT(r3, r2);
@@ -280,11 +311,13 @@ int glhInvertMatrixf2(const float *m, float *out){
     /* last check */
     if (0.0 == r3[3])
         return 0;
+    
     s = 1.0 / r3[3];		/* now back substitute row 3 */
     r3[4] *= s;
     r3[5] *= s;
     r3[6] *= s;
     r3[7] *= s;
+    
     m2 = r2[3];			/* now back substitute row 2 */
     s = 1.0 / r2[2];
     r2[4] = s * (r2[4] - r3[4] * m2), r2[5] = s * (r2[5] - r3[5] * m2),
@@ -295,6 +328,7 @@ int glhInvertMatrixf2(const float *m, float *out){
     m0 = r0[3];
     r0[4] -= r3[4] * m0, r0[5] -= r3[5] * m0,
     r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
+    
     m1 = r1[2];			/* now back substitute row 1 */
     s = 1.0 / r1[1];
     r1[4] = s * (r1[4] - r2[4] * m1), r1[5] = s * (r1[5] - r2[5] * m1),
@@ -302,10 +336,13 @@ int glhInvertMatrixf2(const float *m, float *out){
     m0 = r0[2];
     r0[4] -= r2[4] * m0, r0[5] -= r2[5] * m0,
     r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
+    
     m0 = r0[1];			/* now back substitute row 0 */
     s = 1.0 / r0[0];
     r0[4] = s * (r0[4] - r1[4] * m0), r0[5] = s * (r0[5] - r1[5] * m0),
     r0[6] = s * (r0[6] - r1[6] * m0), r0[7] = s * (r0[7] - r1[7] * m0);
+    
+    // 下面为所求矩阵的逆
     MAT(out, 0, 0) = r0[4];
     MAT(out, 0, 1) = r0[5], MAT(out, 0, 2) = r0[6];
     MAT(out, 0, 3) = r0[7], MAT(out, 1, 0) = r1[4];
@@ -332,7 +369,8 @@ int glhInvertMatrixf2(const float *m, float *out){
         case GL_MODELVIEW:
             {
                 viewMatrix.Identity();
-                for (int i = 0; i <modelMatrix.size(); i++) {
+                int size = modelMatrix.size();
+                for (int i = 0; i <size; ++i) {
                     modelMatrix.pop();
                 }
                 mat4 initMatrix;
@@ -351,13 +389,14 @@ int glhInvertMatrixf2(const float *m, float *out){
                      zNear:(float)zNear
                       zFar:(float)zFar{
     //avoid error
+    // 这里为了避免发生错误，先构造出一个新的矩阵，对这个矩阵变换成功后，再赋值给projectionMatrix
     projectionMatrix.Identity();
     
     GLfloat halfWidth, halfHeight, deltaZ;
     deltaZ = zFar - zNear;
     halfHeight = tan( (fovy / 2) / 180 * Pi ) * zNear;
     halfWidth = halfHeight * aspect;
-    //fill projection matrix
+    //fill projection matrix，填充投影矩阵
     projectionMatrix.x.x = zNear / halfWidth;
     projectionMatrix.y.y = zNear / halfHeight;
     projectionMatrix.z.z = - (zFar + zNear) / deltaZ;
@@ -402,6 +441,7 @@ int glhInvertMatrixf2(const float *m, float *out){
     }
     
     mat4 deltaMatrix = delta.ToMatrix();
+    // 将四元数与model栈的顶部的矩阵相乘
     modelMatrix.top() = deltaMatrix * modelMatrix.top();
     glLoadMatrixf((modelMatrix.top()*viewMatrix).Pointer());
 }
@@ -451,7 +491,7 @@ int glhInvertMatrixf2(const float *m, float *out){
 }
 
 +(void)pushMatrix{
-    mat4 newMatrix= modelMatrix.top();
+    mat4 newMatrix = modelMatrix.top();
     modelMatrix.push(newMatrix);
 }
 
