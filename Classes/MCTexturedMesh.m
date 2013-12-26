@@ -22,6 +22,7 @@
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+    
     glDisableClientState(GL_COLOR_ARRAY);
 	glVertexPointer(vertexSize, GL_FLOAT, 0, vertexes);
     glTexCoordPointer(2, GL_FLOAT, 0, uvCoordinates);
@@ -30,7 +31,7 @@
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_COLOR_ARRAY);
+//    glDisableClientState(GL_COLOR_ARRAY);
 }
 @end
 

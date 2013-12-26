@@ -5,7 +5,10 @@
 //  Created by kwan terry on 12-8-17.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
-
+/**
+ *  @file
+ *	储存着魔方具体数据的头文件，用于将来魔方的3D渲染
+ */
 #ifndef HelloCone_data_hpp
 #define HelloCone_data_hpp
 
@@ -113,6 +116,7 @@ const GLfloat colorss[]={
     1.0,0.0,1.0,1.0
     
 };*/
+#pragma mark Cube_vertex_coordinates_f
 float Cube_vertex_coordinates_f []={
     //上
     -0.44,0.52,-0.44,//left top(at rear)
@@ -167,6 +171,8 @@ float Cube_vertex_coordinates_f []={
        
    
 };
+
+#pragma mark Cube_normal_vectors_f
 float Cube_normal_vectors_f [] = {
     //上
     0.0,1.0,0.0,
@@ -214,6 +220,8 @@ float Cube_normal_vectors_f [] = {
     1.0,0.0,0.0,
     1.0,0.0,0.0
 };
+
+#pragma mark Cube_texture_coordinates_f
 float Cube_texture_coordinates_f [] = {
     //上 黄
     0.2890625,0.01171875,
@@ -274,6 +282,7 @@ float Cube_texture_coordinates_f [] = {
 
 };
 
+#pragma mark Cube_LockSign_vertex_coordinates
 float Cube_LockSign_vertex_coordinates []={
     //上
     -0.15,0.53,-0.15,//left top(at rear)
@@ -323,6 +332,8 @@ float Cube_LockSign_vertex_coordinates []={
     0.53,-0.15,-0.15,//right
     0.53,0.15,-0.15//top right
 };
+
+#pragma mark Cube_direction_indicator_vertex_coordinates
 float Cube_direction_indicator_vertex_coordinates []={
     //上
     -0.38,0.54,-0.38,//left top(at rear)
@@ -373,6 +384,7 @@ float Cube_direction_indicator_vertex_coordinates []={
     0.54,0.38,-0.38//top right
 };
 
+#pragma mark Cube_LockSign_vertex_texture_coordinates
 float Cube_LockSign_vertex_texture_coordinates []={
     0,0,
     0,1,

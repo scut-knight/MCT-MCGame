@@ -5,7 +5,10 @@
 //,Created,by,kwan,terry,on,12-10-3.
 //,Copyright,(c),2012年,__MyCompanyName__.,All,rights,reserved.
 //
-
+/**
+ *	@file
+ *  储存着用于测试的魔方数据
+ */
 #define Cube_vertex_count		248
 #define Cube_polygon_count		492
 #define Cube_vertex_array_size		Cube_polygon_count * 3

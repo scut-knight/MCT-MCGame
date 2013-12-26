@@ -10,6 +10,10 @@
 @class MCTexturedQuad;
 @class MCAnimatedQuad;
 #import "MCPoint.h"
+
+/**
+ *	整个应用的材质纹理加载器，加载png图片
+ */
 @interface MCMaterialController : NSObject{
     //model meterial
     NSMutableDictionary * materialLibrary;

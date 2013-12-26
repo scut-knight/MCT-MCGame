@@ -7,7 +7,9 @@
 //
 #import "MCMesh.h"
 #import "MCMaterialController.h"
-
+/**
+ *	带纹理的MCMesh类
+ */
 @interface MCTexturedMesh : MCMesh {
 	GLfloat * uvCoordinates;
 	GLfloat * normals;

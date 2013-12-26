@@ -1,7 +1,9 @@
 //
 // Prefix header for all source files of the 'MCGame' target in the 'MCGame' project
 //
-
+/**
+ *	为编译器编译而准备的预编译前缀文件
+ */
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>

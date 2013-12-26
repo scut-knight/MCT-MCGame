@@ -13,7 +13,9 @@
 using namespace std;
 
 #define MaxLineSize 128
-
+/**
+ *	应用外部模型加载器，加载外部3D模型
+ */
 @interface MCOBJLoader : NSObject{
     NSMutableDictionary * OBJLibrary;
     
@@ -34,6 +36,7 @@ using namespace std;
 @property GLfloat * Cube_normal_vectors;
 @property GLfloat * Cube_texture_coordinates;
 @property (nonatomic,retain)NSString * texture_key;
+
 +(MCOBJLoader*)sharedMCOBJLoader;
 -(void)loadObjFromFile:(NSString*)filename objkey:(NSString*)objkey;
 

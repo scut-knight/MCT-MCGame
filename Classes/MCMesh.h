@@ -15,6 +15,9 @@
 #import "MCPoint.h"
 #import "MCSceneController.h"
 
+/**
+ *	这个类表示一个由顶点包围的，被用于渲染的区域。
+ */
 @interface MCMesh : NSObject {
 	// mesh data
 	GLfloat * vertexes;

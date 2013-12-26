@@ -12,7 +12,14 @@
 @implementation MCMesh
 
 @synthesize vertexCount,vertexSize,colorSize,renderStyle,vertexes,colors,centroid,radius;
-
+/**
+ *	初始化MCMesh
+ *
+ *	@param	verts	顶点数组
+ *	@param	vertCount	顶点个数
+ *	@param	vertSize	顶点大小
+ *	@param	style	渲染方式
+ */
 - (id)initWithVertexes:(CGFloat*)verts 
            vertexCount:(NSInteger)vertCount 
             vertexSize:(NSInteger)vertSize
@@ -29,7 +36,11 @@
 	}
 	return self;
 }
-
+/**
+ *	计算中点
+ *
+ *	@return	MCPoint(centerX,centerY,0.0)
+ */
 -(MCPoint)calculateCentroid
 {
 	CGFloat xTotal = 0;
@@ -45,9 +56,15 @@
 	}
 	// now average each total over the number of vertexes
     //	return MCPointMake(xTotal/(CGFloat)vertexCount, yTotal/(CGFloat)vertexCount, zTotal/(CGFloat)vertexCount);
+    // 注意z轴坐标上的值恒为0.0
 	return MCPointMake(xTotal/(CGFloat)vertexCount, yTotal/(CGFloat)vertexCount, 0.0);
 }
 
+/**
+ *	计算半径，注意这个不是圆，其半径为中点到最远顶点的距离
+ *
+ *	@return	CGFloat类型的半径值
+ */
 -(CGFloat)calculateRadius
 {
 	CGFloat rad = 0.0;
@@ -82,12 +99,20 @@
 	glDrawArrays(renderStyle, 0, vertexCount);	
 }
 
-
+/**
+ *	计算MCMesh的边界
+ *
+ *	@param	mesh	输入的MCMesh
+ *	@param	scale	以向量表示的缩放尺度
+ *
+ *	@return	如果mesh的边数小于三，返回CGRectZero；否则返回一个至少为1.0 * 1.0的CGRect类型
+ */
 +(CGRect)meshBounds:(MCMesh*)mesh scale:(MCPoint)scale
 {
 	if (mesh == nil) return CGRectZero;
 	// need to run through my vertexes and find my extremes
 	if (mesh.vertexCount < 2) return CGRectZero;
+    
 	CGFloat xMin,yMin,xMax,yMax;
 	xMin = xMax = mesh.vertexes[0];
 	yMin = yMax = mesh.vertexes[1];

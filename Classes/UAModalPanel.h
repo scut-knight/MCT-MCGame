@@ -8,7 +8,7 @@
 
 /**
  *  @file
- *  开源项目UAModalPanel，介绍可以看下面的网址
+ *  位于ModalPopPanel包的文件属于开源项目UAModalPanel，介绍可以看下面的网址
  *  English:
  *  @see	https://github.com/UrbanApps/UAModalPanel
  *  中文：

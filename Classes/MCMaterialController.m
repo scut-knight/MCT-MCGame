@@ -12,6 +12,7 @@
 #import "MCConfiguration.h"
 #import "MCStringDefine.h"
 #import "PlatformDetect.h"
+
 @implementation MCMaterialController
 // Singleton accessor.  this is how you should ALWAYS get a reference
 // to the controller.  Never init your own. 
