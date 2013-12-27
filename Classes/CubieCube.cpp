@@ -162,6 +162,9 @@ void CubieCube::rotateRight(Edge arr[], int l, int r) {
 /**
  *	将CubieCube转化成FaceCube
  *
+ *  Notice：auto_ptr在C++11中已经变得过时，，因为其无法管理数组的内存分配等等。
+ *  推荐使用unique_ptr代替。不过为了照顾旧版本Xcode，比如我现在用的4.6版本，还是保持不变。
+ *
  *	@return	一个智能指针，因为返回的FaceCube对象是在函数体内new出来的，所以要用智能指针管理内存的释放
  */
 std::auto_ptr<FaceCube> CubieCube::toFaceCube() {

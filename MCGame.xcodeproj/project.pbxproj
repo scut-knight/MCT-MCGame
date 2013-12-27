@@ -1375,8 +1375,8 @@
 			children = (
 				A3F2ACC11616E1CE00D622B8 /* MCConfiguration.h */,
 				A3D67F8A1759E35E002501B2 /* MCStringDefine.h */,
-				A3C1D188169596DD004EB56C /* MCCollisionController.h */,
 				A3C1D189169596DD004EB56C /* MCCollisionController.mm */,
+				A3C1D188169596DD004EB56C /* MCCollisionController.h */,
 				1D3623240D0F684500981E51 /* MCGameAppDelegate.h */,
 				1D3623250D0F684500981E51 /* MCGameAppDelegate.mm */,
 				A3DB2594162D993900AB9F00 /* CoordinatingController.h */,

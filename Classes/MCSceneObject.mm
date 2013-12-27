@@ -15,11 +15,13 @@
 
 
 @implementation MCSceneObject
+
 @synthesize prerotation,pretranslation;
 @synthesize translation,rotation,scale,active,mesh,matrix,meshBounds;
 //@synthesize m_orientation;
 @synthesize quaRotation,quaPreviousRotation,start_quaRotation,finish_quaRotation;
 @synthesize collider;
+
 - (id) init
 {
 	self = [super init];

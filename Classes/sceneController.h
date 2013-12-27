@@ -7,17 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+
 //@class MCInputViewController;
 @class MCCollisionController;
 @class InputController;
 @class EAGLView;
 @class MCSceneObject;
+/**
+ *	该类搭建了一个舞台，负责各种场景对象的产生、渲染和终结。
+ */
 @interface sceneController : NSObject{
-    //maintain all the scene objects
+    /**
+     *	maintain all the scene objects
+     */
     NSMutableArray * sceneObjects;
-    //queue that store object to remove next update gameloop
+	/**
+	 *	queue that store object to remove next update gameloop
+	 */
 	NSMutableArray * objectsToRemove;
-    //queue that store object to add next update gameloop,and add to the sceneObject array.
+    /**
+     *	queue that store object to add next update gameloop,and add to the sceneObject array.
+     */
 	NSMutableArray * objectsToAdd;
     
     //inputcontroller

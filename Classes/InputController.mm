@@ -11,13 +11,16 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 #import "CoordinatingController.h"
+
 @implementation InputController
+
 @synthesize touchCount;
 @synthesize touchEvents;
 @synthesize fsm_Current_State,fsm_Previous_State;
 @synthesize particleEmitter;
 @synthesize lastpoint;
 //@synthesize isNeededReload;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)niMCundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:niMCundleOrNil]) {
 		// init our touch storage set

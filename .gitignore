@@ -16,6 +16,6 @@ DerivedData
 .idea/
 *.hmap
 *.xccheckout
-
+Breakpoints.xcbkptlist
 #CocoaPods
 Pods

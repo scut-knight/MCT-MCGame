@@ -21,8 +21,12 @@
 #import "MCConfiguration.h"
 #import "MCRay.h"
 //#include "MeshRenderEngine.hpp"
+
 @class MCMesh;
 @class MCCollider;
+/**
+ *	该类用于处理图像渲染
+ */
 @interface MCSceneObject : NSObject {
 	// transform values
 	MCPoint pretranslation;
