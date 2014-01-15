@@ -7,11 +7,20 @@
 //
 
 #import "MCTexturedQuad.h"
-
+/**
+ *	动画方块。
+ *  每一帧动画都是一个MCTexturedQuad
+ */
 @interface MCAnimatedQuad : MCTexturedQuad{
     NSMutableArray * frameQuads;
+	/**
+	 *	帧数
+	 */
 	CGFloat speed;
 	NSTimeInterval elapsedTime;
+	/**
+	 *	是否循环播放各帧
+	 */
 	BOOL loops;
 	BOOL didFinish;
 }

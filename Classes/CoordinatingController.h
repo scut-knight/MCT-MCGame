@@ -21,6 +21,9 @@
  *  实现了MBProgressHUDDelegate协议(接口)，使用开源项目MBProgressHUD来表示场景切换时“等待中”的状态。
  */
 @interface CoordinatingController : NSObject <MBProgressHUDDelegate>{
+    /**
+     *	当前使用的场景控制器
+     */
     sceneController * currentController;
     MBProgressHUD *HUD;
     UIWindow *window;

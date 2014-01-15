@@ -35,13 +35,20 @@
 	EAGLView * openGLView;
 	
     //MCCollisionController * collisionController;
-    
+    // 以下是关于动画播放的
 	NSTimer *animationTimer;
 	NSTimeInterval animationInterval;
     
+    // 以下是关于场景的帧管理的
+	/**
+	 *	每次gameloop需要的时间
+	 */
 	NSTimeInterval deltaTime;
 	NSTimeInterval lastFrameStartTime;
 	NSTimeInterval thisFrameStartTime;
+	/**
+	 *	场景开始时间
+	 */
 	NSDate * levelStartDate;
 	
 	BOOL needToLoadScene;

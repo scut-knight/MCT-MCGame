@@ -7,7 +7,9 @@
 //
 
 #import "MCMobileObject.h"
-
+/**
+ *	背景纹理网格对象
+ */
 @interface MCBackGroundTexMesh : MCMobileObject
 
 @end

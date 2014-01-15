@@ -190,11 +190,12 @@
 }
 
 /**
+ *  we want to override the super's render because
+ *  we dont have a mesh, but instead are holding onto all the array data
+ *  as instance vars
+ *
  *  重载了基类的render方法
  */
-// we want to override the super's render because
-// we dont have a mesh, but instead are holding onto all the array data
-// as instance vars
 -(void)render
 {
 	if (!active) return;

@@ -29,12 +29,23 @@
  */
 @interface MCSceneObject : NSObject {
 	// transform values
+	/**
+	 *	平移前坐标
+	 */
 	MCPoint pretranslation;
+	/**
+	 *	旋转前坐标
+	 */
 	MCPoint prerotation;
     
-
+    /**
+     *	平移后坐标
+     */
     MCPoint translation;
 	MCPoint scale;
+	/**
+	 *	旋转后坐标
+	 */
 	MCPoint rotation;
     
     Quaternion quaRotation;
