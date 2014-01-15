@@ -8,6 +8,11 @@
 
 #import "MCMesh.h"
 #import "MCMaterialController.h"
+/**
+ *	纹理渲染区域
+ *
+ *  Quad是四方形的意思，这里代表了一片特定的区域。
+ */
 @interface MCTexturedQuad : MCMesh{
     GLfloat * uvCoordinates;
 	NSString * materialKey;

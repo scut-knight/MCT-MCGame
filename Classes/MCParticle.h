@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "MCPoint.h"
+/**
+ *	MC粒子
+ */
 @interface MCParticle  :NSObject{
     //粒子当前位置
     MCPoint  position;

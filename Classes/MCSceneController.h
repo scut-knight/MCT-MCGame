@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "sceneController.h"
 
-
+/**
+ *	场景控制器
+ */
 @interface MCSceneController : sceneController {
 	}
 

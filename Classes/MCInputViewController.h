@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "InputController.h"
 #import "MCParticleSystem.h"
+
+/**
+ *	输入场景控制器
+ *
+ *  负责加载主场景的场景对象和调用各个子场景的控制器
+ */
 @interface MCInputViewController : InputController{
     //MCParticleSystem *particleEmitter;
 }

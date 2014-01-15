@@ -17,12 +17,15 @@
     }
     return self;
 }
+
 -(void)awake{
     self.mesh = labelQuad;
 }
+
 - (void)update{
     [super update];
 }
+
 - (void)dealloc{
     [labelQuad release];
 	[super dealloc];

@@ -158,7 +158,6 @@
 #pragma mark load each scene
 -(void)loadCountingPlayScene{
     [SVProgressHUD dismiss];
-    //[SVProgressHUD dismiss];
     [currentController stopAnimation];
     _countingPlaySceneController = [MCCountingPlaySceneController sharedCountingPlaySceneController];
     MCCountingPlayInputViewController * countingInputController = [[MCCountingPlayInputViewController alloc] initWithNibName:nil bundle:nil];

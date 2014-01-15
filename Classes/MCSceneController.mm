@@ -18,8 +18,11 @@
 //#import "data.hpp"
 @implementation MCSceneController
 
+/**
+ *  使用Singleton来初始化
+ */
 // Singleton accessor.  this is how you should ALWAYS get a reference
-// to the scene controller.  Never init your own. 
+// to the scene controller.  Never init your own.
 +(MCSceneController*)sharedSceneController
 {
   static MCSceneController *sharedSceneController;
@@ -34,13 +37,17 @@
 
 #pragma mark scene preload
 
+/**
+ *	初始化所有的场景对象
+ */
 // this is where we initialize all our scene objects
 -(void)loadScene
-{needToLoadScene = NO;
+{
+    needToLoadScene = NO;
 	RANDOM_SEED();
 	// this is where we store all our objects
 	if (sceneObjects == nil) sceneObjects = [[NSMutableArray alloc] init];	
-	
+	// 加载背景
     MCBackGroundTexMesh* background = [[MCBackGroundTexMesh alloc]init];
     background.pretranslation = MCPointMake(0, 0, -246);
     background.scale = MCPointMake(64, 64, 1);
@@ -58,7 +65,7 @@
 	[magicCube release];
 	*/
     //大魔方
-    MCMagicCubeUIModelController* magicCubeUI = [[MCMagicCubeUIModelController alloc]initiate] ;
+    MCMagicCubeUIModelController* magicCubeUI = [[MCMagicCubeUIModelController alloc] initiate] ;
     magicCubeUI.target=self;
     [magicCubeUI setUsingMode:SOlVE_Input_MODE];
     [magicCubeUI setStepcounterAddAction:@selector(stepcounterAdd)];
@@ -82,7 +89,10 @@
 
 
 
-
+/**
+ *	游戏结束时为实现了该接口的各个场景类所调用。
+ *  这里没有实现，可供实现来覆盖
+ */
 -(void)gameOver
 {
     //this selector would be the action take by interface when the puzzle is solved. but now it is not implement.
@@ -98,6 +108,7 @@
 	
 	[super dealloc];
 }
+
 - (void)releaseSrc{
     [super releaseSrc];
     //[self stopAnimation];

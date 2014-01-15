@@ -21,6 +21,14 @@
 @synthesize lastpoint;
 //@synthesize isNeededReload;
 
+/**
+ *	根据nib文件来初始化
+ *
+ *	@param	nibNameOrNil	nib文件名
+ *	@param	niMCundleOrNil	nib所在的bundle
+ *
+ *	@return	self
+ */
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)niMCundleOrNil {
 	if (self = [super initWithNibName:nibNameOrNil bundle:niMCundleOrNil]) {
 		// init our touch storage set
@@ -32,10 +40,15 @@
 	}
 	return self;
 }
+
+/**
+ *	一个空函数
+ */
 -(void)loadView
 {
 	
 }
+
 
 -(CGRect)screenRectFromMeshRect:(CGRect)rect atPoint:(CGPoint)meshCenter
 {
