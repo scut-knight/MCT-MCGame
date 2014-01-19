@@ -14,8 +14,12 @@
 #import "PlatformDetect.h"
 
 @implementation MCMaterialController
-// Singleton accessor.  this is how you should ALWAYS get a reference
-// to the controller.  Never init your own. 
+/**
+ * Singleton accessor.  this is how you should ALWAYS get a reference
+ * to the controller.  Never init your own. 
+ *
+ *  单件
+ */
 +(MCMaterialController*)sharedMaterialController
 {
     static MCMaterialController *sharedMaterialController;

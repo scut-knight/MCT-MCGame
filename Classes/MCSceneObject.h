@@ -47,7 +47,7 @@
 	 *	旋转后坐标
 	 */
 	MCPoint rotation;
-    
+    // 旋转用的四元数
     Quaternion quaRotation;
     Quaternion quaPreviousRotation;
     //用来进行校验的四元数
@@ -80,7 +80,7 @@
 @property (assign) Quaternion start_quaRotation;
 @property (assign) Quaternion finish_quaRotation;
 @property (assign) BOOL active;
-@property (assign) CGRect meshBounds;
+@property (readonly) CGRect meshBounds;
 - (id) init;
 - (void) dealloc;
 - (void)awake;

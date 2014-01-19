@@ -9,9 +9,12 @@
 #import "MCMobileObject.h"
 #import "MCRay.h"
 #import "CubeFace.h"
+#import "Global.h"
+
 @class MCParticleSystem;
 @class MCCollider;
-#import "Global.h"
+
+
 @interface Cube :MCMobileObject{
     MCParticleSystem * particleEmitter;
     NSMutableArray *cube6faces;
@@ -35,6 +38,7 @@
 @property (nonatomic,retain)NSMutableArray *cube6faces;
 @property (nonatomic,retain)NSMutableArray *cube6faces_locksign;
 @property (nonatomic,retain)NSMutableArray *cube6faces_direction_indicator;
+
 -(id)init;
 - (id) initWithState:(NSDictionary*)states;
 - (void) flashWithState:(NSDictionary*)states;

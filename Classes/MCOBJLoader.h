@@ -14,7 +14,7 @@ using namespace std;
 
 #define MaxLineSize 128
 /**
- *	应用外部模型加载器，加载外部3D模型
+ *	应用外部模型加载器，加载外部3D模型(来自于.obj文件的魔方坐标参数)
  */
 @interface MCOBJLoader : NSObject{
     NSMutableDictionary * OBJLibrary;

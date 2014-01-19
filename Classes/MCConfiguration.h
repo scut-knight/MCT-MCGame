@@ -10,6 +10,10 @@
  *  we need and dont want to hardcode in the code
  *
  *  配置文件,包括一些需要的宏和设置
+ *
+ *  有一点需要注意的是，编译器会声称有些变量没有使用。
+ *  这个是编译器对.mm类型文件的变量识别上的问题。
+ *  所以不要移除那些“无用的”变量。
  */
 
 #pragma mark - #define
@@ -133,7 +137,7 @@ typedef enum {
 
 #pragma mark cubre mesh
 // 以下内容均被用于.mm文件中，却被编译器错误地当作未使用变量。所以不要除去这一部分
-
+// 以下内容用于debug状态下调试用
 static NSInteger MCCubreVertexStride = 3;
 static NSInteger MCCubreColorStride = 4;
 static NSInteger MCCubreOutlineVertexesCount = 36;

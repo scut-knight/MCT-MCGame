@@ -21,6 +21,7 @@
 #import "MCStringDefine.h"
 
 @implementation Cube
+
 @synthesize cube6faces_direction_indicator;
 @synthesize isNeededToShowSpaceDirection;
 @synthesize indicator_axis;
@@ -29,6 +30,13 @@
 @synthesize cube6faces_locksign;
 @synthesize isLocked=_isLocked;
 @synthesize index_selectedFace;
+/**
+ *	使用状态来初始化。注意与默认初始化函数的异同。
+ *
+ *	@param	states	一个NSNumber：NSNumber字典，在该字典中各个面(用NSNumber表示)对应的方向(用NSNumber表示)不同。这样就决定了魔方的朝向。
+ *
+ *	@return	带纹理数据的魔方对象
+ */
 - (id) initWithState:(NSDictionary *)states
 {
 	self = [super init];
@@ -48,20 +56,23 @@
         [(MCTexturedMesh*)mesh setMaterialKey:@"cubeTexture3"];
         [(MCTexturedMesh*)mesh setUvCoordinates:Cube_texture_coordinates];
         [(MCTexturedMesh*)mesh setNormals:Cube_normal_vectors];
+        
         [self setIsLocked:NO];
         if (cube6faces==nil) {
             cube6faces = [[NSMutableArray alloc]init];
         }
+        // for each face
         for (int i=0; i<6; i++) {
             NSNumber *state = [states objectForKey:[NSNumber numberWithInteger:i ]];
             CubeFace* faces = [[CubeFace alloc]initWithVertexes:&Cube_vertex_coordinates_f[i*6*3] vertexCount:6 vertexSize:3 renderStyle:GL_TRIANGLES];
             [faces setIsNeedRender:YES];
             [(CubeFace*)faces setMaterialKey:@"sixcolor"];
-            [(CubeFace*)faces setUvCoordinates:&Cube_texture_coordinates_f[[state integerValue]*6*2]];
+            [(CubeFace*)faces setUvCoordinates:&Cube_texture_coordinates_f[[state integerValue]*6*2]]; // 这里使用了state而不是用i
             [(CubeFace*)faces setNormals:&Cube_normal_vectors_f[i*6*3]];
             [cube6faces addObject:faces];
             [faces release];
         }
+        // for each locksign
         index_selectedFace = -1;
         if (cube6faces_locksign==nil) {
             cube6faces_locksign = [[NSMutableArray alloc]init];
@@ -75,6 +86,7 @@
             [cube6faces_locksign addObject:faces_locksign];
             [faces_locksign release];
         }
+        // for each direction indicator
         if (cube6faces_direction_indicator==nil) {
             cube6faces_direction_indicator = [[NSMutableArray alloc]init];
         }
@@ -91,6 +103,12 @@
     
 	return self;
 }
+
+/**
+ *	根据状态来涂上颜色
+ *
+ *	@param	states	状态
+ */
 - (void) flashWithState:(NSDictionary*)states{
     for (int i=0; i<6; i++) {
         NSNumber *state = [states objectForKey:[NSNumber numberWithInteger:i ]];
@@ -99,6 +117,11 @@
     }
 };
 
+/**
+ *	默认的初始化函数。注意与有状态的初始化函数的异同。
+ *
+ *	@return	带纹理数据的魔方对象
+ */
 -(id)init{
     self = [super init];
 	if (self != nil) {
@@ -116,11 +139,13 @@
         [(MCTexturedMesh*)mesh setMaterialKey:@"cubeTexture3"];/**/
         [(MCTexturedMesh*)mesh setUvCoordinates:Cube_texture_coordinates];
         [(MCTexturedMesh*)mesh setNormals:Cube_normal_vectors];
+        
         [self setIsLocked:NO];
         if (cube6faces==nil) {
             cube6faces = [[NSMutableArray alloc]init];
         }
-        index_selectedFace = -1;
+        index_selectedFace = -1; // 没有输入状态时多出默认设置
+        // for each face
         for (int i=0; i<6; i++) {
             //NSNumber *state = [states objectForKey:[NSNumber numberWithInteger:i ]];
             CubeFace* faces = [[CubeFace alloc]initWithVertexes:&Cube_vertex_coordinates_f[i*6*3] vertexCount:6 vertexSize:3 renderStyle:GL_TRIANGLES];
@@ -131,6 +156,7 @@
             [cube6faces addObject:faces];
             [faces release];
         }
+        // for each locksign
         if (cube6faces_locksign==nil) {
             cube6faces_locksign = [[NSMutableArray alloc]init];
         }
@@ -143,6 +169,7 @@
             [cube6faces_locksign addObject:faces_locksign];
             [faces_locksign release];
         }
+        // for each direction indicator
         if (cube6faces_direction_indicator==nil) {
             cube6faces_direction_indicator = [[NSMutableArray alloc]init];
         }
@@ -161,7 +188,10 @@
 	return self;
 
 }
-// called once every frame
+
+/**
+ * called once every frame
+ */
 -(void)render
 {
     if (!mesh || !active) return; // if we do not have a mesh, no need to render
@@ -170,6 +200,7 @@
 	glLoadIdentity();
 	glMultMatrixf(matrix);
 	[mesh render];
+    // render each subobjects
     [cube6faces makeObjectsPerformSelector:@selector(render)];
     if ([self isLocked]) {
         [cube6faces_locksign makeObjectsPerformSelector:@selector(render)];
@@ -177,6 +208,7 @@
     [cube6faces_direction_indicator makeObjectsPerformSelector:@selector(render)];
 	glPopMatrix();
 }
+
 -(void)awake
 {
     active = YES;
@@ -184,8 +216,9 @@
 
 
 
-
-// called once every frame
+/**
+ * called once every frame
+ */
 -(void)update
 {
     //self work
@@ -254,6 +287,9 @@
        
 }
 
+/**
+ *	当粒子全部消失时，从场景中移除该对象，并且结束当前游戏循环。
+ */
 -(void)deadUpdate
 {
 	if ((particleEmitter.emitCounter <= 0) && (![particleEmitter activeParticles])) {
@@ -263,7 +299,9 @@
 }
 
 
-
+/**
+ *	dealloc时，需要移除粒子发射器
+ */
 - (void) dealloc
 {
     if (particleEmitter != nil) [[[CoordinatingController sharedCoordinatingController] currentController] removeObjectFromScene:particleEmitter];
