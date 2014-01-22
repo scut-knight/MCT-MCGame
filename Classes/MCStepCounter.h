@@ -7,7 +7,10 @@
 //
 
 #import "MCSceneObject.h"
-
+/**
+ *	虽然名字叫做计步器，但是该类现在并不负责计步的操作。
+ *  该类作为MCMultiDigitCounter的一部分，负责计步器图层的渲染。
+ */
 @interface MCStepCounter : MCSceneObject{
  //   NSInteger m_stepCounter;
     MCTexturedQuad *m_numberQuad[10];

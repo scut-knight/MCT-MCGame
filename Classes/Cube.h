@@ -14,7 +14,9 @@
 @class MCParticleSystem;
 @class MCCollider;
 
-
+/**
+ *	场景对象之立方体
+ */
 @interface Cube :MCMobileObject{
     MCParticleSystem * particleEmitter;
     NSMutableArray *cube6faces;

@@ -8,7 +8,10 @@
 
 #import "MCButton.h"
 #import "MCParticleSystem.h"
-
+/**
+ *	纹理按钮。
+ *  继承自MCButton，在MCButton上添加了纹理。
+ */
 @interface MCTexturedButton : MCButton {
 	MCTexturedQuad * upQuad;
 	MCTexturedQuad * downQuad;
@@ -16,6 +19,7 @@
     MCParticleSystem *particleEmitter;
 }
 @property (nonatomic,assign) BOOL isNeedToAddParticle;
+
 - (id) initWithUpKey:(NSString*)upKey downKey:(NSString*)downKey;
 - (void) dealloc;
 - (void)awake;

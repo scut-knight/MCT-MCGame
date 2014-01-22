@@ -8,6 +8,9 @@
 
 #import "MCSceneObject.h"
 #import "MCStepCounter.h"
+/**
+ *	计步器
+ */
 @interface MCMultiDigitCounter : MCSceneObject{
     //计数器值
     NSInteger m_counterValue;
@@ -16,6 +19,7 @@
     //计数器位数组
     NSMutableArray * m_multiDigitCounter;
 }
+
 @property (assign) NSInteger m_counterValue;
 @property (nonatomic,retain)NSMutableArray * m_multiDigitCounter;
 - (id) initWithNumberOfDigit:(NSInteger)bits andKeys:(NSString *[])texturekeys;

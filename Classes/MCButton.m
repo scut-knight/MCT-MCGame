@@ -13,10 +13,12 @@
 #pragma mark square
 static NSInteger MCSquareVertexSize = 2;
 static NSInteger MCSquareColorSize = 4;
+// 未按下的外观
 static GLenum MCSquareOutlineRenderStyle = GL_LINE_LOOP;
 static NSInteger MCSquareOutlineVertexesCount = 4;
 static CGFloat MCSquareOutlineVertexes[8] = {-0.5f, -0.5f, 0.5f,  -0.5f, 0.5f,   0.5f, -0.5f,  0.5f};
 static CGFloat MCSquareOutlineColorValues[16] = {1.0,1.0,1.0,1.0, 1.0,1.0,1.0,1.0, 1.0,1.0,1.0,1.0, 1.0,1.0,1.0,1.0};
+// 按下后的外观
 static GLenum MCSquareFillRenderStyle = GL_TRIANGLE_STRIP;
 static NSInteger MCSquareFillVertexesCount = 4;
 static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5};
@@ -26,7 +28,9 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
 
 @synthesize buttonDownAction,buttonUpAction,target;
 
-// called once when the object is first created.
+/**
+ * called once when the object is first created.
+ */
 -(void)awake
 {
 	pressed = NO;
@@ -42,7 +46,9 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
 	[self setNotPressedVertexes];
 }
 
-// called once every frame
+/**
+ * called once every frame
+ */
 -(void)update
 {
 	// check for touches
@@ -50,6 +56,9 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
 	[super update];
 }
 
+/**
+ *	设置按下按钮后的外观
+ */
 -(void)setPressedVertexes
 {
 	mesh.vertexes = MCSquareFillVertexes;
@@ -58,6 +67,9 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
 	mesh.colors = MCSquareOutlineColorValues;
 }
 
+/**
+ *	设置未按下按钮时的外观
+ */
 -(void)setNotPressedVertexes
 {
 	mesh.vertexes = MCSquareOutlineVertexes;
@@ -66,6 +78,9 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
 	mesh.colors = MCSquareOutlineColorValues;
 }
 
+/**
+ *	处理触摸事件
+ */
 -(void)handleTouches
 {
 	NSSet * touches = [[[CoordinatingController sharedCoordinatingController] currentController].inputController touchEvents];
@@ -73,9 +88,10 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
 	BOOL pointInBounds = NO;
     FSM_Interaction_State fsm_Current_State = [[[CoordinatingController sharedCoordinatingController] currentController].inputController fsm_Current_State];
 	CGPoint lastpoint = [[[CoordinatingController sharedCoordinatingController] currentController].inputController lastpoint];
+    // 处理每一点触控
     for (UITouch * touch in [touches allObjects]) {
         CGPoint touchPoint = [touch previousLocationInView:[touch view]];
-        if (touch.phase == UITouchPhaseEnded&&fsm_Current_State==kState_F1){
+        if (touch.phase == UITouchPhaseEnded && fsm_Current_State==kState_F1){
             if (CGRectContainsPoint(screenRect, lastpoint)) {
                 [self touchUp];
                 break;
@@ -93,7 +109,9 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
     }
 	
 }
-
+/**
+ *	按下按钮了
+ */
 -(void)touchUp
 {
 	if (!pressed) return; // we were already up
@@ -102,13 +120,18 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
     
 	[target performSelector:buttonUpAction];
 }
+/**
+ *	按下按钮，但是是无效的，无需产生buttonUpAction动作
+ */
 -(void)showUp
 {
 	if (!pressed) return; // we were already up
 	pressed = NO;
 	[self setNotPressedVertexes];
 }
-
+/**
+ *	松开按钮
+ */
 -(void)touchDown
 {
 	if (pressed) return; // we were already down
