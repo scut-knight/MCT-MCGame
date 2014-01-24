@@ -7,10 +7,13 @@
 //
 
 #import "MCSceneObject.h"
-
+/**
+ *	计时器中分割各部分的点
+ */
 @interface MCDotSeparater : MCSceneObject{
     MCTexturedQuad * quad;
 }
+
 - (id) initWithUpKeyS:(NSString*)Key;
 - (void)awake;
 @end

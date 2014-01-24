@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "MCSceneObject.h"
+/**
+ *	动作箭头
+ */
 @interface ActionArrow : MCSceneObject{
     MCTexturedQuad *arrowQuad;
 }

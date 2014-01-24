@@ -17,12 +17,15 @@
     }
     return self;
 }
+
 -(void)awake{
     self.mesh = arrowQuad;
 }
+
 - (void)update{
     [super update];
 }
+
 - (void)dealloc{
     [arrowQuad release];
 	[super dealloc];

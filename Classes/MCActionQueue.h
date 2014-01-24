@@ -10,8 +10,13 @@
 #import "MCSceneObject.h"
 #import "ActionQuad.h"
 #import "ActionArrow.h"
+/**
+ *	动作队列
+ */
 @interface MCActionQueue :MCSceneObject{
-    //action 队列
+    /**
+     *  action 队列
+     */
     NSMutableArray *actionQuads;
     NSInteger currentActionIndex;
     ActionArrow *currentArrow;

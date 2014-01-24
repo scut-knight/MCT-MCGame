@@ -17,9 +17,11 @@
     }
     return self;
 }
+
 - (void)awake{
     self.mesh = quad;
 };
+
 - (void)dealloc{
     [quad release];
 	[super dealloc];
