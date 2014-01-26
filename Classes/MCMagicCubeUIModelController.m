@@ -713,7 +713,9 @@
     [super update];
 };
 
-
+/**
+ *	处理触控事件，根据不同的触控结果来对魔方模型进行不同操作
+ */
 -(void)handleTouches
 {
     if ([self usingMode] == SOlVE_Play_MODE) {
@@ -979,7 +981,7 @@
             //确定旋转方向
             //使用第一点 和 最后一个点 及他们点中间点 在轨迹圆上形成轨迹弧
             //三点确定两个向量，他们进行差乘，再和法向量进行点乘 由正负确定转向
-            if(isLayerRotating!=YES)return;
+            if(isLayerRotating!=YES) return;
             //CGPoint location = [touch locationInView:view];
             CGPoint location = [touch previousLocationInView:view];
             vec2 lastPoint = vec2(location.x,location.y);
@@ -1008,8 +1010,9 @@
             if (fingerRotate_angle>135) {
                 isNeededToUpadteTwice = YES;
             }
-            int tmpvar = int(fingerRotate_angle)/90;
-            fingerRotate_angle_mod90 = fingerRotate_angle - tmpvar*90.0;
+//            int tmpvar = int(fingerRotate_angle)/90;
+//            fingerRotate_angle_mod90 = fingerRotate_angle - tmpvar*90.0;
+            fingerRotate_angle_mod90 = fingerRotate_angle - int(fingerRotate_angle/90) * 90;
             if (fingerRotate_angle_mod90 > 45.0) {
                 rest_fingerRotate_angle = 90.0-fingerRotate_angle_mod90;
             }else {
@@ -1032,24 +1035,30 @@
             if (current_rotate_axis ==Z) {
                 cosa = corssv1v2.Dot(oz)/(corssv1v2.Module()*oz.Module());
             }
+            // 魔方旋转角度
             if (cosa > 0){
+                // 45 - 90
                 if (fingerRotate_angle_mod90 > 45) {
                     current_rotate_direction = CW;
                     isNeededToUpdateMagicCubeState = YES;
                 }else {
+                // 0 - 45
                     current_rotate_direction = CCW;
                     isNeededToUpdateMagicCubeState = NO;
                 }
             }else {
+                // 135 - 180
                 if (fingerRotate_angle_mod90 > 45) {
                     current_rotate_direction = CCW;
                     isNeededToUpdateMagicCubeState = YES;
                 }else {
+                // 90 -135
                     current_rotate_direction = CW;
                     isNeededToUpdateMagicCubeState = NO;
                 }
             }
-            if (fingerRotate_angle>90&&fingerRotate_angle_mod90<45) {
+            // 注意这一步不是冗余的。
+            if (fingerRotate_angle>90 && fingerRotate_angle_mod90<45) {
                 isNeededToUpdateMagicCubeState = YES;
             }
             if (isNeededToUpdateMagicCubeState) {
@@ -1095,7 +1104,7 @@
             }
             isLayerRotating = NO;
             firstThreePointCount = 0;
-            if ([self usingMode] == PLAY_MODE||[self usingMode] ==SOlVE_Input_MODE) {
+            if ([self usingMode] == PLAY_MODE||[self usingMode] == SOlVE_Input_MODE) {
             //自由模式下，无限制操作
                 if ([touches count]==2) {
                     UITouch *touch0 = [[touches allObjects] objectAtIndex:0];
@@ -1389,15 +1398,19 @@
     }
 }
 
+/**
+ *	旋转180度时的更新
+ */
 -(void)updatetweice{
     LayerRotationDirectionType commandaxis = current_rotate_direction;
-    if (fingerRotate_angle>90&&fingerRotate_angle_mod90<45) {
+    if (fingerRotate_angle>90 && fingerRotate_angle_mod90<45) {
         if(commandaxis==CCW){
             commandaxis=CW;
         }else {
             commandaxis=CCW;
         }
     }
+    // 记录第一阶段旋转
     NSInvocation *doinvocation = [self createInvocationOnAxis:current_rotate_axis onLayer:current_rotate_layer inDirection:commandaxis isTribleRotate:NO isTwoTimes:NO];
     
     if(commandaxis==CCW){
@@ -1405,10 +1418,19 @@
     }else {
         commandaxis=CCW;
     }
+    // 记录第二阶段旋转
     NSInvocation *undoinvocation = [self createInvocationOnAxis:current_rotate_axis onLayer:current_rotate_layer inDirection:commandaxis isTribleRotate:NO isTwoTimes:NO];
+    // 加入到动作堆栈，用于撤销/重做
     [self addInvocation:doinvocation withUndoInvocation:undoinvocation];
 };
 
+/**
+ *	映射到平头锥体
+ *
+ *	@param	touchpoint	二维的触摸点向量
+ *
+ *	@return	三维的平头锥体
+ */
 -(vec3)MapToSphere:(vec2 )touchpoint
 {
     
@@ -1434,6 +1456,13 @@
     return mapped / radius;
 }
 
+/**
+ *	映射到图像层
+ *
+ *	@param	touchpoint	触摸点的二维向量
+ *
+ *	@return	三维向量的图像
+ */
 -(vec3)MapToLayerCenter:(vec2 )touchpoint
 {
     //ivec2 magiccube_centerPoint = ivec2(512+translation.x,384+translation.y);
@@ -1475,6 +1504,7 @@
     }else {
         zero = oz;
     }
+    
     MCPoint direction_N = MCPointMatrixMultiply(zero, [[array27Cube objectAtIndex:13] matrix]);
     vec3 layer_direction_N;
         layer_direction_N = vec3(direction_N.x,direction_N.y,direction_N.z);
@@ -1487,6 +1517,10 @@
     float ratio = sqrt((mapped.x*mapped.x +mapped.y*mapped.y+ mapped.z*mapped.z)/(radius*radius));
     return (mapped / ratio) / radius;
 }
+
+/**
+ *	获取被选择的魔方层
+ */
 - (void) SelectLayer{
     //获取layer的对象指针
     switch (current_rotate_axis) {
@@ -1527,12 +1561,19 @@
     }
 };
 
+/**
+ *	计步器加
+ */
 -(void)stepCounterAdd{
     if ([target respondsToSelector:stepcounterAddAction]) {
         [target performSelector:stepcounterAddAction];
     }
     
 }
+
+/**
+ *	计步器减
+ */
 -(void)stepCounterMinus{
     if ([target respondsToSelector:stepcounterMinusAction]) {
         [target performSelector:stepcounterMinusAction];
@@ -1540,10 +1581,12 @@
         
 }
 
-
+/**
+ *	更新计步器，魔方解法数据，魔方背后的数据模型。
+ */
 -(void)updateState{
     if (isTribleAutoRotateIn_TECH_MODE) {
-        
+        // trible action should be empty
     }else{
         if (isAddStepWhenUpdateState) {
             [self stepCounterAdd];
@@ -1590,6 +1633,10 @@
     }
     
 }
+
+/**
+ *	更新魔方各方块的状态，比如颜色、朝向等等。
+ */
 -(void)updateMagicCubeIndexState{
     return;
     Cube *tmp;
@@ -1739,10 +1786,18 @@
             break;
     }
 }
+
 #pragma mark undo and redo
 
-//创建撤销操作点NSInvocation对象
--(NSInvocation *)createInvocationOnAxis : (AxisType)axis onLayer: (int)layer inDirection: (LayerRotationDirectionType)direction isTribleRotate:(BOOL)is_trible_roate isTwoTimes:(BOOL)isTwoTimes{
+/**
+ *  创建撤销操作点NSInvocation对象
+ */
+-(NSInvocation *)createInvocationOnAxis : (AxisType)axis
+                                onLayer: (int)layer
+                                inDirection: (LayerRotationDirectionType)direction
+                                isTribleRotate:(BOOL)is_trible_roate
+                                isTwoTimes:(BOOL)isTwoTimes{
+    
     NSMethodSignature *executeMethodSinature = [self methodSignatureForSelector:@selector(rotateOnAxis:onLayer:inDirection:isTribleRotate:isTwoTimes:)];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:executeMethodSinature];
     [invocation setTarget:self];
@@ -1755,29 +1810,41 @@
     return invocation;
 }
 
-
-//手动转动时 添加但是不执行
+/**
+ *  手动转动时 添加但是不执行（添加到NSUndoManager,但是不调用[invocation invoke]）
+ */
 -(void)addInvocation:(NSInvocation *)invocation
       withUndoInvocation:(NSInvocation *)undoInvocation{
     [invocation retainArguments];
     [[self.undoManger prepareWithInvocationTarget:self] unexecuteInvocation:undoInvocation withRedoInvocation:invocation];
 }
-//正常撤销
+
+/**
+ *  正常撤销
+ */
 -(void)executeInvocation:(NSInvocation *)invocation
       withUndoInvocation:(NSInvocation *)undoInvocation{
     [invocation retainArguments];
     [[self.undoManger prepareWithInvocationTarget:self] unexecuteInvocation:undoInvocation withRedoInvocation:invocation];
     [invocation invoke];
 }
-//正常恢复
+
+/**
+ *  正常恢复,与撤销操作相反。
+ */
 -(void)unexecuteInvocation:(NSInvocation *)invocation
       withRedoInvocation:(NSInvocation *)redoInvocation{
     [[self.undoManger prepareWithInvocationTarget:self] executeInvocation:redoInvocation withUndoInvocation:invocation];
     [invocation invoke];
 }
+
 #pragma mark final adjust
+
+/**
+ *	微调x/y轴，使魔方模型处于中心。
+ */
 -(void)adjustWithCenter{
-    
+    // 该函数充满了冗余的内容。待重构。TODO
     float xyz[9] = {1.0,0.0,0.0,
                     0.0,1.0,0.0,
                     0.0,0.0,1.0};
@@ -1788,7 +1855,7 @@
     //vec3 center_oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
     CGFloat * tmp_matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
     for (int i = 0; i < 9; i++) {
-        if (true ) {
+        if (true ) { // <-囧
             //Cube *tmpCube = [array27Cube objectAtIndex:i];
             Cube *tmpCube = layerPtr[i];
             GLfloat *tmpXYZ;
@@ -1814,16 +1881,20 @@
              tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
              tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
              tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+                
             //处理相对于中心x轴的模糊x轴
             float angle_ox_centerOX = FabsThetaBetweenV1andV2(tmp_ox, center_ox);
             float angle_oy_centerOX = FabsThetaBetweenV1andV2(tmp_oy, center_ox);
             float angle_oz_centerOX = FabsThetaBetweenV1andV2(tmp_oz, center_ox);
+                
             //模糊x轴
-            vec3 fuzzy_ox = (angle_ox_centerOX < angle_oy_centerOX )? (angle_ox_centerOX<angle_oz_centerOX)?tmp_ox:tmp_oz : (angle_oy_centerOX < angle_oz_centerOX )? tmp_oy :tmp_oz ;
+            vec3 fuzzy_ox = (angle_ox_centerOX < angle_oy_centerOX ) ? 
+                                (angle_ox_centerOX<angle_oz_centerOX) ? tmp_ox:tmp_oz :
+                                    (angle_oy_centerOX < angle_oz_centerOX ) ? tmp_oy :tmp_oz ;
             
             float signOFfuzzyOXandcenterOX = fuzzy_ox.Dot(center_ox);
             //NSLog(@"signOFfuzzyOXandcenterOX:%f",signOFfuzzyOXandcenterOX);
-            if (signOFfuzzyOXandcenterOX<0.0001) {
+            if (signOFfuzzyOXandcenterOX < 0.0001) {
                 //负数代表两向量相反
                 //1 获取 fuzzy_ox 的 反向量
                 vec3 inverse_fuzzy_ox = (-fuzzy_ox);
@@ -1845,7 +1916,8 @@
                 }
             }
             }
-            //continue;
+            
+            // 处理y轴
             if (current_rotate_axis==X) {
         
             
@@ -1868,10 +1940,17 @@
             tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
             tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
             tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+                
+            //处理相对于中心y轴的模糊y轴
             float angle_ox_centerOY = FabsThetaBetweenV1andV2(tmp_ox, center_oy);
             float angle_oy_centerOY = FabsThetaBetweenV1andV2(tmp_oy, center_oy);
             float angle_oz_centerOY = FabsThetaBetweenV1andV2(tmp_oz, center_oy);
-            vec3 fuzzy_oy = (angle_ox_centerOY < angle_oy_centerOY )? (angle_ox_centerOY<angle_oz_centerOY)?tmp_ox:tmp_oz : (angle_oy_centerOY < angle_oz_centerOY )? tmp_oy :tmp_oz ;
+            
+            //模糊y轴
+            vec3 fuzzy_oy = (angle_ox_centerOY < angle_oy_centerOY ) ?
+                                (angle_ox_centerOY<angle_oz_centerOY) ? tmp_ox:tmp_oz :
+                                    (angle_oy_centerOY < angle_oz_centerOY ) ? tmp_oy :tmp_oz ;
+                
             float signOFfuzzyOYandcenterOY = fuzzy_oy.Dot(center_oy);
             if (signOFfuzzyOYandcenterOY<0.0001) {
                 //负数代表两向量相反
@@ -1899,8 +1978,14 @@
     }
     free(tmp_matrix);
 }
+
 #pragma mark final adjust
+
+/**
+ *	微调x/y/z轴，使魔方模型处于中心。调节方法之终结版。
+ */
 -(void)adjustWithCenter_2{
+    // 也是待重构。TODO
     float xyz[9] = {1.0,0.0,0.0,
         0.0,1.0,0.0,
         0.0,0.0,1.0};
@@ -1910,6 +1995,7 @@
     vec3 center_oy = vec3(XYZ[3],XYZ[4],XYZ[5]);
     vec3 center_oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
     CGFloat * tmp_matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
+    
     for (int i = 0; i < 27; i++) {
         if (i!=13 ) {
             //Cube *tmpCube = [array27Cube objectAtIndex:i];
@@ -1938,10 +2024,12 @@
                 tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
                 tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
                 tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+            
                 //处理相对于中心x轴的模糊x轴
                 float angle_ox_centerOX = FabsThetaBetweenV1andV2(tmp_ox, center_ox);
                 float angle_oy_centerOX = FabsThetaBetweenV1andV2(tmp_oy, center_ox);
                 float angle_oz_centerOX = FabsThetaBetweenV1andV2(tmp_oz, center_ox);
+            
                 //模糊x轴
                 vec3 fuzzy_ox = (angle_ox_centerOX < angle_oy_centerOX )? (angle_ox_centerOX<angle_oz_centerOX)?tmp_ox:tmp_oz : (angle_oy_centerOX < angle_oz_centerOX )? tmp_oy :tmp_oz ;
                 
@@ -1991,10 +2079,15 @@
                 tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
                 tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
                 tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+            
+                //处理相对于中心y轴的模糊y轴
                 float angle_ox_centerOY = FabsThetaBetweenV1andV2(tmp_ox, center_oy);
                 float angle_oy_centerOY = FabsThetaBetweenV1andV2(tmp_oy, center_oy);
                 float angle_oz_centerOY = FabsThetaBetweenV1andV2(tmp_oz, center_oy);
+            
+                //模糊y轴
                 vec3 fuzzy_oy = (angle_ox_centerOY < angle_oy_centerOY )? (angle_ox_centerOY<angle_oz_centerOY)?tmp_ox:tmp_oz : (angle_oy_centerOY < angle_oz_centerOY )? tmp_oy :tmp_oz ;
+            
                 float signOFfuzzyOYandcenterOY = fuzzy_oy.Dot(center_oy);
                 if (signOFfuzzyOYandcenterOY<0.0001) {
                     //负数代表两向量相反
@@ -2039,10 +2132,15 @@
             tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
             tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
             tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+            
+            //处理相对于中心z轴的模糊z轴
             float angle_ox_centerOZ = FabsThetaBetweenV1andV2(tmp_ox, center_oz);
             float angle_oy_centerOZ = FabsThetaBetweenV1andV2(tmp_oy, center_oz);
             float angle_oz_centerOZ = FabsThetaBetweenV1andV2(tmp_oz, center_oz);
+            
+            //模糊y轴
             vec3 fuzzy_oz = (angle_ox_centerOZ < angle_oy_centerOZ )? (angle_ox_centerOZ<angle_oz_centerOZ)?tmp_ox:tmp_oz : (angle_oy_centerOZ < angle_oz_centerOZ )? tmp_oy :tmp_oz ;
+            
             float signOFfuzzyOYandcenterOZ = fuzzy_oz.Dot(center_oz);
             if (signOFfuzzyOYandcenterOZ<0.0001) {
                 //负数代表两向量相反
@@ -2071,7 +2169,10 @@
     }
     free(tmp_matrix);
 }
+
 #pragma mark math
+
+
 -(vec3)middleOfV1:(vec3)v1 V2:(vec3)v2{
     vec3 add = v1+v2;
     add.Normalize();

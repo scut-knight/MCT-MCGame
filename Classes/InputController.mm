@@ -214,7 +214,12 @@
      
 }
 
-
+/**
+ *	处理触控结束事件，并结束粒子效果
+ *
+ *	@param	touches	触摸点位置的集合
+ *	@param	event	UI事件
+ */
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     
@@ -265,7 +270,15 @@
     //NSLog(@"touch:in(%f,%f)",location.x,location.y);
     
 }
+
 #pragma mark Autorotate
+/**
+ *	响应屏幕旋转事件
+ *
+ *	@param	interfaceOrientation	屏幕朝向，横向或纵向
+ *
+ *	@return	是否响应屏幕的旋转
+ */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIDeviceOrientationLandscapeRight);
@@ -274,18 +287,30 @@
 
 
 #pragma mark unload, dealloc
-
+/**
+ *	处理内存警告
+ *
+ *  交由父类进行处理
+ */
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 	// Release any cached data, images, etc that aren't in use.
 }
 
+/**
+ *	处理视图无法加载的问题
+ *
+ *  不做任何处理
+ */
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
 
+/**
+ *	加载视图所做的动作。可由子类进行覆盖。
+ */
 -(void)loadInterface
 {
 	//implemented by sub class
@@ -306,12 +331,19 @@
 
 }
 
+/**
+ *	更新视图。
+ *  通过调用各场景对象的update方法来更新视图。
+ */
 -(void)updateInterface
 {
 	[interfaceObjects makeObjectsPerformSelector:@selector(update)];
 }
 
-
+/**
+ *	渲染视图。
+ *  通过调用各场景对象的render方法来渲染视图。
+ */
 -(void)renderInterface
 {
 	glMatrixMode(GL_PROJECTION);
@@ -335,16 +367,28 @@
     
 }
 
+/**
+ *	撤销视图
+ */
 -(void)releaseInterface{
     [interfaceObjects removeAllObjects];
 }
 
-
+/**
+ *	是否可以响应屏幕旋转
+ *
+ *	@return	是的
+ */
 - (BOOL)shouldAutorotate
 {
     return YES;
 }
 
+/**
+ *	返回支持的屏幕旋转类型
+ *
+ *	@return	UIInterfaceOrientationMaskLandscape
+ */
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskLandscape;
