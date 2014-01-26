@@ -5,6 +5,9 @@
 #pragma once
 #include <cmath>
 using namespace std;
+/**
+ *	Pi 值
+ */
 const double Pi = 4 * std::atan(1.0f);
 const double TwoPi = 2 * Pi;
 

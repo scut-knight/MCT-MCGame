@@ -14,7 +14,9 @@
 #import "RotateType.h"
 #import "MCTransformUtil.h"
 #import "Global.h"
+
 @implementation MCMagicCubeUIModelController
+
 @synthesize array27Cube;
 @synthesize stepcounterAddAction,stepcounterMinusAction;
 @synthesize target;
@@ -25,6 +27,7 @@
 //@synthesize TIME_PER_ROTATION;
 //@synthesize magicCube;
 @synthesize undoManger;
+
 -(id)initiate{
     if(self = [super init]){
         if (array27Cube == nil) array27Cube = [[NSMutableArray alloc] init];
@@ -38,6 +41,7 @@
         rotation = MCPointMake(30,-45,0);
         rotationalSpeed = MCPointMake(0, 30, 0);
         MCPoint sub_scale  = MCPointMake(scale.x/3, scale.y/3, scale.z/3);
+        // 旋转前为需要旋转的那一层赋上空指针
         for (int  i = 0; i<9; i++) {
             layerPtr[i] = nil;
         }
@@ -102,6 +106,13 @@
     return self;
 };
 
+/**
+ *	构造魔方并按照状态列表来上色
+ *
+ *	@param	stateList	颜色状态列表
+ *
+ *	@return	MCMagicCubeUIModelController实例
+ */
 -(id)initiateWithState:(NSArray *)stateList{
     if(self = [super init]){
         if (array27Cube == nil) array27Cube = [[NSMutableArray alloc] init];
@@ -185,6 +196,11 @@
     return self;
 }
 
+/**
+ *	根据状态列表来为各个立方块上色。
+ *
+ *	@param	stateList	颜色状态列表
+ */
 -(void)flashWithState:(NSArray *)stateList{
     Cube *centercube = [array27Cube objectAtIndex:13];
     for (int z = 0; z < 3; z++) {
@@ -203,6 +219,7 @@
             }
         }
     }
+    // 如果在Normal模式下
     if ([target respondsToSelector:@selector(isShowQueue)]) {
         if ([target isShowQueue]) {
             for (int i = 0; i<[lockedarray count]; i++) {
@@ -217,11 +234,17 @@
     
 };
 
+/**
+ *	渲染每一个Cube实例
+ */
 -(void)render{
     [array27Cube makeObjectsPerformSelector:@selector(render)];
     [super render];
 };
 
+/**
+ *	唤醒每一个Cube实例
+ */
 -(void)awake
 {
      [array27Cube makeObjectsPerformSelector:@selector(awake)];
@@ -229,7 +252,15 @@
     
 }
 
-
+/**
+ *	实现魔方的某一层响应手势进行旋转
+ *
+ *	@param	axis	AXisType 旋转轴，x/y/z
+ *	@param	layer	旋转的层的序号
+ *	@param	direction	LayerRotationDirection 旋转方向
+ *	@param	is_trible_roate	旋转是否多余
+ *	@param	is_twotimes	是否需要旋转两次
+ */
 - (void) rotateOnAxis : (AxisType)axis onLayer: (int)layer inDirection: (LayerRotationDirectionType)direction isTribleRotate:(BOOL)is_trible_roate isTwoTimes:(BOOL)is_twotimes{
     //当前如果有某一自动旋转正在进行，禁止再旋转，直到完成
     if (isAutoRotate) return;
@@ -237,6 +268,7 @@
     if (isLayerRotating) return;
     //当前如果有某一旋转自动调整正在进行，禁止再旋转，直到完成
     if (isNeededToAdjustment) return;
+    
     isTribleAutoRotateIn_TECH_MODE = is_trible_roate;
     isAutoRotate = YES;
    
@@ -295,12 +327,14 @@
 
 };
 
-
+/**
+ *	在旋转时更新魔方UI模型
+ */
 -(void)update{
     [self handleTouches];
     //if (collider != nil) [collider updateCollider:self];
     if (isAutoRotate){
-        //
+        // 已花费时间
         CGFloat deltaTime = [[[CoordinatingController sharedCoordinatingController] currentController] deltaTime];
         
         rest_rotate_time -= deltaTime;
@@ -331,6 +365,7 @@
                         start = MCPointMake(oz.x,oz.y,oz.z);
                         end = MCPointMake(current.x,current.y,current.z);
                     }else {
+                        // 逆时针
                         current = MCPointMake(0, costheta, sintheta);
                         start = MCPointMake(oy.x,oy.y,oy.z);
                         end = MCPointMake(current.x,current.y,current.z);
@@ -383,7 +418,7 @@
                         [MagicCubeIndexState[i] setQuaRotation:delta.Rotated([MagicCubeIndexState[i] quaPreviousRotation])];
                     }
                 }
-                //
+                // 设置为没有层被选中
                 current_rotate_layer = NO_SELECTED_LAYER;
                 [self updateState];
             }else{
@@ -403,7 +438,7 @@
                 }
 
             }
-            if (isTribleAutoRotateIn_TECH_MODE)isTribleAutoRotateIn_TECH_MODE = NO;
+            if (isTribleAutoRotateIn_TECH_MODE) isTribleAutoRotateIn_TECH_MODE = NO;
             //归零
             rest_rotate_time = 0;
             isAutoRotate = NO;
@@ -423,6 +458,7 @@
             MCPoint current;
             MCPoint start;
             MCPoint end;
+            // 这一部分似乎冗余了，可以抽出来作为一个单独的方法 TODO
             switch (current_rotate_axis) {
                 case X:
                 {
@@ -494,7 +530,7 @@
         }
     }
     if (isNeededToAdjustment) {
-        
+        // 时间处理这一部分冗余了，待提炼成一个私有方法 TODO
         CGFloat deltaTime = [[[CoordinatingController sharedCoordinatingController] currentController] deltaTime];
         rest_fingerRotate_time -= deltaTime;
         
@@ -576,7 +612,7 @@
             }
             //[self finalAdjust];
             if(isNeededToUpdateMagicCubeState){
-                if (fingerRotate_angle>90&&fingerRotate_angle_mod90<45) {
+                if (fingerRotate_angle>90 && fingerRotate_angle_mod90<45) {
                     if (current_rotate_direction == CW) {
                         current_rotate_direction =CCW;
                     }else {
@@ -676,14 +712,18 @@
     [array27Cube makeObjectsPerformSelector:@selector(update)];
     [super update];
 };
+
+
 -(void)handleTouches
 {
-    if ([self usingMode]==SOlVE_Play_MODE) {
-        //求解模式下，不显影任何输入
+    if ([self usingMode] == SOlVE_Play_MODE) {
+        //求解模式下，不响应任何输入
         return;
     }
+    // 处理多点触控
 	NSSet * touches = [[[CoordinatingController sharedCoordinatingController] currentController].inputController touchEvents];
     UIView* view= [[[CoordinatingController sharedCoordinatingController] currentController].inputController view ];
+    // 初始化魔方当前和前一个交互状态
 	FSM_Interaction_State fsm_Current_State = [[[CoordinatingController sharedCoordinatingController] currentController].inputController fsm_Current_State];
     FSM_Interaction_State fsm_Previous_State = [[[CoordinatingController sharedCoordinatingController] currentController].inputController fsm_Previous_State];
     if ([touches count] == 0) return;
@@ -727,8 +767,8 @@
             //CGPoint location = [touch locationInView:view];
             CGPoint location = [touch previousLocationInView:view];
             firstThreePointCount++;
-            firstThreePoint[0].x =location.x;
-            firstThreePoint[0].y =location.y;
+            firstThreePoint[0].x = location.x;
+            firstThreePoint[0].y = location.y;
             //Once function down, update the ray.
             [ray updateWithScreenX:location.x
                            screenY:location.y];
@@ -833,9 +873,10 @@
                             if (distance < 0) continue;
                             if (distance < nearest_distance) {
                                 
-                                directionVector[1] = [ray pointIntersectWithTriangleMadeUpOfV0:&tmp_dection[0 +i*9]
-                                                                                            V1:&tmp_dection[3 +i*9]
-                                                                                            V2:&tmp_dection[6 +i*9]];
+                                directionVector[1] =
+                                    [ray pointIntersectWithTriangleMadeUpOfV0:&tmp_dection[0 +i*9]
+                                                                           V1:&tmp_dection[3 +i*9]
+                                                                           V2:&tmp_dection[6 +i*9]];
                                 nearest_distance = distance;
                                 index = tmp_cube.index;
                             }
@@ -849,14 +890,19 @@
                 }
             firstThreePointCount++;
             }else {
-                 
+                 // firstThreePointCount == 3
                  vec3 select_triangleV0 = vec3(selected_triangle[0],selected_triangle[1],selected_triangle[2]);
                  vec3 select_triangleV1 = vec3(selected_triangle[3],selected_triangle[4],selected_triangle[5]);
                  vec3 select_triangleV2 = vec3(selected_triangle[6],selected_triangle[7],selected_triangle[8]);
                  vec3 select_movedTo0_V0 = select_triangleV0 - select_triangleV1;
                  vec3 select_movedTo0_V1 = select_triangleV2 - select_triangleV1;
                  
-                 float xyz[9] = {1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0};
+                 float xyz[9] = {
+                     1.0,0.0,0.0,
+                     0.0,1.0,0.0,
+                     0.0,0.0,1.0
+                 };
+                 // 中心魔方块
                  Cube * tmpcuble = [array27Cube objectAtIndex:13];
                  GLfloat * XYZ = VertexesArray_Matrix_Multiply(xyz, 3, 3, tmpcuble.matrix);
                  vec3 ox = vec3(XYZ[0],XYZ[1],XYZ[2]);
@@ -866,21 +912,23 @@
                  float ox_triangle = [self AngleV0V1withV:ox V0:select_movedTo0_V0 V1:select_movedTo0_V1];
                  float oy_triangle = [self AngleV0V1withV:oy V0:select_movedTo0_V0 V1:select_movedTo0_V1];
                  float oz_triangle = [self AngleV0V1withV:oz V0:select_movedTo0_V0 V1:select_movedTo0_V1];
+                // 返回ox_triangle,oy_triangle,oz_triangle三者中最大者
                  AxisType vertical_axis = (ox_triangle>oy_triangle)? (ox_triangle>oz_triangle)?X:Z:(oy_triangle>oz_triangle)?Y:Z;
                  
-                vec3 dirtection = directionVector[1]-directionVector[0];
+                vec3 dirtection = directionVector[1] - directionVector[0];
                  float dx = FabsThetaBetweenV1andV2(ox,dirtection);
                   float dy = FabsThetaBetweenV1andV2(oy,dirtection);
                   float dz = FabsThetaBetweenV1andV2(oz,dirtection);
                  if (vertical_axis == X) {
-                 current_rotate_axis = (dy>dz)?Y:Z;
+                     current_rotate_axis = (dy>dz)?Y:Z;
                  }
                  if (vertical_axis == Y) {
-                 current_rotate_axis = (dx >dz)?X:Z;
+                     current_rotate_axis = (dx >dz)?X:Z;
                  }
                  if (vertical_axis == Z) {
-                 current_rotate_axis = (dx>dy)?X:Y;
+                     current_rotate_axis = (dx>dy)?X:Y;
                  }
+                
                  if (selected != nil) {
                  //计算选中点层和轴
                  int index = [selected index];
@@ -889,7 +937,7 @@
                  //Cube *tmpcube = //[array27Cube objectAtIndex:i];
                  Cube *tmpcube = MagicCubeIndexState[i];
                  if ([tmpcube index] == index) {
-                 magiccubeStateIndex = i;
+                     magiccubeStateIndex = i;
                  }
                  }
                  int x = -1,y = -1,z= -1;
@@ -899,11 +947,11 @@
                  y = tmp/3;
                  x = tmp%3;
                  if (current_rotate_axis == X) {
-                 current_rotate_layer = x;
+                     current_rotate_layer = x;
                  }else if(current_rotate_axis ==Y){
-                 current_rotate_layer = y;
+                     current_rotate_layer = y;
                  }else {
-                 current_rotate_layer = z;
+                     current_rotate_layer = z;
                  }
                  //选中层
                  [self SelectLayer];
@@ -1340,6 +1388,7 @@
             break;
     }
 }
+
 -(void)updatetweice{
     LayerRotationDirectionType commandaxis = current_rotate_direction;
     if (fingerRotate_angle>90&&fingerRotate_angle_mod90<45) {

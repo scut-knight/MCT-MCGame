@@ -119,15 +119,41 @@ typedef enum _FinishViewType {
 
 /**
  * for 魔方模型交互算法key
+ *
+ *  各种触摸状态
  */
 typedef enum {
+    /**
+     *	无触摸状态
+     */
     kState_None,
+    /**
+     *	单点触摸
+     */
     kState_S1,
+    /**
+     *	单层旋转中
+     */
     kState_M1,
+    /**
+     *	异常情况1，
+     *  单层旋转时突然增加触摸
+     */
     kState_F1,
+    
     kState_A1,
+    /**
+     *	双点触摸
+     */
     kState_S2,
+    /**
+     *	变换视角中
+     */
     kState_M2,
+    /**
+     *	异常情况2，
+     *  变换视角时突然增加触摸
+     */
     kState_F2
 }FSM_Interaction_State;
 

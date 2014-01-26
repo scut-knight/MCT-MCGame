@@ -164,25 +164,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Classes/MCMagicCubeUIModelController.m"
-         timestampString = "393323942.553646"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "235"
-         endingLineNumber = "235"
-         landmarkName = "-rotateOnAxis:onLayer:inDirection:isTribleRotate:isTwoTimes:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Classes/MCMagicCubeUIModelController.m"
          timestampString = "393385952.215762"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1482"
          endingLineNumber = "1482"
-         landmarkName = "-stepCounterAdd"
+         landmarkName = "-SelectLayer"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -195,7 +182,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1488"
          endingLineNumber = "1488"
-         landmarkName = "-stepCounterMinus"
+         landmarkName = "-stepCounterAdd"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -208,7 +195,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1481"
          endingLineNumber = "1481"
-         landmarkName = "-stepCounterAdd"
+         landmarkName = "-SelectLayer"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

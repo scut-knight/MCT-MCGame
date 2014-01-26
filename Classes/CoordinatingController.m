@@ -182,6 +182,7 @@
     //sleep(1);
     
 }
+
 -(void)loadRandomSolveScene{
     [SVProgressHUD dismiss];
     //[SVProgressHUD dismiss];
@@ -235,6 +236,7 @@
     //sleep(1);
     
 }
+
 -(void)loadMainMenuScene{
     [SVProgressHUD dismiss];
     [currentController stopAnimation];
