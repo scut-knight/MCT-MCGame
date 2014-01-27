@@ -109,6 +109,7 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
     }
 	
 }
+
 /**
  *	按下按钮了
  */
@@ -120,6 +121,7 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
     
 	[target performSelector:buttonUpAction];
 }
+
 /**
  *	按下按钮，但是是无效的，无需产生buttonUpAction动作
  */
@@ -129,6 +131,7 @@ static CGFloat MCSquareFillVertexes[8] = {-0.5,-0.5, 0.5,-0.5, -0.5,0.5, 0.5,0.5
 	pressed = NO;
 	[self setNotPressedVertexes];
 }
+
 /**
  *	松开按钮
  */

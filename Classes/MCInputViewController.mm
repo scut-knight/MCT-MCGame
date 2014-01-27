@@ -16,7 +16,9 @@
 #import "MCLabel.h"
 @implementation MCInputViewController
 
-
+/**
+ *	加载主场景
+ */
 -(void)loadInterface
 {
 	if (interfaceObjects == nil) interfaceObjects = [[NSMutableArray alloc] init];
@@ -101,6 +103,7 @@
     [super loadInterface];
 }
 
+#pragma mark - button up and down
 // 所有的Down会在命令行输出对应信息
 // 所有的Up会加载对应的控制器
 -(void)normalPlayBtnDown{

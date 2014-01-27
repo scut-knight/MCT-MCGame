@@ -29,6 +29,7 @@ static MCDBController* sharedSingleton_ = nil;
     }
     return sharedSingleton_;
 }
+
 /**
  *	重载allocWithZone函数，防止生成副本
  */
@@ -36,6 +37,7 @@ static MCDBController* sharedSingleton_ = nil;
 {
     return [MCDBController sharedInstance];
 }
+
 /**
  *  重载copy函数，防止生成副本
  */
@@ -43,6 +45,7 @@ static MCDBController* sharedSingleton_ = nil;
 {
     return self;
 }
+
 /**
  *	重载retain函数，防止生成副本
  */
@@ -50,6 +53,7 @@ static MCDBController* sharedSingleton_ = nil;
 {
     return self;
 }
+
 /**
  *	重载retainCount函数，防止生成副本
  */
@@ -58,11 +62,15 @@ static MCDBController* sharedSingleton_ = nil;
     return NSIntegerMax; // 返回最大的整数值，导致retain计数不成功
 }
 
+/**
+ *	只是一个空函数
+ */
 - (oneway void)release
 {
     //do nothing
 }
 
+#pragma mark - init
 /**
  *	@return	数据库文件的路径
  */
@@ -312,6 +320,7 @@ static MCDBController* sharedSingleton_ = nil;
     //post notification to user manager controller
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DBInsertScoreSuccess" object:nil];
 }
+
 /**
  *	查询最高的五个得分
  *
@@ -415,6 +424,7 @@ static MCDBController* sharedSingleton_ = nil;
     return [myScore autorelease];
 
 }
+
 /**
  *	先查找得分对应的user，并修改user的totalxxx等数据，并更新用户数据
  *

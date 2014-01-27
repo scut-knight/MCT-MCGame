@@ -14,7 +14,9 @@
 @synthesize life,decay;
 @synthesize size,grow;
 
-
+/**
+ *	更新粒子坐标，生命值与大小
+ */
 -(void)update{
     // 更新坐标
     position.x += velocity.x;
@@ -22,6 +24,7 @@
 	position.z += velocity.z;
 	
 	life -= decay;
+    // grow是负值哦
 	size += grow;
     // 确保大小不是负值
 	if (size < 0.0) size = 0.0;
