@@ -72,46 +72,6 @@
     [interfaceObjects addObject:actionQueue];
     [actionname release];
        
-	/*
-	// mainMenuBtn
-    //the texture 还没设计出来
-	MCTexturedButton * mainMenuBtn = [[MCTexturedButton alloc] initWithUpKey:@"mainMenuBtnUp" downKey:@"mainMenuBtnUp"];
-	mainMenuBtn.scale = MCPointMake(75, 35, 1.0);
-	mainMenuBtn.translation = MCPointMake(-450, 350.0, 0.0);
-	mainMenuBtn.target = self;
-	mainMenuBtn.buttonDownAction = @selector(mainMenuBtnDown);
-	mainMenuBtn.buttonUpAction = @selector(mainMenuBtnUp);
-	mainMenuBtn.active = YES;
-	[mainMenuBtn awake];
-	[interfaceObjects addObject:mainMenuBtn];
-	[mainMenuBtn release];
-    */
-    
-    /*
-    //队列的下一步
-	MCTexturedButton * shiftLeft = [[MCTexturedButton alloc] initWithUpKey:@"previousSolutionBtnUp" downKey:@"previousSolutionBtnUp"];
-	shiftLeft.scale = MCPointMake(40, 40, 1.0);
-	shiftLeft.translation = MCPointMake(-260, 320.0, 0.0);
-	shiftLeft.target = self;
-	shiftLeft.buttonDownAction = @selector(shiftLeftBtnDown);
-	shiftLeft.buttonUpAction = @selector(shiftLeftBtnUp);
-	shiftLeft.active = YES;
-	[shiftLeft awake];
-	[interfaceObjects addObject:shiftLeft];
-	[shiftLeft release];
-    //队列的上一步
-	MCTexturedButton * shiftRight = [[MCTexturedButton alloc] initWithUpKey:@"nextSolutionBtnUp" downKey:@"nextSolutionBtnUp"];
-	shiftRight.scale = MCPointMake(40, 40, 1.0);
-	shiftRight.translation = MCPointMake(260, 320.0, 0.0);
-	shiftRight.target = self;
-	shiftRight.buttonDownAction = @selector(shiftRightBtnDown);
-	shiftRight.buttonUpAction = @selector(shiftRightBtnUp);
-	shiftRight.active = YES;
-	[shiftRight awake];
-	[interfaceObjects addObject:shiftRight];
-	[shiftRight release];
-     */
-       
     //提示按钮
     MCTexturedButton * showTipsBtn = [[MCTexturedButton alloc] initWithUpKey:TextureKey_showTipsButtonUp downKey:TextureKey_showTipsButtonDown];
 	showTipsBtn.scale =  MCPointMake(82, 56, 1);;
@@ -124,20 +84,6 @@
 	[interfaceObjects addObject:showTipsBtn];
 	[showTipsBtn release];
 
-    
-    /*
-    //置乱按钮
-    MCTexturedButton * randomBtn = [[MCTexturedButton alloc] initWithUpKey:@"tipsBtnUp" downKey:@"tipBtnUp"];
-	randomBtn.scale = MCPointMake(110, 55, 1.0);
-	randomBtn.translation = MCPointMake(-450, 120.0, 0.0);
-	randomBtn.target = self;
-	randomBtn.buttonDownAction = @selector(randomBtnDown);
-	randomBtn.buttonUpAction = @selector(randomBtnUp);
-	randomBtn.active = YES;
-	[randomBtn awake];
-	[interfaceObjects addObject:randomBtn];
-	[randomBtn release];
-     */
     //上一步/撤销
 	MCTexturedButton * undoCommand = [[MCTexturedButton alloc] initWithUpKey:TextureKey_previousButtonUp downKey:TextureKey_previousButtonDown];
 	undoCommand.scale =  MCPointMake(93, 58, 1);;
@@ -356,10 +302,7 @@
             MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
             c.magicCube=[MCMagicCube unarchiveMagicCubeWithFile:filePath];
             c.playHelper=[MCPlayHelper playerHelperWithMagicCube:[c magicCube]];
-
-            //[c.playHelper setMagicCube:c.magicCube];
             
-
             //更新UI模型
             [c reloadLastTime];
             [[self timer]startTimer];
@@ -403,20 +346,16 @@
             [stepcounter reset];
             [timer reset];
             [self randomBtnUp];
-
-            
         }
         
         learnPagePauseMenuView = nil;
     }
     if (finishView){
-        
         if ([finishView finishViewType]==kFinishView_GoBack) {
             [self mainMenuBtnUp];
         }        
         finishView = nil;
     }
-    
 }
 
 -(void)showFinishView{

@@ -20,7 +20,6 @@
     MCActionQueue *actionQueue;
     MCMultiDigitCounter *stepcounter;
     InfoView * infoView;
-    //MBProgressHUD *HUD;
     BOOL isFinishInput;
     NSMutableArray * singmasternotations;
     int totalMove;

@@ -27,7 +27,6 @@
         m_second = [[MCMultiDigitCounter alloc]initWithNumberOfDigit:2 andKeys:texturekeys];
         separater11 = [[MCDotSeparater alloc]initWithUpKeyS:@"dot2"];
         m_millisecond = [[MCMultiDigitCounter alloc]initWithNumberOfDigit:3 andKeys:texturekeys];
-        //m_nstimer = [[NSTimer alloc]init];
         totalTime = 0;
         isStop = YES;
     }
@@ -107,13 +106,10 @@
 
 -(void)startTimer{
     isStop = NO;
-   //m_nstimer = [NSTimer scheduledTimerWithTimeInterval:Interval target:self selector:@selector(addTimer) userInfo:nil repeats:YES];
 }
 
 -(void)stopTimer{
     isStop = YES;
-    //[m_nstimer invalidate];
-    //m_nstimer = nil;
 }
 
 
@@ -170,7 +166,6 @@
 }
 
 - (void)dealloc{
-    //[m_nstimer release];
     [m_hour release];
     [m_minute release];
     [m_second release];

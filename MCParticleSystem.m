@@ -212,12 +212,8 @@
     // 并且得到的结果将代替当前矩阵。
     // 它描述了一个产生平行投影的变换。
 	glOrthof(-512, 512, -384, 384, -1.0f, 50.0f);
-    
-	// clear the matrix
-	//glPushMatrix();
-	//glLoadIdentity();
+
     glMatrixMode(GL_MODELVIEW);
-    //glMultMatrixf(matrix);
 	// bind our texture
 	[[MCMaterialController sharedMaterialController] bindMaterial:materialKey];
     

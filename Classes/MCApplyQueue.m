@@ -99,10 +99,8 @@
 /**
  *	应用旋转动作，并且改变currentRotationQueuePosition
  *
- *
+ *  apply rotation and return result，the position will move to next position
  */
-//apply rotation and return result
-//the position will move to next position
 - (void)applyRotation:(SingmasterNotation)currentRotation{
     //detect the rotation result
     //if the queue is exist, continue

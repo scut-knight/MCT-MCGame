@@ -55,7 +55,6 @@
 		if (vertexSize > 2) zTotal += vertexes[position + 2];
 	}
 	// now average each total over the number of vertexes
-    //	return MCPointMake(xTotal/(CGFloat)vertexCount, yTotal/(CGFloat)vertexCount, zTotal/(CGFloat)vertexCount);
     // 注意z轴坐标上的值恒为0.0
 	return MCPointMake(xTotal/(CGFloat)vertexCount, yTotal/(CGFloat)vertexCount, 0.0);
 }

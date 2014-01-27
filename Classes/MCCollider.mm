@@ -103,10 +103,7 @@
 	glLoadIdentity();
 	
 	glMultMatrixf(matrix);
-    //glTranslatef(translation.x, translation.y, translation.z);
-    //glScalef(scale.x, scale.y, scale.z);
-    //NSLog(@"%f",scale.x);
-    
+ 
 	[mesh render];	
 	glPopMatrix();
 }

@@ -56,13 +56,11 @@
     
     //场景对象控制器
 	MCSceneController * sceneController = [MCSceneController sharedSceneController];
-	//MCCountingPlaySceneController * sceneController = [MCCountingPlaySceneController sharedCountingPlaySceneController];
     [[CoordinatingController sharedCoordinatingController] setCurrentController: sceneController];
     [[CoordinatingController sharedCoordinatingController] setWindow:window];
     //创建输入控制器，并绑定到场景控制器
 	// make a new input view controller, and save it as an instance variable
 	MCInputViewController * anInputController = [[MCInputViewController alloc] initWithNibName:nil bundle:nil];
-    //MCCountingPlayInputViewController * anInputController = [[MCCountingPlayInputViewController alloc] initWithNibName:nil bundle:nil];
 	sceneController.inputController = anInputController;
 	[anInputController release];
 	
@@ -77,7 +75,6 @@
 	
 	// set our view as the first window view
     [window setRootViewController:sceneController.inputController];
-	//[window addSubview:sceneController.inputController.view];
     
 	[window makeKeyAndVisible];
 	

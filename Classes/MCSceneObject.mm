@@ -31,11 +31,9 @@
         pretranslation = MCPointMake(0.0, 0.0, 0.0);
         prerotation = MCPointMake(0.0, 0.0, 0.0);
 		scale = MCPointMake(1.0, 1.0, 1.0);
-        // matrix = new CGFloat[16];
 		matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
 		active = NO;
 		meshBounds = CGRectZero;
-		//self.collider = nil;
 	}
 	return self;
 }
@@ -120,7 +118,6 @@
 {
 	
 	[mesh release];
-	//[collider release];
 	free(matrix);	
 	[super dealloc];
 

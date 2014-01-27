@@ -20,7 +20,6 @@
  */
 @interface MCTimer : MCSceneObject{
     long  totalTime;//毫秒值
-    //NSTimer * m_nstimer;
     MCMultiDigitCounter * m_hour;
     /**
      *	位于小时与分钟的相隔点

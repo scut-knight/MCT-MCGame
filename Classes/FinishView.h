@@ -5,17 +5,6 @@
 //  Created by kwan terry on 13-5-22.
 //
 //
-/*
- typedef enum _FinishViewType {
- kFinishView_GoBack= 0,
- kFinishView_ChangeName,
- kFinishView_OneMore,
- kFinishView_GoCountingPlay,
- kFinishView_Share,
- kFinishView_Default
- } FinishViewType;
-
- */
 
 #import "UATitledModalPanel.h"
 #import "MCConfiguration.h"

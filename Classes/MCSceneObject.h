@@ -74,7 +74,6 @@
 @property (assign) CGFloat * matrix;
 @property (assign) MCPoint pretranslation;
 @property (assign) MCPoint prerotation;
-//@property (assign) Quaternion m_orientation;
 @property (assign) Quaternion quaRotation;
 @property (assign) Quaternion quaPreviousRotation;
 @property (assign) Quaternion start_quaRotation;

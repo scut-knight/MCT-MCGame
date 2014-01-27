@@ -23,7 +23,6 @@
 @synthesize playHelper;
 @synthesize tipsLabel = _tipsLabel;
 @synthesize isShowQueue;
-//@synthesize rotation_per_second;
 
 /**
  *	产生学习模式场景控制器的单件
@@ -68,15 +67,6 @@
     [magicCubeUI setStepcounterMinusAction:@selector(stepcounterMinus)];
     [self addObjectToScene:magicCubeUI];
     [magicCubeUI release];
-    /*
-    //加载坐标系
-    xyzCoordinateIndicator * xyz_CoorInd = [[xyzCoordinateIndicator alloc]init];
-    [xyz_CoorInd setScale:MCPointMake(67,67,67)];
-    [xyz_CoorInd setTranslation:MCPointMake(0, 0, 0)];
-    [xyz_CoorInd setRotation:MCPointMake(30,-45,0)];
-    [self addObjectToScene:xyz_CoorInd];
-    [xyz_CoorInd release];
-    */
     //提示标签
     [self setTipsLabel: [[[UILabel alloc]initWithFrame:CGRectMake(800,100,220,160)] autorelease]];
     [[self tipsLabel] setText:@""];
@@ -98,10 +88,6 @@
 	[inputController loadInterface];
     
 }
-//-(void)setRotation_per_second:(float)rotation_per_second2{
-//    [magicCubeUI setTIME_PER_ROTATION:rotation_per_second];
-//    rotation_per_second = rotation_per_second2;
-//}
 
 /**
  *	重新加载场景，只加载大魔方
@@ -158,22 +144,17 @@
    //本次转动notation
     [playHelper rotateWithSingmasterNotation:[rotateType notation]];
     
-    
     //是否更新队列
     if (isShowQueue) {
         [self showQueue];
-        
     }
     
     [magicCubeUI flashWithState:[ magicCube getColorInOrientationsOfAllCubie]];
-    
-    
     
     SoundSettingController *soundsetting = [SoundSettingController sharedsoundSettingController];
     [soundsetting playSoundForKey:Audio_RotateSound_Ding_key];
     
     [self checkIsOver];
-
 }
 
 /**
@@ -186,9 +167,7 @@
  */
 - (void) rotateOnAxis : (AxisType)axis onLayer: (int)layer
            inDirection: (LayerRotationDirectionType)direction isTribleRotate:(BOOL)is_trible_roate{
-    
     //[playHelper rotateWithSingmasterNotation:notation];
-    
     [magicCubeUI rotateOnAxis:axis onLayer:layer inDirection:direction isTribleRotate:NO isTwoTimes:NO];
     
     

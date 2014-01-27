@@ -21,8 +21,6 @@
 /**
  *  使用Singleton来初始化
  */
-// Singleton accessor.  this is how you should ALWAYS get a reference
-// to the scene controller.  Never init your own.
 +(MCSceneController*)sharedSceneController
 {
   static MCSceneController *sharedSceneController;
@@ -53,17 +51,7 @@
     background.scale = MCPointMake(64, 64, 1);
     [self addObjectToScene:background];
     [background release];
-    /*
-	// our 'character' object
-	Cube * magicCube = [[Cube alloc] init];
-    //[magicCube.mesh setColors:&colorss];
-	magicCube.pretranslation = MCPointMake(0.0, 40.0, 0.0);
-	magicCube.scale = MCPointMake(60, 60, 60);
-    magicCube.prerotation = MCPointMake(30, 30, 0);
-    magicCube.rotationalSpeed = MCPointMake(20, 20, 20);
-	[self addObjectToScene:magicCube];
-	[magicCube release];
-	*/
+    
     //大魔方
     MCMagicCubeUIModelController* magicCubeUI = [[MCMagicCubeUIModelController alloc] initiate] ;
     magicCubeUI.target=self;
@@ -73,14 +61,6 @@
     [self addObjectToScene:magicCubeUI];
     [magicCubeUI release];
 
-    
-	
-	// if we do not have a collision controller, then make one and link it to our
-	// sceneObjects
-//	if (collisionController == nil) collisionController = [[MCCollisionController alloc] init];
-//	collisionController.sceneObjects = sceneObjects;
-//	if (DEBUG_DRAW_COLLIDERS)	[self addObjectToScene:collisionController];
-    
 	// reload our interface
 	[inputController loadInterface];
 
@@ -112,8 +92,6 @@
 
 - (void)releaseSrc{
     [super releaseSrc];
-    //[self stopAnimation];
-    //[self restartScene];
 }
 
 

@@ -9,7 +9,7 @@
 #import "MCStepCounter.h"
 
 @implementation MCStepCounter
-//@synthesize m_stepCounter;
+
 /**
  *	加载10个纹理图层，分别代表10个数字，作为计步器的图层背景
  *
@@ -24,7 +24,6 @@
             m_numberQuad[i] = [[MCMaterialController sharedMaterialController]quadFromAtlasKey:Keys[i]];
             [m_numberQuad[i] retain];
         }
-        //m_stepCounter = 0;
     }
 	return self;
 };
@@ -35,20 +34,7 @@
 - (void)reset{
     [self setNumberQuad:0];
 };
-/*
-- (void)addStep{
-    m_stepCounter++;
-    if (m_stepCounter > 9) {
-        m_stepCounter = 0;
-    }
-    [self setNumberQuad:m_stepCounter];
-};
 
-- (void)minusStep{
-    m_stepCounter--;
-    [self setNumberQuad:m_stepCounter];
-};
- */
 - (void)awake{
     [self setNumberQuad:0];
 };

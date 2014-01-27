@@ -99,12 +99,6 @@
     }
 };
 - (IBAction)goBackMainMenuBtnPressed:(id)sender{
-    //    CoordinatingController *coorCol = [CoordinatingController sharedCoordinatingController];
-    //    sceneController *tmp = [coorCol currentController];
-    //    InputController *inputCol = [tmp inputController];
-    //    if ([inputCol respondsToSelector:@selector(mainMenuPlayBtnUp)]) {
-    //        [inputCol performSelector:@selector(mainMenuPlayBtnUp)];
-    //    }
     learnPagePauseSelectType = kLearnPagePauseSelect_GoBack;
     // Using Delegates
 	if ([delegate respondsToSelector:@selector(shouldCloseModalPanel:)]) {

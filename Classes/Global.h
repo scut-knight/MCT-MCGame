@@ -296,9 +296,6 @@ namespace MC{
         LayerRotationDirectionType direction;
         RotationLayerMode type;
     };
-    //Test switcher--------------------------------------------------------------------------------
-
-    //#define ONLY_TEST
 
     //Popup item attr------------------------------------------------------------------------------
     #pragma mark- popup item attr

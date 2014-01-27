@@ -13,7 +13,6 @@
  *  曾用于学习模式，不过现在已经没用了。待移除。
  */
 @interface xyzCoordinateIndicator : MCMobileObject{
-    
 }
 -(id)init;
 @end

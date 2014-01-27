@@ -67,22 +67,6 @@
 	// this is where we store all our objects
 	if (sceneObjects == nil) sceneObjects = [[NSMutableArray alloc] init];	
 	
-	// our 'character' object
-//	TestCube * magicCube = [[TestCube alloc] init];
-//	magicCube.translation = MCPointMake(30.0, 0.0, 0.0);
-//	magicCube.scale = MCPointMake(30, 30, 30);
-//    magicCube.rotation = MCPointMake(0, 0, 0);
-//    magicCube.rotationalSpeed = MCPointMake(20, 20, 20);
-//	[self addObjectToScene:magicCube];
-//	[magicCube release];	
-    
-	
-	// if we do not have a collision controller, then make one and link it to our
-	// sceneObjects
-    //	if (collisionController == nil) collisionController = [[MCCollisionController alloc] init];
-    //	collisionController.sceneObjects = sceneObjects;
-    //	if (DEBUG_DRAW_COLLIDERS)	[self addObjectToScene:collisionController];
-    
 	// reload our interface
 	[inputController loadInterface];
     
@@ -256,12 +240,6 @@
     glLightfv (GL_LIGHT0, GL_AMBIENT, light_ambient);
     glLightfv (GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv (GL_LIGHT0, GL_SPECULAR, light_specular);
-        // // // Material features
-    //GLfloat mat_specular[] = { 0.5, 0.5, 0.5, 1.0 };
-    //GLfloat mat_shininess[] = { 120.0 };
-      //  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
-      // glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
-    
     glShadeModel (GL_SMOOTH);
     
 	// Place the light up and to the right
@@ -302,19 +280,6 @@
 	[animationTimer invalidate];
 	animationTimer = newTimer;
 }
-//
-///**
-// *	为动画指定一个时间间隔，因为与默认情况有冲突(默认既然提供了setter，就要再提供getter)，所以禁用。
-// *
-// *	@param	interval	时间间隔
-// */
-//- (void)setAnimationInterval:(NSTimeInterval)interval {	
-//	animationInterval = interval;
-//	if (animationTimer) {
-//		[self stopAnimation];
-//		[self startAnimation];
-//	}
-//}
 
 #pragma mark dealloc
 
@@ -328,15 +293,12 @@
 	[objectsToRemove release];
 	[inputController release];
 	[openGLView release];
-    //	[collisionController release];
 	
 	[super dealloc];
 }
 
 - (void)releaseSrc{
     [inputController releaseInterface];
-    //[self stopAnimation];
-    //[self restartScene];
 }
 
 

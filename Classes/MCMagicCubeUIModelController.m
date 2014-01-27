@@ -24,8 +24,6 @@
 @synthesize lockedarray;
 @synthesize selected_cube_face_index;
 @synthesize selected_cube_index;
-//@synthesize TIME_PER_ROTATION;
-//@synthesize magicCube;
 @synthesize undoManger;
 
 -(id)initiate{
@@ -99,8 +97,6 @@
         undoManger = [[NSUndoManager alloc]init];
         //default mode play mode;
         [self setUsingMode:PLAY_MODE];
-        
-        //magicCube = [MCMagicCube getSharedMagicCube];
     }
     
     return self;
@@ -119,7 +115,6 @@
         if (lockedarray == nil) {
             lockedarray = [[NSMutableArray alloc]init];
         }
-        //magicCube = [MCMagicCube getSharedMagicCube];
         isAutoRotate = NO;
         //魔方整体三个参数
         scale = MCPointMake(90,90,90);
@@ -154,8 +149,6 @@
                     tCube.translation = MCPointMake((gap+sub_scale.x)*sign_x, (gap+sub_scale.y)*sign_y, (gap+sub_scale.z)*sign_z);
                     
                     tCube.scale = MCPointMake(sub_scale.x, sub_scale.y, sub_scale.z);
-                    //Cube.rotation = MCPointMake(rotation.x, rotation.y, rotation.z);
-                    //Cube.rotationalSpeed = MCPointMake(0, 0, 0);
                     tCube.collider = [MCCollider collider];
                     [tCube.collider setCheckForCollision:YES];
                     [array27Cube addObject: tCube];
@@ -167,8 +160,6 @@
         
         m_trackballRadius = 260;
         m_spinning = NO;
-        //self.collider = [MCCollider collider];
-        //[self.collider setCheckForCollision:YES];
         ray = [[MCRay alloc] init];
         for (int z = 0; z < 3; z++) {
             for (int y = 0; y < 3; y++) {
@@ -182,7 +173,6 @@
         select_trackballRadius = 260;
         is_TECH_MODE_Rotate = NO;
         isTribleAutoRotateIn_TECH_MODE = NO;
-        //  TIME_PER_ROTATION =0.5;
         for (int i =0 ; i<3; i++) {
             twoLayerFlag[i] = NO;
         }
@@ -210,7 +200,6 @@
                 Cube * tCube = nil;
                 if (x != 1 || y != 1 || z != 1){
                     NSDictionary *cubestate = [stateList objectAtIndex:index_tmp];
-                    //tCube = [[Cube alloc] initWithState:cubestate];
                     tCube = [array27Cube objectAtIndex:index_tmp];
                     [tCube flashWithState:cubestate];
                     [tCube setIsLocked:NO];
@@ -248,8 +237,6 @@
 -(void)awake
 {
      [array27Cube makeObjectsPerformSelector:@selector(awake)];
-    //[[array27Cube objectAtIndex:26] performSelector:@selector(awake)];
-    
 }
 
 /**
@@ -321,10 +308,6 @@
         default:
             break;
     }
-
-    //在下面调用 魔方底层数据模型的 旋转操作 更新数据
-    //[MagicCube rotateOnAxis : axis onLayer: layer inDirection:direction];
-
 };
 
 /**
@@ -967,8 +950,6 @@
                  
                  }
                  firstThreePointCount++;
-                 
-
             }
             
 
@@ -982,14 +963,9 @@
             //使用第一点 和 最后一个点 及他们点中间点 在轨迹圆上形成轨迹弧
             //三点确定两个向量，他们进行差乘，再和法向量进行点乘 由正负确定转向
             if(isLayerRotating!=YES) return;
-            //CGPoint location = [touch locationInView:view];
             CGPoint location = [touch previousLocationInView:view];
             vec2 lastPoint = vec2(location.x,location.y);
-            //vec2 middle = vec2((firstThreePoint[0].x+lastPoint.x)/2,
-             //                    (firstThreePoint[0].y+lastPoint.y)/2);
-            //NSLog(@"Point22[0]%f %f ",firstThreePoint[0].x,firstThreePoint[0].y);
-            //NSLog(@"Point22[1]%f %f ",middle.x,middle.y);
-            //NSLog(@"Point22[2]%f %f ",lastPoint.x,lastPoint.y);
+
             float xyz[9] = {1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0};
             Cube * tmpcuble = [array27Cube objectAtIndex:13];
             GLfloat * XYZ = VertexesArray_Matrix_Multiply(xyz, 3, 3, tmpcuble.matrix);
@@ -998,20 +974,14 @@
             vec3 oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
             
             vec3 firstv = [self MapToLayerCenter:firstThreePoint[0]];
-            //vec3 middlev =[self MapToLayerCenter:middle];
             vec3 lastv = [self MapToLayerCenter:lastPoint];
             vec3 middlev = [self middleOfV1:firstv V2:lastv];
             
-            //NSLog(@"Point33[0]%f %f %f ",firstv.x,firstv.y,firstv.z);
-            //NSLog(@"Point33[1]%f %f %f ",middlev.x,middlev.y,middlev.z);
-            //NSLog(@"Point33[2]%f %f %f ",lastv.x,lastv.y,lastv.z);
             //标记启动自动调整
-            //double angle = fingerRotate_angle*360/Pi;
             if (fingerRotate_angle>135) {
                 isNeededToUpadteTwice = YES;
             }
-//            int tmpvar = int(fingerRotate_angle)/90;
-//            fingerRotate_angle_mod90 = fingerRotate_angle - tmpvar*90.0;
+
             fingerRotate_angle_mod90 = fingerRotate_angle - int(fingerRotate_angle/90) * 90;
             if (fingerRotate_angle_mod90 > 45.0) {
                 rest_fingerRotate_angle = 90.0-fingerRotate_angle_mod90;
@@ -1030,7 +1000,6 @@
             }
             if (current_rotate_axis == Y) {
                 cosa = corssv1v2.Dot(oy)/(corssv1v2.Module()*oy.Module());
-                //NSLog(@"cosay:%f",cosa);
             }
             if (current_rotate_axis ==Z) {
                 cosa = corssv1v2.Dot(oz)/(corssv1v2.Module()*oz.Module());
@@ -1092,7 +1061,6 @@
             isLayerRotating = NO;
             firstThreePointCount = 0;
             if (selected != nil) {
-                //selected.scale = MCPointMake(30, 30, 30);
                 selected = nil;
             }
             
@@ -1130,14 +1098,10 @@
             else if([self usingMode] == TECH_MODE){
                 //教学模式下，进行严格限制
                 //记录第一个点
-                //CGPoint location = [touch locationInView:view];
-                //m_spinning = YES;
-                //if ([touches count]!=2) return;
                 UITouch *touch0 = [[touches allObjects] objectAtIndex:0];
                 CGPoint location = [touch0 previousLocationInView:view];
                 firstThreePoint[0].x =location.x;
                 firstThreePoint[0].y =location.y;
-                //firstThreePointCount++;
             }
             break;
         }
@@ -1156,7 +1120,6 @@
                     CGPoint current1 = [touch1 locationInView:view];
                     current = CGPointMake((current0.x+current1.x)/2,(current0.y+current1.y)/2);
                 }
-                //ivec2 oldLocation = ivec2(previous.x,previous.y);
                 ivec2 newLocation = ivec2(current.x,current.y);
                 if (fsm_Previous_State == kState_S2) {
                     m_fingerStart = newLocation;
@@ -1225,8 +1188,7 @@
                     vec3 tmp_oz ;
                     glPushMatrix();
                     glLoadIdentity();
-                    //mat4 matRotation = centerCube.quaRotation.ToMatrix();
-                    //glMultMatrixf(matRotation.Pointer());
+
                     glRotatef(centerCube.prerotation.x, 1.0f, 0.0f, 0.0f);
                     glRotatef(centerCube.prerotation.y, 0.0f, 1.0f, 0.0f);
                     glRotatef(centerCube.prerotation.z, 0.0f, 0.0f, 1.0f);
@@ -1381,12 +1343,7 @@
                 is_TECH_MODE_Rotate = NO;
                 //自由模式下，无限制操作
                 firstThreePointCount = 0;
-                //firstThreePoint[0].x = 512;
-                //firstThreePoint[1].x = 512;
-                //firstThreePoint[0].y = 384;
-                //firstThreePoint[1].y = 384;
                 if (selected != nil) {
-                    //selected.scale = MCPointMake(30, 30, 30);
                     selected = nil;
                 }
 
@@ -1433,13 +1390,9 @@
  */
 -(vec3)MapToSphere:(vec2 )touchpoint
 {
-    
-    //ivec2 m_centerPoint = ivec2(384+translation.y,512+translation.x);
     vec2 m_centerPoint = vec2(512+translation.x,384+translation.y);
-    //NSLog(@"center:%i %i",m_centerPoint.x,m_centerPoint.y);
-    
     vec2 p = touchpoint - m_centerPoint;
-     //NSLog(@"p: %f  %f",p.x,p.y);
+
     // Flip the Y axis because pixel coords increase towards the bottom.
     p.y = -p.y;
     const float radius = m_trackballRadius;
@@ -1465,7 +1418,6 @@
  */
 -(vec3)MapToLayerCenter:(vec2 )touchpoint
 {
-    //ivec2 magiccube_centerPoint = ivec2(512+translation.x,384+translation.y);
     vec3 layer_center;
     
     int layer_center_index;
@@ -1478,11 +1430,9 @@
     }
     MCPoint original = MCPointMake(0, 0, 0);
     MCPoint layercenter_original = MCPointMatrixMultiply(original, [[array27Cube objectAtIndex:layer_center_index] matrix]);
-    //vec3 layer_direction_N = vec3(layercenter_original.x,layercenter_original.y,layercenter_original.z);
     layer_center = vec3(512+translation.x+layercenter_original.x,384+translation.y+layercenter_original.y,layercenter_original.z);
     vec2 layer_center_2D = vec2(layer_center.x,layer_center.y);
     vec2 p = touchpoint - layer_center_2D;
-   // vec2 p = touchpoint - magiccube_centerPoint;
     p.y = -p.y;
     const float radius = select_trackballRadius;
     const float safeRadius = radius - 1;
@@ -1510,10 +1460,8 @@
         layer_direction_N = vec3(direction_N.x,direction_N.y,direction_N.z);
     float z = sqrt(radius * radius - p.LengthSquared()) + layer_center.z;
     vec3 trackVecter = vec3(p.x, p.y, z);
-    //NSLog(@"layer_center:  %f ,%f ,%f",layer_center.x,layer_center.y,layer_center.z);
     vec3 crossed = trackVecter.Cross(layer_direction_N);
     vec3 mapped = layer_direction_N.Cross(crossed);
-    //vec3 mapped = vec3(map.x,map.y,fabs(map.z));
     float ratio = sqrt((mapped.x*mapped.x +mapped.y*mapped.y+ mapped.z*mapped.z)/(radius*radius));
     return (mapped / ratio) / radius;
 }

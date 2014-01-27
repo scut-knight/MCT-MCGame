@@ -39,12 +39,10 @@ float xyzCoordinate_vertex_coordinates []={
 @implementation xyzCoordinateIndicator
 -(id)init{
     if (self = [super init]) {
-       
         mesh = [[MCMesh alloc] initWithVertexes:xyzCoordinate_vertex_coordinates
                                             vertexCount:34
                                              vertexSize:3
-                                            renderStyle:GL_LINES];
-        
+                                            renderStyle:GL_LINES];  
     }
     return self;
 }
