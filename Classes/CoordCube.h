@@ -63,7 +63,8 @@ public:
      */
 	static short flipMove[N_FLIP][N_MOVE];
     /**
-	 * Parity of the corner permutation. This is the same as the parity for the edge permutation of a valid cube.
+	 * Parity of the corner permutation. 
+     * This is the same as the parity for the edge permutation of a valid cube.
      *
 	 * parity has values 0 and 1
      */
@@ -85,7 +86,8 @@ public:
     
     // *******************************************Phase 1 and 2 movetable************************************************
     /**
-	 * Move table for permutation of six corners. The positions of the DBL and DRB corners are determined by the parity.
+	 * Move table for permutation of six corners. 
+     * The positions of the DBL and DRB corners are determined by the parity.
      *
 	 * URFtoDLF < 20160 in phase 1
      *
@@ -96,7 +98,8 @@ public:
 	static short URFtoDLF_Move[N_URFtoDLF][N_MOVE];
     
     /**
-	 * Move table for the permutation of six U-face and D-face edges in phase2. The positions of the DL and DB edges are
+	 * Move table for the permutation of six U-face and D-face edges in phase2. 
+     * The positions of the DL and DB edges are
 	 * determined by the parity.
      *
 	 * URtoDF < 665280 in phase 1
@@ -154,6 +157,7 @@ public:
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     /**
      * Initial all static variables.
+     *
      * 使用储存好的二进制文件来初始化CoordCube的静态变量 
      */
     static void initAllStaticVariables();

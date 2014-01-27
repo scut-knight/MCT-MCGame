@@ -159,7 +159,9 @@ typedef enum _MagicCubeUIUsingMode {
      */
     Cube * MagicCubeIndexState[27];
     NSMutableArray * lockedarray;
-    
+    /**
+     *	需要旋转的那一层，包括了空间指示箭头的显示。
+     */
     Cube * spaceIndicatorlayerPtr[9];
     //
     int selected_cube_index;

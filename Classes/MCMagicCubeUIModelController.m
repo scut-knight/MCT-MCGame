@@ -2172,23 +2172,57 @@
 
 #pragma mark math
 
-
+/**
+ *	求v1和v2的平均向量
+ *
+ *	@param	v1	三维向量
+ *	@param	v2	三维向量
+ *
+ *	@return	由坐标原点到v1和v2的中点的三维向量
+ */
 -(vec3)middleOfV1:(vec3)v1 V2:(vec3)v2{
     vec3 add = v1+v2;
     add.Normalize();
     return add;
 }
+
+/**
+ *	求V到V0与V1构成的平面的平面角
+ *
+ *	@param	v	三维向量
+ *	@param	v0	三维向量，构成平面的一部分
+ *	@param	v1	三维向量，构成平面的另一部分
+ *
+ *	@return	平面角角度，float类型
+ */
 -(float)AngleV0V1withV: (vec3)v V0:(vec3) v0 V1:(vec3) v1{
     vec3 v0Xv1 = v0.Cross(v1);
     float d = abs(v0Xv1.Dot(v))/v0Xv1.Module();
     return d;
 }
 
+/**
+ *	求V1与V2的角度
+ *
+ *	@param	v1	三维向量
+ *	@param	v2	三维向量
+ *
+ *	@return	夹角角度，double类型
+ */
 double ThetaBetweenV1andV2(const vec3& v1,const vec3& v2)
 {
     double cosa = v1.Dot(v2)/(v1.Module()*v2.Module());
     return acos(cosa);
 }
+
+/**
+ *	同ThetaBetweenV1andV2，不过角度取绝对值
+ *
+ *	@param	v1	三维向量
+ *	@param	v2	三维向量
+ *
+ *	@return	夹角角度（0-90度），double类型
+ */
 double FabsThetaBetweenV1andV2(const vec3& v1,const vec3& v2)
 {
     double cosa = v1.Dot(v2)/(v1.Module()*v2.Module());
@@ -2199,7 +2233,12 @@ double FabsThetaBetweenV1andV2(const vec3& v1,const vec3& v2)
     }else
     return acos(fabs(cosa));
 }
-//检测是否有小块被拾取。
+
+#pragma mark util
+
+/**
+ *  检测是否有小块被拾取。
+ */
 -(BOOL)isSelectOneFace:(vec2)touchpoint{	
     //继续射线拾取
     float V[108] = {
@@ -2262,12 +2301,22 @@ double FabsThetaBetweenV1andV2(const vec3& v1,const vec3& v2)
         return NO;
 
 };
+
+/**
+ *	关闭方向指示器（就是那些箭头）的显示
+ */
 -(void)closeSpaceIndicator{
     for (Cube *tmp in array27Cube) {
         [tmp setIsNeededToShowSpaceDirection:NO];
         [tmp setIsLocked:NO];
     }
 }
+
+/**
+ *	将指示箭头调整为下次旋转需要的方向
+ *
+ *	@param	rotationNotationType	魔方公式中的旋转类型
+ */
 - (void) nextSpaceIndicatorWithRotateNotationType:(struct RotateNotationType)rotationNotationType{
     for (Cube *tmp in array27Cube) {
         [tmp setIsNeededToShowSpaceDirection:NO];
@@ -2346,13 +2395,20 @@ double FabsThetaBetweenV1andV2(const vec3& v1,const vec3& v2)
    
 };
 
+/**
+ *	旋转到初始状态
+ */
 -(void)switchToOrignalPlace{
     for (Cube *tmp in array27Cube) {
         [tmp setQuaRotation:Quaternion(0,0,0,1)];
     }
 }
+
 #pragma mark undo redo
 
+/**
+ *	回退到前一步
+ */
 -(void)previousSolution{
     if(isAutoRotate)return;
     if (isLayerRotating) return;
@@ -2361,6 +2417,10 @@ double FabsThetaBetweenV1andV2(const vec3& v1,const vec3& v2)
     }
     [[self undoManger] undo];
 }
+
+/**
+ *	前进到后一步
+ */
 -(void)nextSolution{
     if(isAutoRotate)return;
     if (isLayerRotating) return;

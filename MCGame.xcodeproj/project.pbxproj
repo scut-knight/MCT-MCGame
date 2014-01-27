@@ -47,6 +47,10 @@
 		A3359E63168E9764002F9459 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = A3359E5D168E9764002F9459 /* sr_refresh@2X.png */; };
 		A3359E6B168EB6A7002F9459 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A3359E6A168EB6A7002F9459 /* MBProgressHUD.m */; };
 		A335C3D817620B1B00DA18EE /* dididi.wav in Resources */ = {isa = PBXBuildFile; fileRef = A335C3D717620B1B00DA18EE /* dididi.wav */; };
+		A34487D818967FA500585E49 /* README_TwoPhaseSolver.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A34487D718967FA400585E49 /* README_TwoPhaseSolver.rtf */; };
+		A34487DA1896800100585E49 /* README_Utils.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A34487D91896800100585E49 /* README_Utils.rtf */; };
+		A34487DC1896818D00585E49 /* readme_DataModel.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A34487DB1896818C00585E49 /* readme_DataModel.rtf */; };
+		A34487DE1896855600585E49 /* readme_UserSystem.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A34487DD1896855600585E49 /* readme_UserSystem.rtf */; };
 		A358750F161F146000998085 /* ButtonMerged.plist in Resources */ = {isa = PBXBuildFile; fileRef = A358750D161F146000998085 /* ButtonMerged.plist */; };
 		A3587515161F2C3000998085 /* ButtonMerged.png in Resources */ = {isa = PBXBuildFile; fileRef = A3587514161F2C3000998085 /* ButtonMerged.png */; };
 		A3587518161F355400998085 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3587517161F355400998085 /* MainWindow-iPad.xib */; };
@@ -405,6 +409,10 @@
 		A3359E69168EB6A7002F9459 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		A3359E6A168EB6A7002F9459 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		A335C3D717620B1B00DA18EE /* dididi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dididi.wav; sourceTree = "<group>"; };
+		A34487D718967FA400585E49 /* README_TwoPhaseSolver.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = README_TwoPhaseSolver.rtf; sourceTree = "<group>"; };
+		A34487D91896800100585E49 /* README_Utils.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = README_Utils.rtf; sourceTree = "<group>"; };
+		A34487DB1896818C00585E49 /* readme_DataModel.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_DataModel.rtf; sourceTree = "<group>"; };
+		A34487DD1896855600585E49 /* readme_UserSystem.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_UserSystem.rtf; sourceTree = "<group>"; };
 		A358750D161F146000998085 /* ButtonMerged.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ButtonMerged.plist; sourceTree = "<group>"; };
 		A3587514161F2C3000998085 /* ButtonMerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonMerged.png; sourceTree = "<group>"; };
 		A3587517161F355400998085 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
@@ -883,6 +891,7 @@
 				A3F8290B16EF796900AC5EAF /* MCPlayHelper */,
 				A3F828F316EF78E000AC5EAF /* Resource */,
 				A3F828E216EF78A000AC5EAF /* Doc */,
+				A34487DB1896818C00585E49 /* readme_DataModel.rtf */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -1198,6 +1207,7 @@
 				A3CB5FEE16ABD29C006F03D5 /* MCScore.m */,
 				A3CB5FEF16ABD29C006F03D5 /* MCUser.h */,
 				A3CB5FF016ABD29C006F03D5 /* MCUser.m */,
+				A34487DD1896855600585E49 /* readme_UserSystem.rtf */,
 			);
 			name = UserSystem;
 			sourceTree = "<group>";
@@ -1603,6 +1613,7 @@
 				E05DD5C117700ACE002C16CD /* Search.h */,
 				E05DD5C217700ACE002C16CD /* Tools.cpp */,
 				E05DD5C317700ACE002C16CD /* Tools.h */,
+				A34487D718967FA400585E49 /* README_TwoPhaseSolver.rtf */,
 			);
 			name = TwoPhaseSolver;
 			sourceTree = "<group>";
@@ -1628,6 +1639,7 @@
 				A3359E53168E9417002F9459 /* ProgressBar */,
 				A3935B41165A296900B60A07 /* RayDectionUtil */,
 				A30C47D5161C6F1C0057C5E1 /* MathUtil */,
+				A34487D91896800100585E49 /* README_Utils.rtf */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2027,6 +2039,10 @@
 				E0A8997F17736D9D00E50C54 /* raceAgainButtonDown@2x.png in Resources */,
 				E0A8998017736D9D00E50C54 /* raceAgainButtonUp.png in Resources */,
 				E0A8998117736D9D00E50C54 /* raceAgainButtonUp@2x.png in Resources */,
+				A34487D818967FA500585E49 /* README_TwoPhaseSolver.rtf in Resources */,
+				A34487DA1896800100585E49 /* README_Utils.rtf in Resources */,
+				A34487DC1896818D00585E49 /* readme_DataModel.rtf in Resources */,
+				A34487DE1896855600585E49 /* readme_UserSystem.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

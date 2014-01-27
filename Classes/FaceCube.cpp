@@ -123,6 +123,8 @@ std::string FaceCube::to_String(){
 /**
  * Gives CubieCube representation of a faceletcube
  *
+ *  将facelet Cube转化为CubieCube的表示方法。
+ *
  * @see CubieCube#toFaceCube()
  */
 //-------------------------------

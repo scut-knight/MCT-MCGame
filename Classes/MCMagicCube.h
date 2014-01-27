@@ -12,7 +12,7 @@
 
 /**
  *	魔方,满足MCCubeDelegate，而且内含3*3*3个MCCube
- *  注意，由于openGL的坐标原点位于左下角，所以内含的27个MCCube位置奇葩
+ *  注意，由于openGL的坐标原点位于左下角，所以内含的27个MCCube的位置奇葩
  *  x轴从前到后，y轴从下到上，z轴从左到右，请多想象几次
  *
  * @see MCCubie

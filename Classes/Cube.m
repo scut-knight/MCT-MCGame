@@ -227,6 +227,7 @@
             [tmp setIsNeedRender:NO];
         }
     }
+    // 如果需要显示指示箭头
     if ([self isNeededToShowSpaceDirection]) {
         switch (indicator_axis) {
             case X:

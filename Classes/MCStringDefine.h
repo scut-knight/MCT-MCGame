@@ -91,7 +91,7 @@
 #define Congig_Sound_File @"soundconfig.plist"
 
 
-
+// 空间指示器，就是一些箭头
 #define kSpaceDirectionIndicatorUP @"SpaceDirectionIndicatorUp"
 #define kSpaceDirectionIndicatorDown @"SpaceDirectionIndicatorDown"
 #define kSpaceDirectionIndicatorLeft @"SpaceDirectionIndicatorLeft"

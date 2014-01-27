@@ -18,6 +18,8 @@ using namespace std;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /**
  * Class Search implements the Two-Phase-Algorithm.
+ *
+ *  这个类实现了Two-Phase-Algorithm
  */
 class Search {
 public:
@@ -50,6 +52,8 @@ public:
     
     /**
 	 * Computes the solver string for a given cube.
+     *
+     *  从所给的cube中计算出一个描述解的字符串
 	 *
 	 * @param facelets
 	 *          is the cube definition string, see {@link Facelet} for the format.
