@@ -81,7 +81,7 @@ static MCDBController* sharedSingleton_ = nil;
     
     return [documentDirectory stringByAppendingPathComponent:DBName];
 }
-
+// 创建，查询，关闭数据库，这些操作可以重构成一套方法 TODO
 /**
  *	打开SQLite3数据库，(如果没有相关表)创建数据库,创建用户表，创建得分表，创建学习记录表，创建魔方状态表
  *

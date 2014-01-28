@@ -48,11 +48,9 @@
 	// this is where we store all our objects
 	if (sceneObjects == nil) sceneObjects = [[NSMutableArray alloc] init];
 	
-    //float scale = 60.0;
     isShowQueue = NO;
 	magicCube = [[MCMagicCube magicCube]retain];
     playHelper = [[MCPlayHelper playerHelperWithMagicCube:self.magicCube]retain];
-    //[playHelper applyRules];
     //背景
     MCBackGroundTexMesh* background = [[MCBackGroundTexMesh alloc]init];
     background.pretranslation = MCPointMake(0, 0, -246);
@@ -173,7 +171,9 @@
     
 }
 
-
+/**
+ *	处理旋转操作，看是否在正确的道路上，显示tips等等。
+ */
 -(void)showQueue{
     MCNormalPlayInputViewController* input_C = (MCNormalPlayInputViewController*)inputController;
     //如果队列为空 先applyRules
@@ -312,10 +312,18 @@
         NSLog(@"END form Scene");
     } 
 };
+
+/**
+ *	回退到前一步
+ */
 -(void)previousSolution{
     NSLog(@"mc previousSolution");
     [magicCubeUI performSelector:@selector(previousSolution)];
 }
+
+/**
+ *	前进到下一步
+ */
 -(void)nextSolution{
     NSLog(@"mc nextSolution");
     [magicCubeUI performSelector:@selector(nextSolution)];

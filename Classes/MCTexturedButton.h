@@ -11,6 +11,7 @@
 /**
  *	纹理按钮。
  *  继承自MCButton，在MCButton上添加了纹理。
+ *  用于作为各个场景中的按钮。
  */
 @interface MCTexturedButton : MCButton {
 	MCTexturedQuad * upQuad;

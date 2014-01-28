@@ -8,6 +8,7 @@
 
 #import "UATitledModalPanel.h"
 #import "MCConfiguration.h"
+
 @interface FinishView : UATitledModalPanel <UIPopoverControllerDelegate>{
     FinishViewType finishViewType;
 }

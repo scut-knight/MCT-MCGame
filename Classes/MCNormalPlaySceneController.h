@@ -29,7 +29,7 @@
      */
     MCPlayHelper * playHelper;
     /**
-     *	是否需要展示队列
+     *	是否需要显示魔方旋转动作展示队列
      */
     BOOL isShowQueue;
      /**
