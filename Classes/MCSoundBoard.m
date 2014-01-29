@@ -72,6 +72,7 @@
 /**
  *	the same as - (void)addSoundAtPath:(NSString *)filePath forKey:(id)key
  *  using an anonymous instance
+ *
  *	@param	filePath	: a NSString to define the file path
  *	@param	key	: id value
  */
@@ -94,6 +95,7 @@
 /**
  *	play particular sound in the _sounds with particular key
  *  with an anoymous instance
+ *
  *	@param	key	: id value
  */
 + (void)playSoundForKey:(id)key
@@ -129,6 +131,7 @@
 /**
  *	音量渐增
  *  定时器的调用者提供"player"键选择渐增的音频名，"maxvolume"键(float值)选择最大音量
+ *
  *	@param	timer	
  */
 - (void)fadeIn:(NSTimer *)timer
@@ -176,6 +179,7 @@
 /**
  *	call the fadeIn:(NSTimer *)timer to play the audio fading in gradually
  *  using an anoymous instance
+ *
  *	@param	key	: id value
  *	@param	fadeInInterval
  *	@param	maxvolume	

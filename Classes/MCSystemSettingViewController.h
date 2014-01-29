@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "SoundSettingController.h"
+
+/**
+ *	应用系统设置
+ */
 @interface MCSystemSettingViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>{
     IBOutlet UISlider *soundEffectSlider;
     IBOutlet UISlider *musicSlider;

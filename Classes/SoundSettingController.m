@@ -92,7 +92,9 @@
 };
 
 /**
- *	set volume for background sound and restore it in soundConfiguration.设置背景音量并存储在音量配置中
+ *	set volume for background sound and restore it in soundConfiguration.
+ *
+ *  设置背景音量并存储在音量配置中
  *
  *	@param	volume	:(float)
  */

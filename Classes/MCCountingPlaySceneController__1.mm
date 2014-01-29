@@ -12,6 +12,8 @@
 #import "Cube.h"
 #import "MCMultiDigitCounter.h"
 #import "MCBackGroundTexMesh.h"
+#import "SoundSettingController.h"
+#import "MCStringDefine.h"
 
 @implementation MCCountingPlaySceneController
 @synthesize magicCube;
@@ -36,10 +38,17 @@
  *	根据魔方公式的旋转类型进行旋转
  *
  *	@param	rotateType	魔方公式中的旋转类型
+ *
+ *  @see MCNormalPlaySceneController#rotate
+ * TODO: 解决不播放音效的问题
  */
 -(void)rotate:(RotateType *)rotateType{
     [magicCube rotateWithSingmasterNotation:[rotateType notation]];
     [magicCubeUI flashWithState:[ magicCube getColorInOrientationsOfAllCubie]];
+    
+    SoundSettingController *soundsetting = [SoundSettingController sharedsoundSettingController];
+    [soundsetting playSoundForKey:Audio_RotateSound_Ding_key];
+    
     [self checkIsOver];
 }
 

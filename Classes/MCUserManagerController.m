@@ -142,6 +142,11 @@ static MCUserManagerController* sharedSingleton_ = nil;
     return YES;
 }
 
+/**
+ *	改变当前用户为_name用户
+ *
+ *	@param	_name	将要成为当前用户的用户的用户名
+ */
 - (void)changeCurrentUser:(NSString *)_name
 {
     for (MCUser* user in userModel.allUser) {
@@ -154,6 +159,7 @@ static MCUserManagerController* sharedSingleton_ = nil;
     [self saveCurrentUser];
     [self updateMyScore];
 }
+
 /**
  *	一旦更新成功，改变当前用户为已更新的用户
  *
@@ -169,12 +175,18 @@ static MCUserManagerController* sharedSingleton_ = nil;
     [name release];
 }
 
+/**
+ *	根据数据库的查询结果，更新所有的用户。
+ */
 - (void)updateAllUser
 {
     self.userModel.allUser = [database queryAllUser];
     NSLog(@"update all user");
 }
 
+/**
+ *	根据数据库的查询结果，更新当前的用户。
+ */
 - (void)updateCurrentUser
 {
     self.userModel.currentUser = [database queryUser:userModel.currentUser.name];
@@ -202,6 +214,7 @@ static MCUserManagerController* sharedSingleton_ = nil;
     
     [newScore release];
 }
+
 /**
  *	一旦更新成功，改变当前用户数据
  *
@@ -238,6 +251,7 @@ static MCUserManagerController* sharedSingleton_ = nil;
     
     [newLearn release];
 }
+
 /**
  *	一旦更新成功，改变当前用户数据
  *
@@ -254,11 +268,15 @@ static MCUserManagerController* sharedSingleton_ = nil;
 
 }
 
+/**
+ *	更新当前最高分
+ */
 - (void)updateTopScore
 {
     self.userModel.topScore = [database queryTopScore];
     NSLog(@"update top score");
 }
+
 /**
  *	更新当前用户的最高的五个得分
  */
