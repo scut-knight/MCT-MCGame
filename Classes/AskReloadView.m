@@ -7,11 +7,23 @@
 //
 
 #import "AskReloadView.h"
+
+/**
+ *	AskReloadView 顶部的黑色框坐标
+ */
 #define BLACK_BAR_COMPONENTS				{ 0.171875, 0.2421875, 0.3125, 0.8, 0.07, 0.07, 0.07, 1.0 }
 
 @implementation AskReloadView
 @synthesize askReloadType,viewLoadedFromXib;
 
+/**
+ *	初始化对话框视图
+ *
+ *	@param	frame	对话框大小边界
+ *	@param	title	对话框标题
+ *
+ *	@return	加载对话框
+ */
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title {
 	if ((self = [super initWithFrame:frame])) {
 		
@@ -72,21 +84,37 @@
 	[viewLoadedFromXib release];
     [super dealloc];
 }
+
+/**
+ *	加载子视图
+ */
 - (void)layoutSubviews {
 	[super layoutSubviews];
 	
 	[viewLoadedFromXib setFrame:self.contentView.bounds];
 }
 
-
+/**
+ *	按下继续上次按钮
+ *
+ *	@param	sender	继续上次按钮对象
+ */
 - (IBAction)loadLastTimeBtnPressed:(id)sender{
     askReloadType = kAskReloadView_LoadLastTime;
+    // 这个函数可以抽取出来。TODO NSObject<UAModalPanelDelegate>	delegate
     if ([delegate respondsToSelector:@selector(shouldCloseModalPanel:)]) {
 		if ([delegate shouldCloseModalPanel:self]) {
 			UADebugLog(@"Closing using delegates for modalPanel: %@", self);
 			[self hide];
 		}
-    }};
+    }
+};
+
+/**
+ *	按下重新开始按钮
+ *
+ *	@param	sender	重新开始按钮对象
+ */
 - (IBAction)reloadBtnPressed:(id)sender{askReloadType = kAskReloadView_Reload;
     if ([delegate respondsToSelector:@selector(shouldCloseModalPanel:)]) {
 		if ([delegate shouldCloseModalPanel:self]) {
@@ -95,6 +123,12 @@
 		}
     }
 };
+
+/**
+ *	按下关闭按钮
+ *
+ *	@param	sender	关闭按钮对象
+ */
 - (IBAction)cancelBtnPressed:(id)sender{
     
     askReloadType = kAskReloadView_Cancel;
@@ -108,6 +142,13 @@
     }
     
 };
+
+/**
+ *	需要用来处理触屏事件。目前不做任何处理
+ *
+ *	@param	touches	触控点集合
+ *	@param	event	UI事件
+ */
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 }
 

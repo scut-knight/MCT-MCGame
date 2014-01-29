@@ -8,6 +8,10 @@
 
 #import "UATitledModalPanel.h"
 #import "MCConfiguration.h"
+
+/**
+ *	每次重载场景时弹出的对话框
+ */
 @interface AskReloadView : UATitledModalPanel{
     AskReloadType askReloadType;
     IBOutlet UIView	*viewLoadedFromXib;
