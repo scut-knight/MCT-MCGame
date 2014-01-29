@@ -16,8 +16,8 @@
 #import "LearnPagePauseMenu.h"
 
 /**
- *	学习模式下的输入控制器。
- *  实现了UAModalPanelDelegate，有一个加强了的模式对话框。
+ *	学习模式下的交互控制器。
+ *  实现了UAModalPanelDelegate，可以加载UAModalPanel类型的对话框
  */
 @interface MCNormalPlayInputViewController : InputController<UAModalPanelDelegate>{
     /**
