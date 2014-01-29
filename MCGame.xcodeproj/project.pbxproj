@@ -47,6 +47,8 @@
 		A3359E63168E9764002F9459 /* sr_refresh@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = A3359E5D168E9764002F9459 /* sr_refresh@2X.png */; };
 		A3359E6B168EB6A7002F9459 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A3359E6A168EB6A7002F9459 /* MBProgressHUD.m */; };
 		A335C3D817620B1B00DA18EE /* dididi.wav in Resources */ = {isa = PBXBuildFile; fileRef = A335C3D717620B1B00DA18EE /* dididi.wav */; };
+		A3419B521898AFDC00E0CCEC /* readme_CountingPlay.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3419B511898AFDC00E0CCEC /* readme_CountingPlay.rtf */; };
+		A3419B561898B02200E0CCEC /* reademe_NormalPlay.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3419B551898B02100E0CCEC /* reademe_NormalPlay.rtf */; };
 		A34487D818967FA500585E49 /* README_TwoPhaseSolver.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A34487D718967FA400585E49 /* README_TwoPhaseSolver.rtf */; };
 		A34487DA1896800100585E49 /* README_Utils.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A34487D91896800100585E49 /* README_Utils.rtf */; };
 		A34487DC1896818D00585E49 /* readme_DataModel.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A34487DB1896818C00585E49 /* readme_DataModel.rtf */; };
@@ -166,7 +168,6 @@
 		A3DB41371764B56400C0D091 /* home_button.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3DB41351764B56300C0D091 /* home_button.plist */; };
 		A3E1ADBA16A3C3160050B52D /* readme_config.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3E1ADB916A3C3160050B52D /* readme_config.rtf */; };
 		A3E1ADBC16A3C40C0050B52D /* readme_scene5.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3E1ADBB16A3C40C0050B52D /* readme_scene5.rtf */; };
-		A3E1ADBE16A3C47D0050B52D /* readme_Scene1.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3E1ADBD16A3C47D0050B52D /* readme_Scene1.rtf */; };
 		A3E1ADC016A3C67E0050B52D /* readme_MainMenu.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3E1ADBF16A3C67E0050B52D /* readme_MainMenu.rtf */; };
 		A3E1ADC216A3C7E70050B52D /* readme_ApplicationContext.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3E1ADC116A3C7E70050B52D /* readme_ApplicationContext.rtf */; };
 		A3E1ADC416A3CA8F0050B52D /* readme_MagicCubeUIModel.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A3E1ADC316A3CA8F0050B52D /* readme_MagicCubeUIModel.rtf */; };
@@ -409,6 +410,8 @@
 		A3359E69168EB6A7002F9459 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		A3359E6A168EB6A7002F9459 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		A335C3D717620B1B00DA18EE /* dididi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dididi.wav; sourceTree = "<group>"; };
+		A3419B511898AFDC00E0CCEC /* readme_CountingPlay.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_CountingPlay.rtf; sourceTree = "<group>"; };
+		A3419B551898B02100E0CCEC /* reademe_NormalPlay.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = reademe_NormalPlay.rtf; sourceTree = "<group>"; };
 		A34487D718967FA400585E49 /* README_TwoPhaseSolver.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = README_TwoPhaseSolver.rtf; sourceTree = "<group>"; };
 		A34487D91896800100585E49 /* README_Utils.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = README_Utils.rtf; sourceTree = "<group>"; };
 		A34487DB1896818C00585E49 /* readme_DataModel.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_DataModel.rtf; sourceTree = "<group>"; };
@@ -570,7 +573,6 @@
 		A3DB41351764B56300C0D091 /* home_button.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = home_button.plist; sourceTree = "<group>"; };
 		A3E1ADB916A3C3160050B52D /* readme_config.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_config.rtf; sourceTree = "<group>"; };
 		A3E1ADBB16A3C40C0050B52D /* readme_scene5.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_scene5.rtf; sourceTree = "<group>"; };
-		A3E1ADBD16A3C47D0050B52D /* readme_Scene1.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_Scene1.rtf; sourceTree = "<group>"; };
 		A3E1ADBF16A3C67E0050B52D /* readme_MainMenu.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_MainMenu.rtf; sourceTree = "<group>"; };
 		A3E1ADC116A3C7E70050B52D /* readme_ApplicationContext.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_ApplicationContext.rtf; sourceTree = "<group>"; };
 		A3E1ADC316A3CA8F0050B52D /* readme_MagicCubeUIModel.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_MagicCubeUIModel.rtf; sourceTree = "<group>"; };
@@ -1286,6 +1288,7 @@
 				A3BFF6601770327B004D18D8 /* LearnPagePauseMenu.h */,
 				A3BFF6611770327C004D18D8 /* LearnPagePauseMenu.m */,
 				A3BFF6631770348A004D18D8 /* learnpagepausemenu.xib */,
+				A3419B551898B02100E0CCEC /* reademe_NormalPlay.rtf */,
 			);
 			name = Scene1;
 			sourceTree = "<group>";
@@ -1298,13 +1301,13 @@
 				A3051EDF16303278006DFF96 /* MCCountingPlayInputViewController__1.mm */,
 				A3051EDB16302870006DFF96 /* MCCountingPlaySceneController__1.h */,
 				A3051EDC16302870006DFF96 /* MCCountingPlaySceneController__1.mm */,
-				A3E1ADBD16A3C47D0050B52D /* readme_Scene1.rtf */,
 				A3994A1716E3B4640037DBD0 /* PauseMenu.h */,
 				A3994A1816E3B4640037DBD0 /* PauseMenu.m */,
 				A3994A1F16E3C2720037DBD0 /* mypausemenu.xib */,
 				E0EC371917715B9C00835785 /* CountingFinishView.xib */,
 				E0EC371B17715B9C00835785 /* CountingFinishView.h */,
 				E0EC371A17715B9C00835785 /* CountingFinishView.m */,
+				A3419B511898AFDC00E0CCEC /* readme_CountingPlay.rtf */,
 			);
 			name = Scene2;
 			sourceTree = "<group>";
@@ -1834,7 +1837,6 @@
 				A3359E63168E9764002F9459 /* sr_refresh@2X.png in Resources */,
 				A3E1ADBA16A3C3160050B52D /* readme_config.rtf in Resources */,
 				A3E1ADBC16A3C40C0050B52D /* readme_scene5.rtf in Resources */,
-				A3E1ADBE16A3C47D0050B52D /* readme_Scene1.rtf in Resources */,
 				A3E1ADC016A3C67E0050B52D /* readme_MainMenu.rtf in Resources */,
 				A3E1ADC216A3C7E70050B52D /* readme_ApplicationContext.rtf in Resources */,
 				A3E1ADC416A3CA8F0050B52D /* readme_MagicCubeUIModel.rtf in Resources */,
@@ -2043,6 +2045,8 @@
 				A34487DA1896800100585E49 /* README_Utils.rtf in Resources */,
 				A34487DC1896818D00585E49 /* readme_DataModel.rtf in Resources */,
 				A34487DE1896855600585E49 /* readme_UserSystem.rtf in Resources */,
+				A3419B521898AFDC00E0CCEC /* readme_CountingPlay.rtf in Resources */,
+				A3419B561898B02200E0CCEC /* reademe_NormalPlay.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

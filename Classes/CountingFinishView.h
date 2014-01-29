@@ -19,6 +19,13 @@
 
 #import "UATitledModalPanel.h"
 #import "MCConfiguration.h"
+
+/**
+ *	模式结束弹出的对话框。
+ *  继承自UATitledModalPanel，带有一个标题栏。同时实现了UIPopoverControllerDelegate协议。
+ *
+ * @see FinishView
+ */
 @interface CountingFinishView : UATitledModalPanel <UIPopoverControllerDelegate>{
     FinishViewType finishViewType;
 }

@@ -95,6 +95,7 @@
 	[UIView animateWithDuration:0.2
 						  delay:0.0
 						options:UIViewAnimationCurveEaseIn
+                    // cool!
 					 animations:^{
 						 self.contentView.alpha = 1.0;
 						 self.titleBar.alpha = 1.0;

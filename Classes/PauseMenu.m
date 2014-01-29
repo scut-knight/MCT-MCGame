@@ -7,6 +7,10 @@
 //
 
 #import "PauseMenu.h"
+
+/**
+ *	竞速模式下的暂停对话框 顶部的黑色框坐标
+ */
 #define BLACK_BAR_COMPONENTS				{ 0.22, 0.22, 0.22, 1.0, 0.07, 0.07, 0.07, 1.0 }
 
 @interface PauseMenu ()
@@ -16,6 +20,15 @@
 @implementation PauseMenu
 @synthesize viewLoadedFromXib;
 @synthesize pauseSelectType;
+
+/**
+ *	初始化对话框视图
+ *
+ *	@param	frame	对话框大小边界
+ *	@param	title	对话框标题
+ *
+ *	@return	暂停对话框
+ */
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title {
 	if ((self = [super initWithFrame:frame])) {
 		
@@ -75,18 +88,37 @@
 	[viewLoadedFromXib release];
     [super dealloc];
 }
+
+/**
+ *	加载子视图
+ */
 - (void)layoutSubviews {
 	[super layoutSubviews];
 	
 	[viewLoadedFromXib setFrame:self.contentView.bounds];
 }
-- (IBAction)goOnBtnPressed:(id)sender{pauseSelectType = kPauseSelect_GoOn;
+
+/**
+ *	按下继续按钮
+ *
+ *	@param	sender	继续按钮
+ */
+- (IBAction)goOnBtnPressed:(id)sender{
+    pauseSelectType = kPauseSelect_GoOn;
+    // 下面的部分可以重构掉 TODO
     if ([delegate respondsToSelector:@selector(shouldCloseModalPanel:)]) {
 		if ([delegate shouldCloseModalPanel:self]) {
 			UADebugLog(@"Closing using delegates for modalPanel: %@", self);
 			[self hide];
 		}
-    }};
+    }
+};
+
+/**
+ *	按下重新开始按钮
+ *
+ *	@param	sender	重新开始按钮
+ */
 - (IBAction)restartBtnPressed:(id)sender{
     pauseSelectType = kPauseSelect_Restart;
     if ([delegate respondsToSelector:@selector(shouldCloseModalPanel:)]) {
@@ -96,6 +128,12 @@
 		}
     }
 };
+
+/**
+ *	按下保存并返回按钮
+ *
+ *	@param	sender	保存并返回按钮
+ */
 - (IBAction)goBackMainMenuBtnPressed:(id)sender{
 //    CoordinatingController *coorCol = [CoordinatingController sharedCoordinatingController];
 //    sceneController *tmp = [coorCol currentController];
@@ -113,6 +151,13 @@
     }
 
 };
+
+/**
+ *	需要用来处理触屏事件。目前不做任何处理
+ *
+ *	@param	touches	触控点集合
+ *	@param	event	UI事件
+ */
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 }
 

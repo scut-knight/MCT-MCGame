@@ -10,6 +10,9 @@
 #import "UAModalPanel.h"
 #import "UANoisyGradientBackground.h"	
 
+/**
+ *	带标题栏的UAModalPanel
+ */
 @interface UATitledModalPanel : UAModalPanel {
 
 	CGFloat						titleBarHeight;

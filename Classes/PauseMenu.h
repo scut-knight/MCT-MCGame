@@ -11,12 +11,23 @@
 #import "sceneController.h"
 #import "InputController.h"
 #import "CoordinatingController.h"
+
+/**
+ *	竞速模式的暂停对话框的选项类型
+ */
 typedef enum _PauseSelectType {
     kPauseSelect_GoOn  = 0,
     kPauseSelect_GoBack,
     kPauseSelect_Restart,
     kPauseSelect_default
 } PauseSelectType;
+
+/**
+ *	竞速模式的暂停对话框。
+ *  是不是和学习模式的暂停对话框差不多？(除了名字和部分UI参数，其他的几乎一模一样!)
+ *
+ *  @see LearnPagePauseMenu
+ */
 @interface PauseMenu : UATitledModalPanel{
     PauseSelectType pauseSelectType;
     IBOutlet UIView	*viewLoadedFromXib;
