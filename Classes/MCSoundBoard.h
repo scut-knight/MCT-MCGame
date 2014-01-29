@@ -24,7 +24,7 @@
 
 //sounds
 + (void)addSoundAtPath:(NSString *)filePath forKey:(id)key;
-+ (void)playSoundForKey:(id)key;
++ (void)playSoundForKey:(id)key withVolume:(NSNumber *)volume;
 
 
 //audioes

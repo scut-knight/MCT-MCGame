@@ -63,10 +63,9 @@
 - (void)addSoundAtPath:(NSString *)filePath forKey:(id)key
 {
     NSURL* fileURL = [NSURL fileURLWithPath:filePath];
-    SystemSoundID soundId;
-    AudioServicesCreateSystemSoundID((CFURLRef)fileURL, &soundId);
-    
-    [_sounds setObject:[NSNumber numberWithInt:soundId] forKey:key];
+    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:NULL];
+    [_sounds setObject:player forKey:key];
+    [player release];
 }
 
 /**
@@ -82,25 +81,29 @@
 }
 
 /**
- *	play particular sound in the _sounds with particular key
+ *	play particular sound in the _sounds with particular key and particular volume
  *
  *	@param	key	: id value
+ *  @param  volume : NSNumber value
  */
-- (void)playSoundForKey:(id)key
+- (void)playSoundForKey:(id)key withVolume:(NSNumber *)volume
 {
-    SystemSoundID soundId = [(NSNumber *)[_sounds objectForKey:key] intValue];
-    AudioServicesPlaySystemSound(soundId);
+    AVAudioPlayer *player = [_sounds objectForKey:key];
+    player.volume = [volume floatValue];
+    [player play];
 }
 
 /**
- *	play particular sound in the _sounds with particular key
+ *	play particular sound in the _sounds with particular key and particular volume
+ *
  *  with an anoymous instance
  *
  *	@param	key	: id value
+ *  @param  volume : NSNumber value
  */
-+ (void)playSoundForKey:(id)key
++ (void)playSoundForKey:(id)key withVolume:(NSNumber *)volume
 {
-    [[self sharedInstance] playSoundForKey:key];
+    [[self sharedInstance] playSoundForKey:key  withVolume:volume];
 }
 
 /**

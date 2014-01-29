@@ -24,7 +24,7 @@
 //prtload all sounds
 -(void)loadSounds;
 
--(void)playSoundForKey:(NSString*)key;
+-(void)playSoundForKey:(NSString*)key withSoundType:(NSNumber *)soundType;
 -(void)playAudioForKey:(NSString*)key maxVolume:(NSNumber*)maxvolume;
 -(void)pauseAudioForKey:(NSString*)key fadeOutInterval:(NSTimeInterval)fadetime;
 -(void)playAudioForKey:(NSString*)key fadeInInterval:(NSTimeInterval)fadetime maxVolume:(NSNumber*)maxvolume;

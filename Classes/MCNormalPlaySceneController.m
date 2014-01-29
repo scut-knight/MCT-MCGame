@@ -150,7 +150,7 @@
     [magicCubeUI flashWithState:[ magicCube getColorInOrientationsOfAllCubie]];
     
     SoundSettingController *soundsetting = [SoundSettingController sharedsoundSettingController];
-    [soundsetting playSoundForKey:Audio_RotateSound_Ding_key];
+    [soundsetting playSoundForKey:Audio_RotateSound_Ding_key withSoundType:nil];
     
     [self checkIsOver];
 }

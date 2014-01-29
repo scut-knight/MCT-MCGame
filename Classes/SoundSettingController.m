@@ -104,13 +104,28 @@
     [self restoreSoundConfiguration];
 };
 
--(void)playSoundForKey:(NSString*)key{
-    if ((![self _RotateEffectSwitch])&&[key isEqualToString:Audio_RotateSound_Ding_key]) {
+/**
+ *	如果需要播放的音效存在，那么就播放音效。
+ *
+ *	@param	key	音效名
+ *  @param  soundType 音效类型，同一种类型的音量是一样的
+ */
+-(void)playSoundForKey:(NSString*)key withSoundType:(NSNumber *)soundType{
+    if ( ![self _RotateEffectSwitch] || ![key isEqualToString:Audio_RotateSound_Ding_key]) {
         return;
     }
-    [MCSoundBoard playSoundForKey:key];
+    if (soundType == nil) {
+        soundType = _RotateEffectValume;
+    }
+    [MCSoundBoard playSoundForKey:key withVolume:soundType];
 };
 
+/**
+ *	以指定的最大音量播放音乐
+ *
+ *	@param	key	音乐名
+ *	@param	maxvolume	最大音量
+ */
 -(void)playAudioForKey:(NSString*)key maxVolume:(NSNumber *)maxvolume{
      [MCSoundBoard playAudioForKey:key maxVolume:[[[NSNumber alloc]initWithFloat:1.0] autorelease]];
 };
