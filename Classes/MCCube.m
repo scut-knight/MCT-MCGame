@@ -549,7 +549,7 @@
     int i;
     for (i = 0; i < _skinNum; i++) {
         if (orientation == _orientations[i]) {
-            // Update identity
+            // Update identity,以下部分是为了构造颜色组合
             switch (_faceColors[i]) {
                 case UpColor:
                     _identity = (ColorCombinationType)((int)_identity - 3);
@@ -603,7 +603,7 @@
             
             // Assign face color
             _faceColors[i] = color;
-            
+            // 如果是一个角块，而有两个面已经被填充了，那么补全最后一个面的颜色
             if (_completeFaceNum == 2 && _type == CornerCubie) {
                 int i;
                 for (i = 0; i < _skinNum; i++) {

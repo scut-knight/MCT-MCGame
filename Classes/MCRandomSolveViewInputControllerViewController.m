@@ -438,7 +438,8 @@ static BOOL _isInitFinished = NO;
     int selected_face_index = [secenecontroller selected_face_index];
     //给magicCube填上颜色
     
-    NSObject<MCCubieDelegate> *targetCubie = [[[MCRandomSolveSceneController sharedRandomSolveSceneController] magicCube] cubieWithColorCombination:(ColorCombinationType)selected_cube_index];
+    MCMagicCube *temp = [[MCRandomSolveSceneController sharedRandomSolveSceneController] magicCube];
+    NSObject<MCCubieDelegate> *targetCubie = [temp cubieWithColorCombination:(ColorCombinationType)selected_cube_index];
     [targetCubie setFaceColor:color inOrientation:(FaceOrientationType)selected_face_index];
     
     
@@ -515,7 +516,7 @@ static BOOL _isInitFinished = NO;
             NSString *resultString = [NSString stringWithUTF8String:Search::solution([stateString UTF8String], 24, 1000, true).c_str()];
             
             // Check error
-            if ([resultString hasPrefix:@"Error"]) { // 错误代码由二阶段算法产生
+            if ([resultString hasPrefix:@"Error"]) { // 错误码由二阶段算法产生
                 // Set flag yes
                 _errorFlag = YES;
                 [SVProgressHUD dismiss];
@@ -649,8 +650,7 @@ static BOOL _isInitFinished = NO;
             c.magicCube=[[MCMagicCube unarchiveMagicCubeWithFile:filePath] retain];
             [c flashSecne];
             [c closeSingmasterNotation];
-            
-//            _selectMenu.delegate = self;
+
             //更新UI模型
             if (!_isInitFinished) { // 重复的东西也未免太多了吧
                 [[c tipsLabel] setText:@"求解系统正在初始化...\n请等待..."];
@@ -702,7 +702,7 @@ static BOOL _isInitFinished = NO;
             //save and return
             [self mainMenuBtnUp];
         }else if([solvePagePauseMenuView solvePagePauseSelectType]==kSolvePagePauseSelect_GoBack_Directly){
-            // 直接离开和保存后离开的区别在于，直接离开不用NSKeyedArchiver保存魔方状态
+            // 直接离开和保存后离开的区别在于，直接离开不用NSKeyedArchiver保存魔方状态，如果之后又继续上次，那么就会继续上上次的状态
             MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController];
             if (![[c tipsLabel]isHidden]) {
                 [[c tipsLabel]setHidden:YES];

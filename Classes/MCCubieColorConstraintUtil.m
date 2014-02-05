@@ -218,14 +218,14 @@
 
 /**
  * Get the right orientations in CW（顺时针） order.
- * _FaceOrientationType {
- Up      = 0,
- Down    = 1,
- Front   = 2,
- Back    = 3,
- Left    = 4,
- Right   = 5,
- WrongOrientation    = 6
+ * _FaceOrientationType {<br>
+ Up      = 0,<br>
+ Down    = 1,<br>
+ Front   = 2,<br>
+ Back    = 3,<br>
+ Left    = 4,<br>
+ Right   = 5,<br>
+ WrongOrientation    = 6<br>
  } FaceOrientationType;
  */
 + (NSArray *)getFaceOrientationsInColokWiseOrderAtCornerPosition:(struct Point3i)point{

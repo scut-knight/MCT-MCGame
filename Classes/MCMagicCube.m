@@ -21,7 +21,7 @@
 @implementation MCMagicCube{
     MCCubie *_magicCubies3D[3][3][3];
     /**
-     *	magicCubiesList里转载着magicCubies3D[3][3][3]
+     *	magicCubiesList里装载着magicCubies3D[3][3][3]
      */
     MCCubie *_magicCubiesList[27];
     FaceOrientationType _orientationToMagicCubeFace[6];
@@ -40,13 +40,17 @@
 
 /**
  *	从档案中恢复一个魔方，调用NSKeyedUnarchiver
- *  注意：没有检查路径是否合理，而且对构造newMagicCube是否成功也没有检查
- *	@param	path	文件路径
+ *  注意：没有检查路径是否合理
  *
+ *	@param	path	文件路径
  */
 + (MCMagicCube *)unarchiveMagicCubeWithFile:(NSString *)path{
     MCMagicCube *newMagicCube = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-    [newMagicCube reloadColorMappingDictionary];
+    if (newMagicCube != nil) {
+        [newMagicCube reloadColorMappingDictionary];
+    } else {
+        [[newMagicCube init] reloadColorMappingDictionary];
+    }
     return newMagicCube;
 }
 
@@ -97,10 +101,11 @@
 
 
 /**
+ *  initial the rubik's cube as a new state
+ *
  *	初始化魔方
  *  调用了initRightCubeWithCoordinate:来初始化每一个立方体
  */
-//initial the rubik's cube as a new state
 - (id)init{
     if (self = [super init]) {
         for (int z = 0; z < 3; z++) {
@@ -680,7 +685,8 @@
                         _magicCubies3D[x][y][z] = [aDecoder decodeObjectForKey:[NSString stringWithFormat:kSingleCubieKeyFormat, x+3*y+9*z]];
                         [_magicCubies3D[x][y][z] retain];
                         //set the right pointer
-                        NSInteger listIndex = _magicCubies3D[x][y][z].identity;
+//                        NSInteger listIndex = _magicCubies3D[x][y][z].identity;
+                        NSInteger listIndex = x + 3 * y + 9 * z;
                         _magicCubiesList[listIndex] = _magicCubies3D[x][y][z];
                         [_magicCubiesList[listIndex] retain];
                     }
@@ -699,7 +705,9 @@
  * Every state in the "format" axis-orientation
  * 获取每一个立方体的三维空间轴
  * 调用了MCCube的getCubieOrientationOfAxis:
+ *
  *  @see MCCube#getCubieOrientationOfAxis:
+ *
  *	@return	储存除中央立方体之外26个立方体的状态,中央立方块为空字典
  */
 - (NSArray *)getAxisStatesOfAllCubie{
@@ -724,7 +732,9 @@
  * Every state in the "format" orientation-face color
  * 获取每一个立方体的三维空间轴
  * 调用了MCCube的getCubieColorInOrientations:
+ *
  *  @see MCCube#getCubieColorInOrientations:
+ *
  *	@return	储存除中央立方体之外26个立方体的状态,中央立方块为空字典
  */
 - (NSArray *)getColorInOrientationsOfAllCubie{
@@ -747,7 +757,7 @@
 /**
  *	fter change the color setting,
  * you can applying it in the data model by invoking this method.
- * 将魔方各个面的颜色储存在@FACE_COLOR_MAPPING_FILE_NAME.plist里
+ * 将魔方各个面的颜色储存在FACE_COLOR_MAPPING_FILE_NAME.plist里
  */
 - (void)reloadColorMappingDictionary{
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:FACE_COLOR_MAPPING_FILE_NAME ofType:@"plist"];
