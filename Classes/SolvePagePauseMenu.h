@@ -10,6 +10,10 @@
 #import "sceneController.h"
 #import "InputController.h"
 #import "CoordinatingController.h"
+
+/**
+ *	求解模式的暂停对话框的选项类型
+ */
 typedef enum _SolvePagePauseSelectType {
     kSolvePagePauseSelect_GoOn  = 0,
     kSolvePagePauseSelect_GoBack_Directly,
@@ -17,6 +21,10 @@ typedef enum _SolvePagePauseSelectType {
     kSolvePagePauseSelect_Clean_State,
     kSolvePagePauseSelect_default
 } SolvePagePauseSelectType;
+
+/**
+ *	求解模式的暂停菜单
+ */
 @interface SolvePagePauseMenu : UATitledModalPanel{
     SolvePagePauseSelectType solvePagePauseSelectType;
     IBOutlet UIView	*viewLoadedFromXib;

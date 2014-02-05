@@ -187,6 +187,8 @@
 
 /**
  *  Only the center color will be filled, others will be filled with 'NoColor'
+ *
+ *  只有中间的颜色被填充，其他的颜色为无颜色。用于求解模式
  */
 - (id)initOnlyCenterColor:(struct Point3i)value{
     if(self = [self init]){

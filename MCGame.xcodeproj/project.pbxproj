@@ -56,6 +56,8 @@
 		A358750F161F146000998085 /* ButtonMerged.plist in Resources */ = {isa = PBXBuildFile; fileRef = A358750D161F146000998085 /* ButtonMerged.plist */; };
 		A3587515161F2C3000998085 /* ButtonMerged.png in Resources */ = {isa = PBXBuildFile; fileRef = A3587514161F2C3000998085 /* ButtonMerged.png */; };
 		A3587518161F355400998085 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3587517161F355400998085 /* MainWindow-iPad.xib */; };
+		A37AE55F18A1F4FC00E0405C /* readme_scene4.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A37AE55E18A1F4FC00E0405C /* readme_scene4.rtf */; };
+		A37AE56118A1F5A900E0405C /* readme_scene3.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A37AE56018A1F5A900E0405C /* readme_scene3.rtf */; };
 		A3994A0316E3B36F0037DBD0 /* UIView+JMNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = A3994A0216E3B36F0037DBD0 /* UIView+JMNoise.m */; };
 		A3994A0616E3B3890037DBD0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = A3994A0416E3B3890037DBD0 /* close.png */; };
 		A3994A0716E3B3890037DBD0 /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3994A0516E3B3890037DBD0 /* close@2x.png */; };
@@ -420,6 +422,8 @@
 		A3587514161F2C3000998085 /* ButtonMerged.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonMerged.png; sourceTree = "<group>"; };
 		A3587517161F355400998085 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		A358752B161FF1C600998085 /* data.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = data.hpp; sourceTree = "<group>"; };
+		A37AE55E18A1F4FC00E0405C /* readme_scene4.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_scene4.rtf; sourceTree = "<group>"; };
+		A37AE56018A1F5A900E0405C /* readme_scene3.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = readme_scene3.rtf; sourceTree = "<group>"; };
 		A3935B3C165A296400B60A07 /* MCRay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCRay.h; sourceTree = "<group>"; };
 		A3935B3D165A296400B60A07 /* MCRay.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MCRay.mm; sourceTree = "<group>"; };
 		A3935B3E165A296400B60A07 /* MCGL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCGL.h; sourceTree = "<group>"; };
@@ -1338,6 +1342,7 @@
 				A3D670D817715CF000302DB8 /* InfoView.h */,
 				A3D670D917715CF000302DB8 /* InfoView.m */,
 				A3D670DB17715D0800302DB8 /* myInfo.xib */,
+				A37AE56018A1F5A900E0405C /* readme_scene3.rtf */,
 			);
 			name = Scene3;
 			sourceTree = "<group>";
@@ -1349,6 +1354,7 @@
 				A3D5B2DD175C590B00833F3F /* MCSystemSettingViewController.h */,
 				A3D5B2DE175C590B00833F3F /* MCSystemSettingViewController.m */,
 				A3D5B2DF175C590B00833F3F /* MCSystemSettingViewController.xib */,
+				A37AE55E18A1F4FC00E0405C /* readme_scene4.rtf */,
 			);
 			name = scene4;
 			sourceTree = "<group>";
@@ -2047,6 +2053,8 @@
 				A34487DE1896855600585E49 /* readme_UserSystem.rtf in Resources */,
 				A3419B521898AFDC00E0CCEC /* readme_CountingPlay.rtf in Resources */,
 				A3419B561898B02200E0CCEC /* reademe_NormalPlay.rtf in Resources */,
+				A37AE55F18A1F4FC00E0405C /* readme_scene4.rtf in Resources */,
+				A37AE56118A1F5A900E0405C /* readme_scene3.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
