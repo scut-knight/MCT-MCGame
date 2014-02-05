@@ -10,7 +10,15 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Global.h"
 
-
+/**
+ *	实现旋转动画的辅助函数
+ *
+ *	@param	point	旋转前的点
+ *	@param	center	选择器的中点
+ *	@param	angle	旋转角度
+ *
+ *	@return	旋转结束后的对应点
+ */
 static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float angle)
 {
     CGAffineTransform translation = CGAffineTransformMakeTranslation(center.x, center.y);
@@ -75,6 +83,11 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
     return;
 }
 
+/**
+ *	当一个颜色选择器的菜单项被选中之后，该选项爆开，而其他选项缩小而消失。
+ *
+ *	@param	item	被选中的菜单项
+ */
 - (void)quadCurveMenuItemTouchesEnd:(QuadCurveMenuItem *)item{
     
     if (!_isProtection) {

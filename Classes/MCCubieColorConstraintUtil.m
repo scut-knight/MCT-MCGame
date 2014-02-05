@@ -12,6 +12,8 @@
 
 /**
  *  Return colors that can be filled in this orientation of the cubie.
+ *
+ *  返回对应的立方体朝向的面可以填充的颜色数目
  */
 + (NSMutableArray *)avaiableColorsOfCubie:(NSObject<MCCubieDelegate> *)cubie
                             inOrientation:(FaceOrientationType)orientation{
@@ -39,21 +41,23 @@
         
         // Increase num of completed colors
         completedColorsNum++;
-        for (int i = 0; i < 6; i++) {
+        // 翻转所有面
+        for (int j = 0; j < 6; j++) {
         // flip all the valuable colors
-            counterTable[i] = !counterTable[i];
+            counterTable[j] = !counterTable[j];
         }
-        if (faceColor % 2 == 0) {
+        // 当前面(已经上色了的)和看不见的邻接面都会被翻转一次，准确来说，会被复原
+        if (faceColor % 2 == 0) { // Up Front Left
             counterTable[faceColor+1] = !counterTable[faceColor+1];
         }
-        else{
+        else{ // Down Back Right
             counterTable[faceColor-1] = !counterTable[faceColor-1];
         }
         counterTable[faceColor] = !counterTable[faceColor];
     }
-    
+    // 最多有三个面已经填充了颜色，而不考虑当前面，所以completedColorsNum为0-2
     switch (completedColorsNum) {
-        case 0:
+        case 0: // all are available
         {
             for (int i = 0; i < 6; i++) {
                 [avaiableColors addObject:[NSNumber numberWithInteger:i]];
@@ -63,6 +67,7 @@
         case 1:
         {
             for (int i = 0; i < 6; i++) {
+                // 看得见的而且没有上色的面
                 if (counterTable[i] == NO) {
                     [avaiableColors addObject:[NSNumber numberWithInteger:i]];
                 }
@@ -72,6 +77,7 @@
         case 2:
         {
             for (int i = 0; i < 6; i++) {
+                // 翻转了两次后看得见的而且没有上色的面
                 if (counterTable[i] == YES) {
                     [avaiableColors addObject:[NSNumber numberWithInteger:i]];
                 }

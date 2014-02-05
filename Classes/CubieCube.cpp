@@ -719,7 +719,17 @@ void CubieCube::setURtoBR(int idx) {
         ep[j] = perm[x--];
 }
 
-
+/**
+ *	验证算法结果并返回错误码，错误码为负整数
+ *
+ *	@return	错误码列表：
+ *
+ *  Error -2: Not all 12 edges exist exactly once<br>
+ *  Error -3: Flip error: One edge has to be flipped<br>
+ *  Error -4: Not all corners exist exactly once<br>
+ *  Error -5: Twist error: One corner has to be twisted<br>
+ *  Error -6: Parity error: Two corners or two edges have to be exchanged
+ */
 int CubieCube::verify() {
     int sum = 0;
     int edgeCount[12] = {0};

@@ -144,7 +144,7 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
             }
         }
     } catch (exception e) {
-        return "Error 1";
+        return "Error 1"; // here is not exactly one facelet of each colour
     }
     for (int i = 0; i < 6; i++)
         if (count[i] != 9)
@@ -199,11 +199,11 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
                         gettimeofday(&tv,NULL);
                         
                         if ((tv.tv_sec * 1000 + tv.tv_usec / 1000) - tStart > timeOut << 10)
-                            return "Error 8";
+                            return "Error 8"; //Timeout, no solution within given time
                         
                         if (n == 0) {
                             if (depthPhase1 >= maxDepth)
-                                return "Error 7";
+                                return "Error 7";// No solution exists for the given maxDepth
                             else {
                                 depthPhase1++;
                                 ax[n] = 0;

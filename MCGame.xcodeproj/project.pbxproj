@@ -131,8 +131,6 @@
 		A3D5B2E9175CD87A00833F3F /* volumedown.png in Resources */ = {isa = PBXBuildFile; fileRef = A3D5B2E7175CD87900833F3F /* volumedown.png */; };
 		A3D5B2EA175CD87A00833F3F /* volumeup.png in Resources */ = {isa = PBXBuildFile; fileRef = A3D5B2E8175CD87900833F3F /* volumeup.png */; };
 		A3D651E717826EEF00D820DD /* PlatformDetect.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D651E617826EEF00D820DD /* PlatformDetect.m */; };
-		A3D670DA17715CF000302DB8 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D670D917715CF000302DB8 /* InfoView.m */; };
-		A3D670DC17715D0900302DB8 /* myInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3D670DB17715D0800302DB8 /* myInfo.xib */; };
 		A3D670E917718AF100302DB8 /* learn_element.png in Resources */ = {isa = PBXBuildFile; fileRef = A3D670E517718AF100302DB8 /* learn_element.png */; };
 		A3D670EA17718AF100302DB8 /* learn_element2.png in Resources */ = {isa = PBXBuildFile; fileRef = A3D670E617718AF100302DB8 /* learn_element2.png */; };
 		A3D670EB17718AF100302DB8 /* learn_element.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3D670E717718AF100302DB8 /* learn_element.plist */; };
@@ -533,9 +531,6 @@
 		A3D5B2E8175CD87900833F3F /* volumeup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = volumeup.png; path = Classes/volumeup.png; sourceTree = "<group>"; };
 		A3D651E517826EEF00D820DD /* PlatformDetect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformDetect.h; sourceTree = "<group>"; };
 		A3D651E617826EEF00D820DD /* PlatformDetect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlatformDetect.m; sourceTree = "<group>"; };
-		A3D670D817715CF000302DB8 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
-		A3D670D917715CF000302DB8 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
-		A3D670DB17715D0800302DB8 /* myInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = myInfo.xib; sourceTree = "<group>"; };
 		A3D670E517718AF100302DB8 /* learn_element.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = learn_element.png; sourceTree = "<group>"; };
 		A3D670E617718AF100302DB8 /* learn_element2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = learn_element2.png; sourceTree = "<group>"; };
 		A3D670E717718AF100302DB8 /* learn_element.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = learn_element.plist; sourceTree = "<group>"; };
@@ -1339,9 +1334,6 @@
 				A3D671331771F85000302DB8 /* SolvePagePauseMenu.h */,
 				A3D671341771F85000302DB8 /* SolvePagePauseMenu.m */,
 				A3D671351771F85100302DB8 /* solvepagepausemenu.xib */,
-				A3D670D817715CF000302DB8 /* InfoView.h */,
-				A3D670D917715CF000302DB8 /* InfoView.m */,
-				A3D670DB17715D0800302DB8 /* myInfo.xib */,
 				A37AE56018A1F5A900E0405C /* readme_scene3.rtf */,
 			);
 			name = Scene3;
@@ -1991,7 +1983,6 @@
 				E0EC3717177154FC00835785 /* changeUserButtonUp_small.png in Resources */,
 				E0EC3718177154FC00835785 /* changeUserButtonUp_small@2x.png in Resources */,
 				E0EC371C17715B9C00835785 /* CountingFinishView.xib in Resources */,
-				A3D670DC17715D0900302DB8 /* myInfo.xib in Resources */,
 				A3D670E917718AF100302DB8 /* learn_element.png in Resources */,
 				A3D670EA17718AF100302DB8 /* learn_element2.png in Resources */,
 				A3D670EB17718AF100302DB8 /* learn_element.plist in Resources */,
@@ -2173,7 +2164,6 @@
 				E05DD5C817700ACE002C16CD /* Tools.cpp in Sources */,
 				A3BFF6621770327D004D18D8 /* LearnPagePauseMenu.m in Sources */,
 				E0EC371D17715B9C00835785 /* CountingFinishView.m in Sources */,
-				A3D670DA17715CF000302DB8 /* InfoView.m in Sources */,
 				A3D671361771F85100302DB8 /* SolvePagePauseMenu.m in Sources */,
 				A3D651E717826EEF00D820DD /* PlatformDetect.m in Sources */,
 			);

@@ -911,8 +911,10 @@
 
 /**
  *  颠倒魔方
+ *
  *	This function will flip the magic cube.
  * The result will be that:
+ *
  * UpColor face Up
  * DownColor face Down
  * FrontColor face Front

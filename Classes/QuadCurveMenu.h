@@ -11,7 +11,9 @@
 
 @protocol QuadCurveMenuDelegate;
 
-
+/**
+ *	曲面菜单，就是求解模式下的纹理选择器
+ */
 @interface QuadCurveMenu : UIView <QuadCurveMenuItemDelegate>
 {
     
@@ -44,6 +46,11 @@
 
 @end
 
+/**
+ *  @class
+ *
+ *	纹理选择器协议，根据菜单来选择颜色
+ */
 @protocol QuadCurveMenuDelegate <NSObject>
 - (void)quadCurveMenu:(QuadCurveMenu *)menu didSelectColor:(FaceColorType)color;
 @end

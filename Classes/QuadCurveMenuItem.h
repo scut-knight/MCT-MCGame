@@ -11,6 +11,9 @@
 
 @protocol QuadCurveMenuItemDelegate;
 
+/**
+ *	纹理选择器的每一个项
+ */
 @interface QuadCurveMenuItem : UIButton
 {
     CGPoint _startPoint;
@@ -37,6 +40,11 @@
 
 @end
 
+/**
+ *  @class
+ *
+ *	处理颜色选择器每一个项的触控事件
+ */
 @protocol QuadCurveMenuItemDelegate <NSObject>
 - (void)quadCurveMenuItemTouchesBegan:(QuadCurveMenuItem *)item;
 - (void)quadCurveMenuItemTouchesEnd:(QuadCurveMenuItem *)item;

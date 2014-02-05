@@ -18,6 +18,15 @@ static inline CGRect ScaleRect(CGRect rect, float n) {return CGRectMake((rect.si
 @synthesize faceColor = _faceColor;
 
 #pragma mark - initialization & cleaning up
+
+/**
+ *	以图像进行初始化
+ *
+ *	@param	img	初始化时的图像
+ *	@param	himg	高亮时的图像
+ *	@param	color	画面颜色
+ *	@param	frame	图像区域
+ */
 - (id)initWithImage:(UIImage *)img 
    highlightedImage:(UIImage *)himg
        presentColor:(FaceColorType)color
@@ -84,6 +93,11 @@ static inline CGRect ScaleRect(CGRect rect, float n) {return CGRectMake((rect.si
 
 
 #pragma mark - instant methods
+/**
+ *	设置高亮显示，比如在被触碰时会有明显的高亮显示
+ *
+ *	@param	highlighted	是否高亮
+ */
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
