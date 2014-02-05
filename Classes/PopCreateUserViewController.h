@@ -9,7 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "MCUserManagerController.h"
 
+/**
+ *	创建用户弹出对话框
+ */
 @interface PopCreateUserViewController : UIViewController{
+    /**
+     *	用户管理控制器
+     */
     MCUserManagerController *userManagerController;
 }
 

@@ -35,6 +35,7 @@ static MCUserManagerController* sharedSingleton_ = nil;
     }
     return sharedSingleton_;
 }
+
 /**
  *	重载allocWithZone函数，防止生成副本
  */
@@ -50,6 +51,7 @@ static MCUserManagerController* sharedSingleton_ = nil;
 {
     return self;
 }
+
 /**
  *	重载retain函数，防止生成副本
  */
@@ -129,6 +131,9 @@ static MCUserManagerController* sharedSingleton_ = nil;
  */
 - (BOOL)createNewUser:(NSString *)_name
 {
+    if (_name == nil) {
+        return NO;
+    }
     for (MCUser* user in userModel.allUser) {
         if ([user.name isEqualToString:_name]) {
             return NO;

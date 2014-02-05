@@ -85,6 +85,13 @@
     // Release any retained subviews of the main view.
 }
 
+/**
+ *	响应屏幕转动事件
+ *
+ *	@param	interfaceOrientation	屏幕朝向
+ *
+ *	@return	响应正常情况下的屏幕
+ */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIDeviceOrientationLandscapeRight);
@@ -106,37 +113,51 @@
 
 #pragma mark -
 #pragma mark Tableview delegates
-
+/**
+ *	只有一个分栏表格，表格有5行
+ *
+ *  之所以这样，是因为数据库控制器被设定成只查询前五个。
+ *
+ *  @see MCDBController
+ *
+ *	@param	section	分栏序号
+ *
+ *	@return	只返回5，表示所有的表格都只有5行
+ */
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 5;
 }
 
+/**
+ *  加载单元格图像
+ */
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     ScoreCell* cell = (ScoreCell*)[tableView dequeueReusableCellWithIdentifier:@"ScoreCellIdentifier"];
     
     //set score information
-    NSInteger scoreIndex = [indexPath row];
+    NSInteger scoreIndex = [indexPath row]; // 0 ~ 4
     
-    if (cell == nil) {
+    if (cell == nil) { // the cell can not be reused
         if (scoreIndex % 2 == 0) {
-            if (scoreIndex == 4) {
+            if (scoreIndex == 4) { // 4
                 NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"ScoreCellBottomDark" owner:self options:nil];
                 cell = [array objectAtIndex:0];
             }
-            else{
+            else{ // 0 2
                 NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"ScoreCellCenterDark" owner:self options:nil];
                 cell = [array objectAtIndex:0];
             }
         }
-        else {
+        else { // 1 3
             NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"ScoreCellCenterGrey" owner:self options:nil];
             cell = [array objectAtIndex:0];
         }
     }
     
+    // 总排行，他这里的按钮比较奇葩！see totalRankBtnUp
     if ([_personalRankBtn isEnabled]) {
         if (scoreIndex < [userManagerController.userModel.topScore count]) {
                     
@@ -159,7 +180,8 @@
         else {
             [cell setCellWithRank:@"" Name:@"" Move:@"" Time:@"" Speed:@"" Score:@""];
         }
-            } else {
+    }
+    else {      // 个人排行
                 if (scoreIndex < [userManagerController.userModel.myScore count]) {
                    
                     MCScore *_scoreRecord = [userManagerController.userModel.myScore objectAtIndex:scoreIndex];
@@ -190,7 +212,11 @@
 
 #pragma mark -
 #pragma mark Popover controller delegates
-
+/**
+ *	弹出框消失之后，对应的处理
+ *
+ *	@param	popoverController	不同的弹出框
+ */
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     //pop over dismiss, and update user information 
@@ -207,27 +233,43 @@
 
 #pragma mark -
 #pragma mark user methods
+/**
+ *	按下创建用户的按钮
+ *
+ *	@param	sender	创建用户按钮
+ */
 - (void)createUserPress:(id)sender
 {
     UIButton *tapbtn = (UIButton*) sender;
-    
+    // 弹出框在下方
     [createUserPopover presentPopoverFromRect:tapbtn.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 }
 
+/**
+ *	按下更改用户的按钮
+ *
+ *	@param	sender	更改用户按钮
+ */
 - (void)changeUserPress:(id)sender
 {
     UIButton *tapbtn = (UIButton*) sender;
-    
+    // 弹出框在下方
     [changeUserPopover presentPopoverFromRect:tapbtn.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 }
 
-
+/**
+ * 按下总排名按钮，注意这里的视觉设置很巧妙，按下会发现按钮变暗了。
+ * 那是因为一旦按下，当前按钮就设为disabled，所以变暗了。
+ */
 - (IBAction)totalRankBtnUp:(id)sender {
     [_totalRankBtn setEnabled:NO];
     [_personalRankBtn setEnabled:YES];
-    [_scoreTable reloadData];
+    [_scoreTable reloadData]; //建议改为updateScoreInformation
 }
 
+/**
+ * 按下个人排名按钮
+ */
 - (IBAction)personalRankBtnUp:(id)sender {
     [_totalRankBtn setEnabled:YES];
     [_personalRankBtn setEnabled:NO];
@@ -236,11 +278,17 @@
 
 
 #pragma mark goback
+/**
+ *  回到主菜单
+ */
 - (IBAction)goBackMainMenu:(id)sender {
     CoordinatingController *tmp = [CoordinatingController sharedCoordinatingController];
     [tmp requestViewChangeByObject:kScoreBoard2MainMenu];
 }
 
+/**
+ *	更新用户信息，包括当前用户名，解开魔方数，总步数，学习时间和竞速时间
+ */
 - (void) updateUserInformation
 {
     //user information
@@ -262,7 +310,13 @@
     [self updateScoreInformation];
 }
 
-
+/**
+ *	将总用时(单位为秒)转换成00:00:00这样的表示形式
+ *
+ *	@param	totalSeconds	总用时
+ *
+ *	@return	00:00:00字符串
+ */
 - (NSString *)timeInFormatFromTotalSeconds:(NSInteger)totalSeconds{
     NSInteger second = totalSeconds % 60;
     NSInteger minute = totalSeconds / 60 % 60;
