@@ -335,6 +335,7 @@
 {
 	[particlePool release];
 	[activeParticles release];
+    [particlesToRemove release];
     
 	free(vertexes);
 	free(uvCoordinates);

@@ -147,7 +147,6 @@ typedef enum _MagicCubeUIUsingMode {
      *	撤销恢复管理栈
      */
     NSUndoManager *undoManger;
-    //MCMagicCube *magicCube;
     UITouch *touch;
     int rrrr;
     /**

@@ -8,8 +8,12 @@
 
 #import "MCBasicElement.h"
 
+/**
+ *  getToken中，得不到token时的默认值，表示错误
+ */
 #define END_TOKEN -999
-#define LOCKED_CUBIE_TOKEN 999
+
+//#define LOCKED_CUBIE_TOKEN 999
 
 //tree node
 @implementation MCTreeNode
@@ -639,6 +643,7 @@
  *	@param	patternStr	字符串，类似于"token1,token2"的形式
  *
  *	@return	如果发生错误，self.root == nil，否则self.root就是对应的规则(self setRoot:[self parseRule])
+ *
  *  @see MCPattern#initWithString:(NSString *)patternStr
  */
 - (id)initWithString:(NSString *)patternStr{
@@ -846,6 +851,7 @@
  *  解析具体的informations
  *  新建并返回一个MCTreeNode*，如果发生错误，生成错误报告
  *  informations的类型请见Global.h中的InformationType
+ *
  *  @see MCPattern
  */
 - (MCTreeNode *)parseInformationItem{

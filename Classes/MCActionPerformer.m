@@ -42,10 +42,11 @@
 }
 
 /**
+ * Rotate operation with axis, layer, direction
+ *
  *	旋转，调用MCMagicCubeOperationDelegate中定义的- (BOOL)rotateOnAxis:(AxisType)axis onLayer:(int)layer inDirection:(LayerRotationDirectionType)direction来进行旋转
  *	@return	BOOL	如果旋转失败，返回NO
  */
-// Rotate operation with axis, layer, direction
 - (BOOL)rotateOnAxis:(AxisType)axis onLayer:(int)layer inDirection:(LayerRotationDirectionType)direction{
     NSObject<MCMagicCubeOperationDelegate> *magicCube = self.workingMemory.magicCube;
     if (magicCube != nil) {
@@ -57,6 +58,7 @@
 /**
  *	旋转。
  *  调用MCMagicCubeOperationDelegate中定义的- (BOOL)rotateWithSingmasterNotation:(SingmasterNotation)notation来进行旋转
+ *
  *	@return	BOOL	如果旋转失败，返回NO
  */
 // Rotate operation with parameter SingmasterNotation
@@ -100,7 +102,9 @@
 
 /**
  *  根据抽象语法树的每个节点的类型应用旋转
+ *
  *  @see MCApplyQueue#- (id)initWithRotationAction:
+ *
  *	@param	root	抽象语法树的根节点
  *
  *	@return	(NSInteger)root.result or YES or NO

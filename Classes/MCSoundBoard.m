@@ -23,7 +23,7 @@
      */
     NSMutableDictionary *_audio;
 }
-
+@synthesize backgroundPlayer;
 // Sound board singleton
 // Taken from http://lukeredpath.co.uk/blog/a-note-on-objective-c-singletons.html
 /**
@@ -139,12 +139,12 @@
  */
 - (void)fadeIn:(NSTimer *)timer
 {
-    AVAudioPlayer *player = [timer.userInfo objectForKey:@"player"];
+    backgroundPlayer = [timer.userInfo objectForKey:@"player"];
     float maxvolume = [[timer.userInfo objectForKey:@"maxvolume"]floatValue];;
-    float volume = player.volume;
+    float volume = backgroundPlayer.volume;
     volume = volume + 1.0 / MCSOUNDBOARD_AUDIO_FADE_STEPS;
     volume = volume > maxvolume ? maxvolume : volume;
-    player.volume = volume;
+    backgroundPlayer.volume = volume;
     
     if (volume == maxvolume) {
         [timer invalidate];
@@ -160,13 +160,11 @@
  */
 - (void)playAudioForKey:(id)key fadeInInterval:(NSTimeInterval)fadeInInterval maxVolume:(NSNumber*)maxvolume
 {
-    AVAudioPlayer *player = [_audio objectForKey:key];
-    
-    // If fade in inteval interval is not 0, schedule fade in
+    backgroundPlayer = [_audio objectForKey:key];
     if (fadeInInterval > 0.0) {
-        player.volume = 0.0;
+        backgroundPlayer.volume = 0.0;
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
-        [dic setObject:player forKey:@"player"];
+        [dic setObject:backgroundPlayer forKey:@"player"];
         [dic setObject:maxvolume forKey:@"maxvolume"];
         NSTimeInterval interval = fadeInInterval / MCSOUNDBOARD_AUDIO_FADE_STEPS;
         [NSTimer scheduledTimerWithTimeInterval:interval
@@ -174,9 +172,9 @@
                                        selector:@selector(fadeIn:)
                                        userInfo:dic
                                         repeats:YES];
+        [dic release];
     }
-    
-    [player play];
+    [backgroundPlayer play];
 }
 
 /**
@@ -208,15 +206,15 @@
  */
 - (void)fadeOutAndStop:(NSTimer *)timer
 {
-    AVAudioPlayer *player = timer.userInfo ;
-    float volume = player.volume;
+    backgroundPlayer = timer.userInfo;
+    float volume = backgroundPlayer.volume;
     volume = volume - 1.0 / MCSOUNDBOARD_AUDIO_FADE_STEPS;
     volume = volume < 0.0 ? 0.0 : volume;
-    player.volume = volume;
+    backgroundPlayer.volume = volume;
     
     if (volume == 0.0) {
         [timer invalidate];
-        [player pause];
+        [backgroundPlayer pause];
     }
 }
 
@@ -225,7 +223,7 @@
  */
 - (void)stopAudioForKey:(id)key fadeOutInterval:(NSTimeInterval)fadeOutInterval
 {
-    AVAudioPlayer *player = [_audio objectForKey:key];
+     backgroundPlayer = [_audio objectForKey:key];
     
     // If fade in inteval interval is not 0, schedule fade in
     if (fadeOutInterval > 0) {
@@ -233,10 +231,10 @@
         [NSTimer scheduledTimerWithTimeInterval:interval
                                          target:self
                                        selector:@selector(fadeOutAndStop:)
-                                       userInfo:player
+                                       userInfo:backgroundPlayer
                                         repeats:YES];
     } else {
-        [player stop];
+        [backgroundPlayer stop];
     }
 }
 
@@ -263,15 +261,15 @@
  */
 - (void)fadeOutAndPause:(NSTimer *)timer
 {
-    AVAudioPlayer *player = timer.userInfo;
-    float volume = player.volume;
+    backgroundPlayer = timer.userInfo;
+    float volume = backgroundPlayer.volume;
     volume = volume - 1.0 / MCSOUNDBOARD_AUDIO_FADE_STEPS;
     volume = volume < 0.0 ? 0.0 : volume;
-    player.volume = volume;
+    backgroundPlayer.volume = volume;
     
     if (volume == 0.0) {
         [timer invalidate];
-        [player stop];
+        [backgroundPlayer pause];
     }
 }
 
@@ -280,18 +278,16 @@
  */
 - (void)pauseAudioForKey:(id)key fadeOutInterval:(NSTimeInterval)fadeOutInterval
 {
-    AVAudioPlayer *player = [_audio objectForKey:key];
-    
-    // If fade in inteval interval is not 0, schedule fade in
+    backgroundPlayer = [_audio objectForKey:key];
     if (fadeOutInterval > 0) {
         NSTimeInterval interval = fadeOutInterval / MCSOUNDBOARD_AUDIO_FADE_STEPS;
         [NSTimer scheduledTimerWithTimeInterval:interval
                                          target:self
                                        selector:@selector(fadeOutAndPause:)
-                                       userInfo:player
+                                       userInfo:backgroundPlayer
                                         repeats:YES];
     } else {
-        [player pause];
+        [backgroundPlayer pause];
     }
 }
 
@@ -324,4 +320,11 @@
     return [[self sharedInstance] audioPlayerForKey:key];
 }
 
+- (void)dealloc
+{
+    [_sounds release];
+    [_audio release];
+    [backgroundPlayer release];
+    [super dealloc];
+}
 @end

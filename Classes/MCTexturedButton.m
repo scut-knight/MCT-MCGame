@@ -65,6 +65,7 @@
     particleEmitter.translation = MCPointMake(self.translation.x, self.translation.y, -1);
     particleEmitter.emit = NO;
     [[[CoordinatingController sharedCoordinatingController] currentController]addObjectToScene:particleEmitter];
+    [particleEmitter release];
 
         //CGPoint orih =  screenRect.origin;
     //CGSize size =  screenRect.size;

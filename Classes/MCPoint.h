@@ -124,7 +124,11 @@ static inline MCPoint MCPointMatrixMultiply(MCPoint p, CGFloat* m)
 }
 
 /**
- *	顶点数组与矩阵乘积
+ *	顶点数组与矩阵乘积。
+ *
+ *  高危注意！这里面返回的tmp数组new了没有delete。
+ *  推荐使用智能指针来处理内存，但是由于重构太麻烦，所以只能调用者自己处理了。
+ *  不要骂我，骂原作者。
  *
  *	@param	ptr	: GLfloat类型的顶点数组，GLfloat类型类似于CGFloat，是专门为OpenGL使用的
  *	@param	vertexStride	顶点步幅

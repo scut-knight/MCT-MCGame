@@ -20,8 +20,10 @@
 /**
  *	sound and audio controller
  */
-@interface MCSoundBoard : NSObject
-
+@interface MCSoundBoard : NSObject{
+    AVAudioPlayer *backgroundPlayer;
+}
+@property (nonatomic,retain)AVAudioPlayer *backgroundPlayer;
 //sounds
 + (void)addSoundAtPath:(NSString *)filePath forKey:(id)key;
 + (void)playSoundForKey:(id)key withVolume:(NSNumber *)volume;

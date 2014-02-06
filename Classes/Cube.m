@@ -283,7 +283,6 @@
         //
     }
     //super work
-    if (collider != nil) [collider updateCollider:self];
     [super update];
        
 }
@@ -305,8 +304,24 @@
  */
 - (void) dealloc
 {
-    if (particleEmitter != nil) [[[CoordinatingController sharedCoordinatingController] currentController] removeObjectFromScene:particleEmitter];
+    if (particleEmitter != nil)
+        [[[CoordinatingController sharedCoordinatingController] currentController] removeObjectFromScene:particleEmitter];
+    
 	[particleEmitter release];
+    
+    if (mesh != nil) {
+        [mesh release];
+    }
+    if (cube6faces != nil) {
+        [cube6faces release];
+    }
+    if (cube6faces_locksign != nil) {
+        [cube6faces_locksign release];
+    }
+    if (cube6faces_direction_indicator != nil) {
+        [cube6faces_direction_indicator release];
+    }
+    
 	[super dealloc];
 }
 

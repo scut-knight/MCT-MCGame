@@ -53,7 +53,7 @@
     [background release];
     
     //大魔方
-    MCMagicCubeUIModelController* magicCubeUI = [[MCMagicCubeUIModelController alloc] initiate] ;
+    MCMagicCubeUIModelController* magicCubeUI = [[MCMagicCubeUIModelController alloc] initiate];
     magicCubeUI.target=self;
     [magicCubeUI setUsingMode:SOlVE_Input_MODE];
     [magicCubeUI setStepcounterAddAction:@selector(stepcounterAdd)];

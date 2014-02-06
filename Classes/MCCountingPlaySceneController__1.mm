@@ -40,7 +40,6 @@
  *	@param	rotateType	魔方公式中的旋转类型
  *
  *  @see MCNormalPlaySceneController#rotate
- * TODO: 解决不播放音效的问题
  */
 -(void)rotate:(RotateType *)rotateType{
     [magicCube rotateWithSingmasterNotation:[rotateType notation]];

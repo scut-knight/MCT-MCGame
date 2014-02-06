@@ -31,6 +31,7 @@
     NSString *fontName = ( NSString *)CGFontCopyFullName(newFont);
     UIFont *font = [UIFont fontWithName:fontName size:size];
     CGFontRelease(newFont);
+    [fontName release];
     return font;
 }
 @end

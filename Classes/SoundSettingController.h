@@ -30,6 +30,7 @@
 -(void)playAudioForKey:(NSString*)key fadeInInterval:(NSTimeInterval)fadetime maxVolume:(NSNumber*)maxvolume;
 
 -(void)setBackgroundPlayer_Volume:(float)volume;
+-(void)setRotateEffectVolume:(float)volume;
 //循环背景音乐开关
 -(void)loopBackGroundAudioFlipSwitch;
 //旋转音效开关

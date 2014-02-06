@@ -423,6 +423,7 @@
                                  [windows addObject:window];
                                  [window release];
                                  [window makeKeyAndVisible];
+                                 [windows release];
                                  
                                  // uncomment to make sure UIWindow is gone from app.windows
                                  //NSLog(@"%@", [UIApplication sharedApplication].windows);

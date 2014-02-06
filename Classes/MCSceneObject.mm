@@ -20,7 +20,6 @@
 @synthesize translation,rotation,scale,active,mesh,matrix,meshBounds;
 //@synthesize m_orientation;
 @synthesize quaRotation,quaPreviousRotation,start_quaRotation,finish_quaRotation;
-@synthesize collider;
 
 - (id) init
 {
@@ -34,6 +33,7 @@
 		matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
 		active = NO;
 		meshBounds = CGRectZero;
+        // 注意mesh没有被初始化。
 	}
 	return self;
 }
@@ -116,9 +116,9 @@
 
 - (void) dealloc
 {
-	
-	[mesh release];
-	free(matrix);	
+    if (matrix != NULL) {
+        free(matrix);
+    }
 	[super dealloc];
 
 }

@@ -61,8 +61,6 @@
                     tCube.scale = MCPointMake(sub_scale.x, sub_scale.y, sub_scale.z);
                     //Cube.rotation = MCPointMake(rotation.x, rotation.y, rotation.z);
                     tCube.rotationalSpeed = rotationalSpeed;
-                    tCube.collider = [MCCollider collider];
-                    [tCube.collider setCheckForCollision:YES];
                     [array27Cube addObject: tCube];
                     [tCube release];		
                 }
@@ -149,8 +147,6 @@
                     tCube.translation = MCPointMake((gap+sub_scale.x)*sign_x, (gap+sub_scale.y)*sign_y, (gap+sub_scale.z)*sign_z);
                     
                     tCube.scale = MCPointMake(sub_scale.x, sub_scale.y, sub_scale.z);
-                    tCube.collider = [MCCollider collider];
-                    [tCube.collider setCheckForCollision:YES];
                     [array27Cube addObject: tCube];
                     [tCube release];
                 }
@@ -184,6 +180,15 @@
     }
     
     return self;
+}
+
+-(void)dealloc{
+    [array27Cube release];
+    [lockedarray release];
+    [ray release];
+    [selected release];
+    [undoManger release];
+    [super dealloc];
 }
 
 /**
@@ -781,6 +786,7 @@
                         tmp_cube.index_selectedFace = i;
                     }
                 }
+                delete [] tmp_dection;
             }
             if (index != -1) {
                 selected = [array27Cube objectAtIndex:index];
@@ -866,6 +872,7 @@
                                 index = tmp_cube.index;
                             }
                         }
+                        delete [] tmp_dection;
                     }
                     if (index != -1) {
                         
@@ -893,6 +900,7 @@
                  vec3 ox = vec3(XYZ[0],XYZ[1],XYZ[2]);
                  vec3 oy = vec3(XYZ[3],XYZ[4],XYZ[5]);
                  vec3 oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
+                delete [] XYZ;
                  
                  float ox_triangle = [self AngleV0V1withV:ox V0:select_movedTo0_V0 V1:select_movedTo0_V1];
                  float oy_triangle = [self AngleV0V1withV:oy V0:select_movedTo0_V0 V1:select_movedTo0_V1];
@@ -916,39 +924,39 @@
                 
                  if (selected != nil) {
                  //计算选中点层和轴
-                 int index = [selected index];
-                 int magiccubeStateIndex = -1;
-                 for (int i = 0;i<27;i++) {
-                 //Cube *tmpcube = //[array27Cube objectAtIndex:i];
-                 Cube *tmpcube = MagicCubeIndexState[i];
-                 if ([tmpcube index] == index) {
-                     magiccubeStateIndex = i;
-                 }
-                 }
-                 int x = -1,y = -1,z= -1;
-                 
-                 z = magiccubeStateIndex/9;
-                 int tmp = magiccubeStateIndex%9;
-                 y = tmp/3;
-                 x = tmp%3;
-                 if (current_rotate_axis == X) {
-                     current_rotate_layer = x;
-                 }else if(current_rotate_axis ==Y){
-                     current_rotate_layer = y;
-                 }else {
-                     current_rotate_layer = z;
-                 }
-                 //选中层
-                 [self SelectLayer];
-                 for (int i= 0; i<9; i++) {
-                 if (current_rotate_layer!=1) {
-                     [layerPtr[i] setQuaPreviousRotation:[layerPtr[i] quaRotation]];
-                 }else if(i != 4){
-                     [layerPtr[i] setQuaPreviousRotation:[layerPtr[i] quaRotation]];
-                 }
-                 }
-                 
-                 }
+                     int index = [selected index];
+                     int magiccubeStateIndex = -1;
+                     for (int i = 0;i<27;i++) {
+                         //Cube *tmpcube = //[array27Cube objectAtIndex:i];
+                         Cube *tmpcube = MagicCubeIndexState[i];
+                         if ([tmpcube index] == index) {
+                             magiccubeStateIndex = i;
+                         }
+                     }
+                     int x = -1,y = -1,z= -1;
+                     
+                     z = magiccubeStateIndex/9;
+                     int tmp = magiccubeStateIndex%9;
+                     y = tmp/3;
+                     x = tmp%3;
+                     if (current_rotate_axis == X) {
+                         current_rotate_layer = x;
+                     }else if(current_rotate_axis ==Y){
+                         current_rotate_layer = y;
+                     }else {
+                         current_rotate_layer = z;
+                     }
+                     //选中层
+                     [self SelectLayer];
+                     for (int i= 0; i<9; i++) {
+                         if (current_rotate_layer!=1) {
+                             [layerPtr[i] setQuaPreviousRotation:[layerPtr[i] quaRotation]];
+                         }else if(i != 4){
+                             [layerPtr[i] setQuaPreviousRotation:[layerPtr[i] quaRotation]];
+                         }
+                     }
+                     
+                }
                  firstThreePointCount++;
             }
             
@@ -972,6 +980,7 @@
             vec3 ox = vec3(XYZ[0],XYZ[1],XYZ[2]);
             vec3 oy = vec3(XYZ[3],XYZ[4],XYZ[5]);
             vec3 oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
+            delete [] XYZ;
             
             vec3 firstv = [self MapToLayerCenter:firstThreePoint[0]];
             vec3 lastv = [self MapToLayerCenter:lastPoint];
@@ -1181,6 +1190,7 @@
                     vec3 center_ox = vec3(XYZ[0],XYZ[1],XYZ[2]);
                     vec3 center_oy = vec3(XYZ[3],XYZ[4],XYZ[5]);
                     vec3 center_oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
+                    delete [] XYZ;
                     
                     GLfloat *tmpXYZ;
                     vec3 tmp_ox ;
@@ -1202,6 +1212,7 @@
                     tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
                     tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
                     tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+                    delete [] XYZ;
                     
                     //处理相对于中心x轴的模糊Y轴
                     float angle_centerox_OY = FabsThetaBetweenV1andV2(center_ox, tmp_oy);
@@ -1315,7 +1326,8 @@
                                 if(fuzzy_vec3_z.Dot(tmp_oz)>0)fuzzy_direction=CW;
                                 else fuzzy_direction=CCW;
                             }
-                        }else return;
+                        }else
+                            return;
                         
                     }
                 
@@ -1339,6 +1351,7 @@
                         [self addInvocation:doinvocation withUndoInvocation:undoinvocation];
                     
                     }
+                    free(tmp_matrix);
                 }
                 is_TECH_MODE_Rotate = NO;
                 //自由模式下，无限制操作
@@ -1561,6 +1574,7 @@
         RotateType * rotateType = [[RotateType alloc]init];
         [rotateType setNotation:notation];
         [target performSelector:@selector(rotate:) withObject:rotateType];
+        [rotateType release];
     }
     
     if (current_rotate_layer == NO_SELECTED_LAYER) {
@@ -1801,6 +1815,8 @@
     vec3 center_ox = vec3(XYZ[0],XYZ[1],XYZ[2]);
     vec3 center_oy = vec3(XYZ[3],XYZ[4],XYZ[5]);
     //vec3 center_oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
+    delete [] XYZ;
+    
     CGFloat * tmp_matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
     for (int i = 0; i < 9; i++) {
         if (true ) { // <-囧
@@ -1829,6 +1845,7 @@
              tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
              tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
              tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+                delete [] tmpXYZ;
                 
             //处理相对于中心x轴的模糊x轴
             float angle_ox_centerOX = FabsThetaBetweenV1andV2(tmp_ox, center_ox);
@@ -1888,7 +1905,8 @@
             tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
             tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
             tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
-                
+                delete [] tmpXYZ;
+            
             //处理相对于中心y轴的模糊y轴
             float angle_ox_centerOY = FabsThetaBetweenV1andV2(tmp_ox, center_oy);
             float angle_oy_centerOY = FabsThetaBetweenV1andV2(tmp_oy, center_oy);
@@ -1942,6 +1960,8 @@
     vec3 center_ox = vec3(XYZ[0],XYZ[1],XYZ[2]);
     vec3 center_oy = vec3(XYZ[3],XYZ[4],XYZ[5]);
     vec3 center_oz = vec3(XYZ[6],XYZ[7],XYZ[8]);
+    delete [] XYZ;
+    
     CGFloat * tmp_matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
     
     for (int i = 0; i < 27; i++) {
@@ -1968,10 +1988,12 @@
                 glScalef(tmpCube.scale.x, tmpCube.scale.y, tmpCube.scale.z);
                 glGetFloatv(GL_MODELVIEW_MATRIX, tmp_matrix);
                 glPopMatrix();
+            
                 tmpXYZ = VertexesArray_Matrix_Multiply(xyz, 3, 3, tmp_matrix);
                 tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
                 tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
                 tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+                delete [] tmpXYZ;
             
                 //处理相对于中心x轴的模糊x轴
                 float angle_ox_centerOX = FabsThetaBetweenV1andV2(tmp_ox, center_ox);
@@ -2023,10 +2045,12 @@
                 glScalef(tmpCube.scale.x, tmpCube.scale.y, tmpCube.scale.z);
                 glGetFloatv(GL_MODELVIEW_MATRIX, tmp_matrix);
                 glPopMatrix();
+            
                 tmpXYZ = VertexesArray_Matrix_Multiply(xyz, 3, 3, tmp_matrix);
                 tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
                 tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
                 tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+                delete [] tmpXYZ;
             
                 //处理相对于中心y轴的模糊y轴
                 float angle_ox_centerOY = FabsThetaBetweenV1andV2(tmp_ox, center_oy);
@@ -2076,10 +2100,12 @@
             glScalef(tmpCube.scale.x, tmpCube.scale.y, tmpCube.scale.z);
             glGetFloatv(GL_MODELVIEW_MATRIX, tmp_matrix);
             glPopMatrix();
+            
             tmpXYZ = VertexesArray_Matrix_Multiply(xyz, 3, 3, tmp_matrix);
             tmp_ox = vec3(tmpXYZ[0],tmpXYZ[1],tmpXYZ[2]);
             tmp_oy = vec3(tmpXYZ[3],tmpXYZ[4],tmpXYZ[5]);
             tmp_oz = vec3(tmpXYZ[6],tmpXYZ[7],tmpXYZ[8]);
+            delete [] tmpXYZ;
             
             //处理相对于中心z轴的模糊z轴
             float angle_ox_centerOZ = FabsThetaBetweenV1andV2(tmp_ox, center_oz);
@@ -2242,6 +2268,7 @@ double FabsThetaBetweenV1andV2(const vec3& v1,const vec3& v2)
                 selected_cube_face_index = i/2;
             }
         }
+        delete [] tmp_dection;
     }
     if (selected_cube_index != -1) {
         return YES;

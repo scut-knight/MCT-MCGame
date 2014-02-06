@@ -61,12 +61,7 @@
 	CGFloat * matrix;
 	
 	CGRect meshBounds;
-	
-	MCCollider *collider;//;
-
-    
 }
-@property (retain) MCCollider *collider;
 @property (retain) MCMesh * mesh;
 @property (assign) MCPoint translation;
 @property (assign) MCPoint rotation;

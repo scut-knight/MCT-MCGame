@@ -326,9 +326,10 @@
 	particleEmitter.decayRange = MCRangeMake(0.02, 0.00);
     
 	[particleEmitter setParticle:@"lightBlur"];
+    
 	particleEmitter.emit = NO;
     [[[CoordinatingController sharedCoordinatingController] currentController] addObjectToScene:particleEmitter];
-
+    [particleEmitter release];
 }
 
 /**

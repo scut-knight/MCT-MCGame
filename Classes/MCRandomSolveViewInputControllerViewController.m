@@ -647,7 +647,7 @@ static BOOL _isInitFinished = NO;
             NSString *filePath = [path stringByAppendingPathComponent:TmpInputMagicCubeData];
             
             MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController ];
-            c.magicCube=[[MCMagicCube unarchiveMagicCubeWithFile:filePath] retain];
+            c.magicCube=[MCMagicCube unarchiveMagicCubeWithFile:filePath];
             [c flashSecne];
             [c closeSingmasterNotation];
 
@@ -664,7 +664,7 @@ static BOOL _isInitFinished = NO;
             //Default
             MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController ];
             //[c.magicCube release];
-            c.magicCube = [[MCMagicCube magicCubeOnlyWithCenterColor]retain];
+            c.magicCube = [MCMagicCube magicCubeOnlyWithCenterColor];
             [c flashSecne];
             [c closeSingmasterNotation];
             if (!_isInitFinished) {

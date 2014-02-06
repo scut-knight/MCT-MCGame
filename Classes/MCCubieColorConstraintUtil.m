@@ -127,7 +127,7 @@
     for (NSNumber *color in avaiableColors) {
         faceColors[targetIndex] = (FaceColorType)[color integerValue];
         
-        FaceColorType uncertaionOrderedColors[3];
+        FaceColorType uncertaionOrderedColors[3] = {NoColor,NoColor,NoColor};
         
         i = 0;
         for (NSNumber *orientation in [MCCubieColorConstraintUtil getFaceOrientationsInColokWiseOrderAtCornerPosition:[cubie coordinateValue]]) {
@@ -169,7 +169,7 @@
         }
         
         struct Point3i coordinateValue = {.x = x, .y = y, .z = z};
-        FaceColorType rightOrderedColors[3];
+        FaceColorType rightOrderedColors[3] = {NoColor,NoColor,NoColor};
         i = 0;
         for (NSNumber *orderedOrientation in [MCCubieColorConstraintUtil getFaceOrientationsInColokWiseOrderAtCornerPosition:coordinateValue]) {
             switch ([orderedOrientation integerValue]) {

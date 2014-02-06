@@ -105,6 +105,15 @@
 };
 
 /**
+ *	设置旋转音效的音量并存储在音量配置中
+ *
+ *	@param	volume	float类型音量大小
+ */
+-(void)setRotateEffectVolume:(float)volume{
+    [self set_RotateEffectValume:[[[NSNumber alloc] initWithFloat:volume] autorelease ]];
+    [self restoreSoundConfiguration];
+};
+/**
  *	如果需要播放的音效存在，那么就播放音效。
  *
  *	@param	key	音效名

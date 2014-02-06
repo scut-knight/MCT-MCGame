@@ -70,6 +70,7 @@
 
 /**
  * 将旋转操作转化成动作类型
+ *
  * Transfer RotateNotationType containing axis, layer, direction and RotationType(Single, Double or Trible) to SingmasterNotation
  */
 + (SingmasterNotation)getSingmasterNotationFromAxis:(AxisType)axis layer:(int)layer direction:(LayerRotationDirectionType)direction {
@@ -1232,6 +1233,7 @@
 /**
  *	返回对位置点的描述
  *  E.g (0, 0, 1) transfers to front center
+ *
  *	@param	position	(Point3i)位置点
  *
  *	@return	类似“背面右上角”的描述
@@ -1398,6 +1400,7 @@
 /**
  *	返回色块朝向的标签，就是描述朝向的第一个字
  *  E.g UpColor - @"U"
+ *
  *	@param	faceColor	色块朝向类型，见Global.h
  */
 + (NSString *)getStringTagOfFaceColor:(FaceColorType)faceColor{

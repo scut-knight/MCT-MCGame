@@ -248,7 +248,7 @@
             NSString *filePath = [path stringByAppendingPathComponent:TmpCounttingPageMagicCubeData];
             
             MCCountingPlaySceneController *c = [MCCountingPlaySceneController sharedCountingPlaySceneController ];
-            c.magicCube=[[MCMagicCube unarchiveMagicCubeWithFile:filePath] retain];
+            c.magicCube=[MCMagicCube unarchiveMagicCubeWithFile:filePath];
             [c flashScene];
             //更新UI模型
             //[c reloadLastTime];

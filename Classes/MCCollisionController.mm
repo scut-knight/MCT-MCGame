@@ -24,11 +24,11 @@
 	if (collidersToCheck == nil) collidersToCheck = [[NSMutableArray alloc] init];
 	[collidersToCheck removeAllObjects];
 	
-	for (MCSceneObject * obj in sceneObjects) {
-		if (obj.collider != nil){
-			[allColliders addObject:obj];
-		}
-	}
+//	for (MCSceneObject * obj in sceneObjects) {
+//		if (obj.collider != nil){
+//			[allColliders addObject:obj];
+//		}
+//	}
     
 	// now check to see if anythign is hitting anything else
 	for (MCSceneObject * colliderObject in collidersToCheck) {
@@ -63,9 +63,9 @@
 	// clear the matrix
 	glPushMatrix();
 	glLoadIdentity();
-	for (MCSceneObject * obj in allColliders) {						
-		[obj.collider render];
-	}
+//	for (MCSceneObject * obj in allColliders) {						
+//		[obj.collider render];
+//	}
 	glPopMatrix();
 }
 

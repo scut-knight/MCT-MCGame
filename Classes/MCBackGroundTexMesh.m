@@ -60,4 +60,8 @@ float background_normal_vectors [] = {
 	[mesh render];
 	glPopMatrix();
 }
+
+-(void)dealloc{
+    [super dealloc];
+}
 @end

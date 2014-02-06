@@ -171,6 +171,7 @@
 /**
  *	以RotationTag的形式返回当前的队列
  *  如果传递一个空的NSMutableArray作为参数，就可以避免将Queue里的内容复制两遍
+ *
  *	@return	包括RotationTag的NSArray
  */
 - (NSArray *)getQueueWithStringFormat{

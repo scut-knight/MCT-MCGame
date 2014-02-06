@@ -97,7 +97,7 @@
 - (void) effectsVolume:(id)sender
 {
 	SoundSettingController * soundsetting = [SoundSettingController sharedsoundSettingController];
-    [soundsetting set_RotateEffectValume:[NSNumber numberWithFloat:[(UISlider*)sender value]]];
+    [soundsetting setRotateEffectVolume:[(UISlider*)sender value]];
 }
 
 /**
