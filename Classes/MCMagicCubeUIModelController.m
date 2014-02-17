@@ -1398,7 +1398,11 @@
         layer_center_index = 4 + current_rotate_layer*9;
     }
     MCPoint original = MCPointMake(0, 0, 0);
-    MCPoint layercenter_original = MCPointMatrixMultiply(original, [[array27Cube objectAtIndex:layer_center_index] matrix]);
+    
+    // 复合调用matrix属性会与SDK7.0框架冲突，故分开写
+    
+    Cube *tempMatrix = [array27Cube objectAtIndex:layer_center_index];
+    MCPoint layercenter_original = MCPointMatrixMultiply(original, [tempMatrix matrix]);
     //vec3 layer_direction_N = vec3(layercenter_original.x,layercenter_original.y,layercenter_original.z);
     layer_center = vec3(512+translation.x+layercenter_original.x,384+translation.y+layercenter_original.y,layercenter_original.z);
     vec2 layer_center_2D = vec2(layer_center.x,layer_center.y);
@@ -1425,7 +1429,11 @@
     }else {
         zero = oz;
     }
-    MCPoint direction_N = MCPointMatrixMultiply(zero, [[array27Cube objectAtIndex:13] matrix]);
+    
+    // 复合调用matrix属性会与SDK7.0框架冲突，故分开写
+    
+    tempMatrix = [array27Cube objectAtIndex:13];
+    MCPoint direction_N = MCPointMatrixMultiply(zero, [tempMatrix matrix]);
     vec3 layer_direction_N;
         layer_direction_N = vec3(direction_N.x,direction_N.y,direction_N.z);
     float z = sqrt(radius * radius - p.LengthSquared()) + layer_center.z;
