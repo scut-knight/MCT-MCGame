@@ -13,15 +13,29 @@
 #import "MCCollisionController.h"
 #import "MCMagicCubeUIModelController.h"
 #import "MCPoint.h"
+
+/**
+ *	求解模式场景控制器
+ */
 @interface MCRandomSolveSceneController : sceneController{
+    /**
+     *	魔方模型控制器，它就是中央的大魔方
+     */
     MCMagicCubeUIModelController* magicCubeUI;
-//    MCPlayHelper * playHelper;
+    /**
+     *	被选中的方块的索引
+     */
     int selected_index;
+    /**
+     *	被选中的面的索引
+     */
     int selected_face_index;
+    /**
+     *	tips标签，用于展示提示
+     */
      UILabel *_tipsLabel;
 }
 @property (nonatomic,retain)MCMagicCube * magicCube;
-//@property (nonatomic,retain)MCPlayHelper * playHelper;
 @property (assign)int selected_index;
 @property (assign)int selected_face_index;
 @property(nonatomic,retain)UILabel *tipsLabel;
@@ -30,7 +44,7 @@
 
 -(void)loadScene;
 
-//将魔方设置为教学模式下
+
 -(void)turnTheMCUI_Into_SOlVE_Play_MODE;
 
 -(void)rotateWithSingmasterNotation:(SingmasterNotation)notation isNeedStay:(BOOL)isStay isTwoTimes:(BOOL)isTwoTimes;

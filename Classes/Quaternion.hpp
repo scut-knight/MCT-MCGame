@@ -2,6 +2,15 @@
 #include "Matrix.hpp"
 
 template <typename T>
+/**
+ *	四元数
+ *
+ *  如在这里的其他数学模型一样，支持旋转、缩放、点乘等基础操作，此外还可以转换成矢量或矩阵
+ *  一个四元数（Quaternion）描述了一个旋转轴和一个旋转角度。
+ *  当用一个四元数乘以一个向量时，实际上就是让该向量围绕着这个四元数所描述的旋转轴，转动这个四元数所描述的角度而得到的向量。
+ *
+ *  @see http://www.cppblog.com/kongque/archive/2010/08/18/123824.html
+ */
 struct QuaternionT {
     T x;
     T y;
@@ -42,6 +51,15 @@ inline QuaternionT<T>::QuaternionT(T x, T y, T z, T w) : x(x), y(y), z(z), w(w)
 {
 }
 
+/**
+ *	球状线性插值
+ *  球状线性插值对于三位模型进行动画处理非常有用，因为这种方式在模型的各种方向之间提供了平滑的转换。
+ *  注 ： Ken Shoemake 是把四元数引入3D编程界的大牛
+ *	@param	t	插值参数
+ *	@param	v1	插值前的矩阵
+ *
+ *	@return	插值后的矩阵
+ */
 // Ken Shoemake's famous method.
 template <typename T>
 inline QuaternionT<T> QuaternionT<T>::Slerp(T t, const QuaternionT<T>& v1) const
@@ -96,6 +114,21 @@ inline T QuaternionT<T>::Dot(const QuaternionT<T>& q) const
     return x * q.x + y * q.y + z * q.z + w * q.w;
 }
 
+/**
+ *	转换成矩阵形式，用于矩阵乘法。
+ *
+ *  Quaternion x,y,z,w
+ *
+ *  Matrix(注意后置的2是²的意思，如果不能正常显示) = 
+ *
+ * 1 - 2y² - 2z²   2xy - 2wz      2xz + 2wy
+ *
+ * 2xy + 2wz      1 - 2x² - 2z²   2yz - 2wx
+ *
+ * 2xz - 2wy      2yz + 2wx      1 - 2x² - 2y²
+ *
+ *	@return	三阶矩阵
+ */
 template <typename T>
 inline Matrix3<T> QuaternionT<T>::ToMatrix() const
 {
@@ -115,6 +148,9 @@ inline Matrix3<T> QuaternionT<T>::ToMatrix() const
     return m;
 }
 
+/**
+ *  直接返回由四元数四个维度x,y,z,w构成的向量
+ */
 template <typename T>
 inline Vector4<T> QuaternionT<T>::ToVector() const
 {
@@ -145,8 +181,11 @@ bool QuaternionT<T>::operator!=(const QuaternionT<T>& q) const
     return !(*this == q);
 }
 
-// Compute the quaternion that rotates from a to b, avoiding numerical instability.
-// Taken from "The Shortest Arc Quaternion" by Stan Melax in "Game Programming Gems".
+/**
+ * 就是通过向量来构造四元数啦
+ * Compute the quaternion that rotates from a to b, avoiding numerical instability.
+ * Taken from "The Shortest Arc Quaternion" by Stan Melax in "Game Programming Gems".
+ */
 template <typename T>
 inline QuaternionT<T> QuaternionT<T>::CreateFromVectors(const Vector3<T>& v0, const Vector3<T>& v1)
 {
@@ -165,6 +204,12 @@ inline QuaternionT<T> QuaternionT<T>::CreateFromVectors(const Vector3<T>& v0, co
     return q;
 }
 
+/**
+ *	指定一个角度一个旋转轴来构造一个Quaternion。这个角度是相对于单位四元数而言的，也可以说是相对于物体的初始方向而言的。
+ *
+ *	@param	axis	旋转轴
+ *	@param	radians	角度(弧度制)
+ */
 template <typename T>
 inline QuaternionT<T>  QuaternionT<T>::CreateFromAxisAngle(const Vector3<T>& axis, float radians)
 {
@@ -177,6 +222,9 @@ inline QuaternionT<T>  QuaternionT<T>::CreateFromAxisAngle(const Vector3<T>& axi
     return q;
 }
 
+/**
+ *	四元数多次运算后会积攒误差，需要对其做规范化
+ */
 template <typename T>
 inline void QuaternionT<T>::Normalize()
 {

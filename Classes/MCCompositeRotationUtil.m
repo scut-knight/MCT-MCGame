@@ -10,7 +10,10 @@
 
 @implementation MCCompositeRotationUtil
 
-
+/**
+ *	根据魔方标记的规则，结合两个动作标记形成一个旋转
+ *  在这里判断前后两个标记能否结合成target SingmasterNotation
+ */
 + (BOOL)isSingmasterNotation:(SingmasterNotation)first andSingmasterNotation:(SingmasterNotation)second equalTo:(SingmasterNotation)target{
     //F+F / F'+F' == F2...
     if (first == second && first/3*3+2 == target) {
@@ -61,6 +64,10 @@
     return result;
 }
 
+/**
+ *	根据魔方标记的规则，结合两个动作标记形成一个旋转
+ *  在这里判断前一个标记是否是后一个Singmaster的一部分
+ */
 + (BOOL)isSingmasterNotation:(SingmasterNotation)part PossiblePartOfSingmasterNotation:(SingmasterNotation)target{
     //F / F' is part of F2...
     if (part != target  && (target+1)%3 == 0 && target/3 == part/3) {

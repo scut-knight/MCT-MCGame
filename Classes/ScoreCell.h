@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *	用户成就栏
+ */
 @interface ScoreCell : UITableViewCell
 
 @property (retain, nonatomic) IBOutlet UILabel *rankLabel;

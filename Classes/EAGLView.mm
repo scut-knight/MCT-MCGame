@@ -12,7 +12,7 @@
 #import <OpenGLES/EAGLDrawable.h>
 
 #import "EAGLView.h"
-
+/// 使用深度缓冲
 #define USE_DEPTH_BUFFER 1
 
 // A class extension to declare private methods
@@ -32,12 +32,22 @@
 @synthesize context;
 
 // You must implement this method
+/**
+ *	类方法，返回CAEAGLLayer类。不过这个方法没有被用到。
+ *
+ *	@return	一个抽象的Class类型，可以用于反射
+ */
 + (Class)layerClass {
     return [CAEAGLLayer class];
 }
 
-
-// The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
+/**
+ * The GL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:
+ *
+ * GL视图储存在nib文件中。当它被解档案时，它会执行initWithCoder:
+ *
+ * 至于该函数，接受一块区域作为CAEAGLLayer绘图的地方
+ */
 - (id)initWithFrame:(CGRect)rect {
     
     if ((self = [super initWithFrame:rect])) {
@@ -60,7 +70,9 @@
     return self;
 }
 
-
+/**
+ *	建立视图
+ */
 - (void)setupViewLandscape
 {	/*		
 	// Sets up matrices and transforms for OpenGL ES
@@ -93,6 +105,9 @@
     
 }
 
+/**
+ *	建立视图肖像，就是建立世界坐标系下的魔方模型到我们的屏幕上的投影
+ */
 - (void)setupViewPortrait
 {		
 	// Set up the window that we will view the scene through
@@ -126,6 +141,9 @@
 	[context presentRenderbuffer:GL_RENDERBUFFER_OES];	
 }
 
+/**
+ *	是否需要重新加载视图，如果isNeedToLayView为YES，则重新加载视图
+ */
 - (void)layoutSubviews 
 {
     if (isNeedToLayView) {
@@ -137,6 +155,11 @@
     }
 }
 
+/**
+ *	设置frameBuffer
+ *
+ *	@return	YES 如果成功，否则返回NO
+ */
 - (BOOL)createFramebuffer {    
     glGenFramebuffersOES(1, &viewFramebuffer);
     glGenRenderbuffersOES(1, &viewRenderbuffer);
@@ -182,8 +205,12 @@
     }
 }
 
-
--(void)perspectiveFovY:(GLfloat)fovY 
+/**
+ *	该方法已经没有用了，用MCGL的同名方法代替了它
+ *
+ *  @see MCGL
+ */
+-(void)perspectiveFovY:(GLfloat)fovY
                 aspect:(GLfloat)aspect 
                  zNear:(GLfloat)zNear
                   zFar:(GLfloat)zFar 

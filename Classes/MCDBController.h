@@ -5,7 +5,11 @@
 //  Created by Yingyi Dai on 12-12-29.
 //  Copyright (c) 2012年 SCUT. All rights reserved.
 //
-
+/**
+ *  @file
+ * sqlite3的接口函数简介：
+ * @see http://liufei-fir.iteye.com/blog/1171175
+ */
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
 #import "MCUser.h"
@@ -13,9 +17,14 @@
 #import "MCLearn.h"
 
 #define DBName @"MCDatabase.sqlite3"
-
+/**
+ *	用户信息管理的数据库操作
+ */
 @interface MCDBController : NSObject
 {
+    /**
+     *	database是私有的
+     */
     @private sqlite3 *database;
 }
 

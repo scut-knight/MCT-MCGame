@@ -10,21 +10,34 @@
 #import "QuadCurveMenu.h"
 #import "MCActionQueue.h"
 #import "MCMultiDigitCounter.h"
-#import "InfoView.h"
 #import "SolvePagePauseMenu.h"
-//#import "MBProgressHUD.h"
 #import "AskReloadView.h"
+
+/**
+ *	求解模式下的交互控制器。
+ *  实现了UAModalPanelDelegate，可以加载UAModalPanel类型的对话框
+ */
 @interface MCRandomSolveViewInputControllerViewController : InputController <QuadCurveMenuDelegate,UAModalPanelDelegate>{
-    //判断是否要弹出选择框到标记
+    /// 判断是否要弹出选择框到标记
     BOOL isWantShowSelectView;
+    /**
+     *	魔方旋转动作队列
+     */
     MCActionQueue *actionQueue;
+    /**
+     *	计步器
+     */
     MCMultiDigitCounter *stepcounter;
-    InfoView * infoView;
-    //MBProgressHUD *HUD;
+    /**
+     *	输入是否结束
+     */
     BOOL isFinishInput;
     NSMutableArray * singmasternotations;
     int totalMove;
     int currentMove;
+    /**
+     *	该变量没有特别的作用
+     */
     BOOL isStay;
     SolvePagePauseMenu *solvePagePauseMenuView;
     AskReloadView* askReloadView;

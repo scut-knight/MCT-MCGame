@@ -7,6 +7,13 @@
 //  https://github.com/samvermette/SVProgressHUD
 //
 
+/**
+ *  这是一个开源项目
+ *  用于在视图前显示当前程序的状态，比如等待中，已完成，……等等
+ *	@see https://github.com/samvermette/SVProgressHUD
+ *  @see http://www.cnblogs.com/xunziji/archive/2012/11/05/2754915.html
+ */
+
 #import <UIKit/UIKit.h>
 #import <AvailabilityMacros.h>
 

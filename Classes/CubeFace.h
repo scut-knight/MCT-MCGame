@@ -7,7 +7,9 @@
 //
 
 #import "MCTexturedMesh.h"
-
+/**
+ *	魔方表面
+ */
 @interface CubeFace : MCTexturedMesh
 @property(nonatomic,assign)BOOL isNeedRender;
 @end

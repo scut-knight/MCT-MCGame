@@ -10,7 +10,13 @@
 
 
 @implementation MCTransformUtil
-
+/**
+ *	返回相反的朝向
+ *
+ *	@param	orientation	朝向
+ *
+ *	@return	相反的朝向
+ */
 + (FaceOrientationType)getContraryOrientation:(FaceOrientationType)orientation {
     FaceOrientationType result;
     switch (orientation) {
@@ -62,6 +68,11 @@
     return names[notation];
 }
 
+/**
+ * 将旋转操作转化成动作类型
+ *
+ * Transfer RotateNotationType containing axis, layer, direction and RotationType(Single, Double or Trible) to SingmasterNotation
+ */
 + (SingmasterNotation)getSingmasterNotationFromAxis:(AxisType)axis layer:(int)layer direction:(LayerRotationDirectionType)direction {
     SingmasterNotation notation = NoneNotation;
     switch (axis) {
@@ -178,6 +189,9 @@
     return notation;
 }
 
+/**
+ *  得到特定的Singmaster记号，也就是动作类型
+ */
 + (SingmasterNotation)getContrarySingmasterNotation:(SingmasterNotation)notation {
     if (notation == NoneNotation) {
         return NoneNotation;
@@ -201,6 +215,14 @@
     return result;
 }
 
+/**
+ *	根据坐标和朝向得到将中央方块的动作？
+ *
+ *	@param	coordinate	坐标原点
+ *	@param	orientation	朝向
+ *
+ *	@return	动作类型
+ */
 + (SingmasterNotation)getPathToMakeCenterCubieAtPosition:(struct Point3i)coordinate inOrientation:(FaceOrientationType)orientation {
     SingmasterNotation result = NoneNotation;
     switch (orientation) {
@@ -391,7 +413,13 @@
     return result;
 }
 
-
+/**
+ *	根据动作类型逆向得到旋转方式
+ *
+ *	@param	notation	动作类型
+ *
+ *	@return	旋转方式结构体
+ */
 + (struct RotateNotationType)getRotateNotationTypeWithSingmasterNotation:(SingmasterNotation)notation {
     struct RotateNotationType returnValue;
     switch (notation) {
@@ -834,7 +862,15 @@
     return returnValue;
 }
 
-
+/**
+ *	By delivering pattern node to this function, we can get the node content.
+ *  Notice! The type of this node must be 'PatternNode'.
+ *
+ *	@param	node	用于获取信息的节点
+ *	@param	workingMemory	当前记录
+ *
+ *	@return	描述魔方当前转动情况
+ */
 + (NSString *)getContenFromPatternNode:(MCTreeNode *)node
               accordingToWorkingMemory:(MCWorkingMemory *)workingMemory{
     NSString *result = nil;
@@ -1029,6 +1065,15 @@
     return result;
 }
 
+/**
+ *	Return the negative sentence of the string returned by 
+ "+ (NSString *)getContenFromPatternNode:(MCTreeNode *)node"
+ *
+ *	@param	node	用于获取信息的节点
+ *	@param	workingMemory	当前记录
+ *
+ *	@return	描述魔方当前转动情况的非命题 即 魔方当前转动情况 + “ 不符合”
+ */
 + (NSString *)getNegativeSentenceOfContentFromPatternNode:(MCTreeNode *)node
                                  accordingToWorkingMemory:(MCWorkingMemory *)workingMemory{
     NSString *positiveSentence = [MCTransformUtil getContenFromPatternNode:node
@@ -1036,7 +1081,25 @@
     return positiveSentence == nil ? nil : [NSString stringWithFormat:@"%@ 不符合", positiveSentence];
 }
 
-
+/**
+ *  简化节点(语句)处的否定逻辑
+ *	//Expand the tree node at three occasions:
+ *  //@1     not                    or
+ *  //        |                    /  \
+ *  //       and        ->       not   not
+ *  //      /   \                 |     |
+ *  //  child  child            child  child
+ *  //-----------------------------------------
+ *  //@2     not                    and
+ *  //        |                    /  \
+ *  //       or        ->        not   not
+ *  //      /   \                 |     |
+ * //  child  child            child  child
+ * //-----------------------------------------
+ * //@3 not-not-child  ->  child
+ *
+ *	@param	node	待处理节点
+ */
 + (void)convertToTreeByExpandingNotSentence:(MCTreeNode *)node{
     //Just expand 'ExpNode' node
     if (node.type != ExpNode) return;
@@ -1119,7 +1182,15 @@
     }
 }
 
-
+/**
+ *  返回对立方体的颜色和位置的描述
+ *	E.g BColor transfer to XXX(where)XXX colors cubie
+ *
+ *	@param	identity	(ColorCombinationType)描述色块位置的枚举类，见Global.h
+ *	@param	mc	立方体
+ *
+ *	@return	类似@“红黄橙色角块”的描述
+ */
 + (NSString *)getConcreteDescriptionOfCubie:(ColorCombinationType)identity fromMgaicCube:(NSObject<MCMagicCubeDataSouceDelegate> *)mc{
     //Check bounds
     if (identity >= ColorCombinationTypeBound || identity < 0) return @"";
@@ -1159,7 +1230,14 @@
     return result;
 }
 
-
+/**
+ *	返回对位置点的描述
+ *  E.g (0, 0, 1) transfers to front center
+ *
+ *	@param	position	(Point3i)位置点
+ *
+ *	@return	类似“背面右上角”的描述
+ */
 + (NSString *)getPositionDescription:(Point3i)position{
     switch (position.z) {
         case 1:
@@ -1268,8 +1346,12 @@
     return @"";
 }
 
-//Internal method
-//FaceColorType to real color string(Chinese)
+/**
+ * Internal method
+ * FaceColorType to real color string(Chinese)
+ * 用于将FaceColorType类型转化成字符串描述的内部函数
+ * 可选颜色：“黄，白，红，橙，蓝，绿，“” ”
+ */
 + (NSString *)getDescriptionOfFaceColorType:(FaceColorType)faceColor
                        accordingToMagicCube:(NSObject<MCMagicCubeDataSouceDelegate> *)mc{
     NSString *realColor = [mc getRealColor:faceColor];
@@ -1315,7 +1397,12 @@
     }
 }
 
-
+/**
+ *	返回色块朝向的标签，就是描述朝向的第一个字
+ *  E.g UpColor - @"U"
+ *
+ *	@param	faceColor	色块朝向类型，见Global.h
+ */
 + (NSString *)getStringTagOfFaceColor:(FaceColorType)faceColor{
     switch (faceColor) {
         case UpColor:
@@ -1336,7 +1423,14 @@
     return @"B";
 }
 
-
+/**
+ *  从动作标签中转化出动作标记类型
+ *	Only transfer U, D, F, B, L and R(can be appended ' or 2)
+ *
+ *	@param	tag	动作标签
+ *
+ *	@return	动作标记类型，见Global.h
+ */
 + (SingmasterNotation)singmasternotationFromStringTag:(NSString *)tag{
     if ([tag compare:@"U"] == NSOrderedSame) {
         return U;

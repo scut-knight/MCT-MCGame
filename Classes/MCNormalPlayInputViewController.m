@@ -15,12 +15,16 @@
 #import "MCStringDefine.h"
 #import "MCMaterialController.h"
 #import "Global.h"
+
 @implementation MCNormalPlayInputViewController
 @synthesize stepcounter;
 @synthesize timer;
 @synthesize actionQueue;
 @synthesize isRandoming;
 
+/**
+ *	加载场景
+ */
 -(void)loadInterface
 {
 	if (interfaceObjects == nil) interfaceObjects = [[NSMutableArray alloc] init];
@@ -29,6 +33,7 @@
     randomRotateCount = 0;
     isRandoming = NO;
     //UI step counter
+    // 计步器纹理名
     NSString *counterName[10] = {@"zero2",@"one2",@"two2",@"three2",@"four2",@"five2",@"six2",@"seven2",@"eight2",@"nine2"};
     stepcounter = [[MCMultiDigitCounter alloc]initWithNumberOfDigit:3 andKeys:counterName];
     [stepcounter setScale : MCPointMake(51, 25, 1.0)];
@@ -72,46 +77,6 @@
     [interfaceObjects addObject:actionQueue];
     [actionname release];
        
-	/*
-	// mainMenuBtn
-    //the texture 还没设计出来
-	MCTexturedButton * mainMenuBtn = [[MCTexturedButton alloc] initWithUpKey:@"mainMenuBtnUp" downKey:@"mainMenuBtnUp"];
-	mainMenuBtn.scale = MCPointMake(75, 35, 1.0);
-	mainMenuBtn.translation = MCPointMake(-450, 350.0, 0.0);
-	mainMenuBtn.target = self;
-	mainMenuBtn.buttonDownAction = @selector(mainMenuBtnDown);
-	mainMenuBtn.buttonUpAction = @selector(mainMenuBtnUp);
-	mainMenuBtn.active = YES;
-	[mainMenuBtn awake];
-	[interfaceObjects addObject:mainMenuBtn];
-	[mainMenuBtn release];
-    */
-    
-    /*
-    //队列的下一步
-	MCTexturedButton * shiftLeft = [[MCTexturedButton alloc] initWithUpKey:@"previousSolutionBtnUp" downKey:@"previousSolutionBtnUp"];
-	shiftLeft.scale = MCPointMake(40, 40, 1.0);
-	shiftLeft.translation = MCPointMake(-260, 320.0, 0.0);
-	shiftLeft.target = self;
-	shiftLeft.buttonDownAction = @selector(shiftLeftBtnDown);
-	shiftLeft.buttonUpAction = @selector(shiftLeftBtnUp);
-	shiftLeft.active = YES;
-	[shiftLeft awake];
-	[interfaceObjects addObject:shiftLeft];
-	[shiftLeft release];
-    //队列的上一步
-	MCTexturedButton * shiftRight = [[MCTexturedButton alloc] initWithUpKey:@"nextSolutionBtnUp" downKey:@"nextSolutionBtnUp"];
-	shiftRight.scale = MCPointMake(40, 40, 1.0);
-	shiftRight.translation = MCPointMake(260, 320.0, 0.0);
-	shiftRight.target = self;
-	shiftRight.buttonDownAction = @selector(shiftRightBtnDown);
-	shiftRight.buttonUpAction = @selector(shiftRightBtnUp);
-	shiftRight.active = YES;
-	[shiftRight awake];
-	[interfaceObjects addObject:shiftRight];
-	[shiftRight release];
-     */
-       
     //提示按钮
     MCTexturedButton * showTipsBtn = [[MCTexturedButton alloc] initWithUpKey:TextureKey_showTipsButtonUp downKey:TextureKey_showTipsButtonDown];
 	showTipsBtn.scale =  MCPointMake(82, 56, 1);;
@@ -124,20 +89,6 @@
 	[interfaceObjects addObject:showTipsBtn];
 	[showTipsBtn release];
 
-    
-    /*
-    //置乱按钮
-    MCTexturedButton * randomBtn = [[MCTexturedButton alloc] initWithUpKey:@"tipsBtnUp" downKey:@"tipBtnUp"];
-	randomBtn.scale = MCPointMake(110, 55, 1.0);
-	randomBtn.translation = MCPointMake(-450, 120.0, 0.0);
-	randomBtn.target = self;
-	randomBtn.buttonDownAction = @selector(randomBtnDown);
-	randomBtn.buttonUpAction = @selector(randomBtnUp);
-	randomBtn.active = YES;
-	[randomBtn awake];
-	[interfaceObjects addObject:randomBtn];
-	[randomBtn release];
-     */
     //上一步/撤销
 	MCTexturedButton * undoCommand = [[MCTexturedButton alloc] initWithUpKey:TextureKey_previousButtonUp downKey:TextureKey_previousButtonDown];
 	undoCommand.scale =  MCPointMake(93, 58, 1);;
@@ -178,7 +129,7 @@
 	[redoCommand release];
     
     [super loadInterface];
-    //基本界面加载完后，弹出是否加载上次未完成的任务
+    //基本界面加载完后，弹出是否加载上次未完成的任务，一定会弹出哦！
     //if (!isNeededReload) {
         [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(askReload) userInfo:nil repeats:NO];
     //}
@@ -186,10 +137,16 @@
     
     
 }
+
+/**
+ *	按下了提示按钮。
+ *  产生tips框，并显示旋转动作队列。
+ */
 -(void)tipsBtnUp{
     if (isRandoming) {
         return;
     }
+    // 访问场景控制器，开始控制场景对象
     MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
     //hiden the action queue
     [self.actionQueue setActive : !self.actionQueue.active ];
@@ -197,25 +154,43 @@
     [[c tipsLabel] setHidden:![[c tipsLabel] isHidden]];
     //switch the isShowQueue flag in scenecontroller
     c.isShowQueue = !c.isShowQueue;
+    // 开
     if (self.actionQueue.active) {
         [[c playHelper] prepare];
         [c showQueue];
     }else{
+    // 关
         [self.actionQueue removeAllActions];
         [c closeSpaceIndicator];
         [[c tipsLabel]setText:@""];
         [[c playHelper] close];
     }
 };
+
+/**
+ *	按下提示按钮时，什么都不做。
+ */
 -(void)tipsBtnDown{};
+
+/**
+ *	虽然名字叫做randomBtnUp，但是由于设计改动的原因，并没有random按钮了。
+ *  不过这个函数将在重新加载场景时调用，用于打乱魔方。
+ */
 -(void)randomBtnUp{
     //TIME_PER_ROTATION = 0.15;
+    // 打乱锁
     isRandoming = YES;
     MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
     [c closeSpaceIndicator];
+    // 定时反复打乱
     radomtimer = [NSTimer scheduledTimerWithTimeInterval:TIME_PER_ROTATION+0.1 target:self selector:@selector(randomRotateHelp1) userInfo:nil repeats:YES];
+    // 打乱后……
     [NSTimer scheduledTimerWithTimeInterval:(TIME_PER_ROTATION+0.1)*(RandomRotateMaxCount+1)+0.1 target:self selector:@selector(randomRotateHelp2) userInfo:nil repeats:NO];
 };
+
+/**
+ *	打乱的方法
+ */
 -(void)randomRotateHelp1{
     randomRotateCount ++;
     MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
@@ -236,6 +211,10 @@
         [radomtimer invalidate];
     }
 }
+
+/**
+ *	打乱结束后的处理工作
+ */
 -(void)randomRotateHelp2{
     isRandoming = NO;
     randomRotateCount =0;
@@ -244,9 +223,13 @@
     [[self stepcounter]reset];
 }
 
+/**
+ *	空方法，为了配合randomBtnUp而存在，不要删掉
+ */
 -(void)randomBtnDown{};
 
 #pragma mark - queue shift
+
 -(void)shiftLeftBtnDown{}
 -(void)shiftLeftBtnUp{[actionQueue shiftLeft];}
 -(void)shiftRightBtnDown{}
@@ -254,15 +237,24 @@
 
 
 #pragma mark - button actions
-//撤销
+
+/**
+ *	按下了上一步按钮，撤销操作
+ */
 -(void)previousSolutionBtnUp{
     NSLog(@"previousSolutionBtnUp");
    MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
     [c previousSolution];
 }
+
+/**
+ *	空的方法，为了配合previousSolutionBtnUp而存在，不要删掉。
+ */
 -(void)previousSolutionBtnDown{}
 
-//暂停
+/**
+ *	按下暂停按钮，开始暂停操作。
+ */
 -(void)pauseSolutionBtnUp{
     NSLog(@"pauseSolutionBtnUp");
     //停止计时器
@@ -280,20 +272,36 @@
 	// Show the panel from the center of the button that was pressed
 	[learnPagePauseMenuView showFromPoint:CGPointMake(512,384)];
 }
+
+/**
+ *	空的方法，为了配合pauseSolutionBtnUp而存在，不要删掉。
+ */
 -(void)pauseSolutionBtnDown{}
-//恢复
+
+/**
+ *	按下了下一步按钮，恢复操作
+ */
 -(void)nextSolutionBtnUp{
     //;
     NSLog(@"nextSolutionBtnUp");
     MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
     [c nextSolution];
 }
+
+/**
+ *	空的方法，为了配合nextSolutionBtnUp而存在，不要删掉。
+ */
 -(void)nextSolutionBtnDown{}
 
 -(void)mainMenuBtnDown{
     NSLog(@"mainMenuBtnDown");
 }
--(void)mainMenuBtnUp{NSLog(@"mainMenuBtnUp");
+
+/**
+ *	保存魔方状态，并把控制权交由场景迁徙协调控制器。
+ */
+-(void)mainMenuBtnUp{
+    NSLog(@"mainMenuBtnUp");
     
     //保存魔方状态
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -313,39 +321,53 @@
 
 #pragma mark - UAModalDisplayPanelViewDelegate
 
-// Optional: This is called before the open animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called before the open animations.
+ *   Only used if delegate is set.
+ */
 - (void)willShowModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"willShowModalPanel called with modalPanel: %@", modalPanel);
 }
 
-// Optional: This is called after the open animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called after the open animations.
+ *   Only used if delegate is set.
+ */
 - (void)didShowModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"didShowModalPanel called with modalPanel: %@", modalPanel);
 }
 
-// Optional: This is called when the close button is pressed
-//   You can use it to perform validations
-//   Return YES to close the panel, otherwise NO
-//   Only used if delegate is set.
+/**
+ * Optional: This is called when the close button is pressed
+ *   You can use it to perform validations
+ *   Return YES to close the panel, otherwise NO
+ *   Only used if delegate is set.
+ */
 - (BOOL)shouldCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"shouldCloseModalPanel called with modalPanel: %@", modalPanel);
 	return YES;
 }
 
-// Optional: This is called before the close animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called before the close animations.
+ *   Only used if delegate is set.
+ */
 - (void)willCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"willCloseModalPanel called with modalPanel: %@", modalPanel);
 }
 
-// Optional: This is called after the close animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called after the close animations.
+ *   Only used if delegate is set.
+ *
+ *  根据模态对话框的不同选项进行不同的操作。
+ *  在模态对话框关闭后执行。
+ */
 - (void)didCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"didCloseModalPanel called with modalPanel: %@", modalPanel);
-    
+    // 重新加载
     if (askReloadView) {
+        // 继续上一次
         if ([askReloadView askReloadType]==kAskReloadView_LoadLastTime) {
             //重新加载上一次；
             //更新数据模型
@@ -356,14 +378,12 @@
             MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
             c.magicCube=[MCMagicCube unarchiveMagicCubeWithFile:filePath];
             c.playHelper=[MCPlayHelper playerHelperWithMagicCube:[c magicCube]];
-
-            //[c.playHelper setMagicCube:c.magicCube];
             
-
             //更新UI模型
             [c reloadLastTime];
             [[self timer]startTimer];
             NSLog(@"dd");
+        // 重新开始
         }else if([askReloadView askReloadType]==kAskReloadView_Reload){
             //Default
             [self randomBtnUp];
@@ -376,15 +396,17 @@
         askReloadView = nil;
     }
     
-    
+    // 暂停
     if (learnPagePauseMenuView){
-    
+        // 保存并返回
         if ([learnPagePauseMenuView learnPagePauseSelectType]==kLearnPagePauseSelect_GoBack) {
             [self mainMenuBtnUp];
+        // 继续
         }else if([learnPagePauseMenuView learnPagePauseSelectType]==kLearnPagePauseSelect_GoOn){
             //停止计时器
     
             [timer startTimer];
+        // 重新开始
         }else if([learnPagePauseMenuView learnPagePauseSelectType]==kLearnPagePauseSelect_Restart){
             //更新UI模型
             
@@ -403,22 +425,22 @@
             [stepcounter reset];
             [timer reset];
             [self randomBtnUp];
-
-            
         }
         
         learnPagePauseMenuView = nil;
     }
     if (finishView){
-        
+        // 除了退出没得选啦
         if ([finishView finishViewType]==kFinishView_GoBack) {
             [self mainMenuBtnUp];
         }        
         finishView = nil;
     }
-    
 }
 
+/**
+ *	学习模式结束时弹出的对话框
+ */
 -(void)showFinishView{
     
     //停止计时器
@@ -453,7 +475,9 @@
 
 }
 
-
+/**
+ *	在重新加载场景时弹出的对话框
+ */
 -(void)askReload{
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *fileName = [path stringByAppendingPathComponent:TmpMagicCubeData];
@@ -483,12 +507,15 @@
 	[askReloadView showFromPoint:CGPointMake(512,384)];
 }
 
-
+/**
+ *	加载上一次
+ */
 -(void)reloadLastTime{
     NSLog(@"reloadLastTime");
     MCNormalPlaySceneController *c = [MCNormalPlaySceneController sharedNormalPlaySceneController ];
     [c reloadLastTime];
 }
+
 - (void)releaseInterface{
     [super releaseInterface];
 }

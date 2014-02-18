@@ -12,9 +12,14 @@
 #import "MCConfiguration.h"
 #import "MCStringDefine.h"
 #import "PlatformDetect.h"
+
 @implementation MCMaterialController
-// Singleton accessor.  this is how you should ALWAYS get a reference
-// to the controller.  Never init your own. 
+/**
+ * Singleton accessor.  this is how you should ALWAYS get a reference
+ * to the controller.  Never init your own. 
+ *
+ *  单件
+ */
 +(MCMaterialController*)sharedMaterialController
 {
     static MCMaterialController *sharedMaterialController;
@@ -50,7 +55,9 @@
 	return self;
 }
 
-
+/**
+ *	加载低分辨率下的纹理。注意与高分辨率下的处理相区别。
+ */
 -(void)loadLowResolution{
     // preload all our textures and atlases
     [self loadTextureImage:@"sixcolor.png" materialKey:@"sixcolor"];
@@ -82,6 +89,9 @@
     [self loadAtlas_TexturePacker_Data:@"number"];
 }
 
+/**
+ *	加载高分辨率下的纹理。注意与低分辨率下的处理相区别。
+ */
 -(void)loadHighResolution{
     // preload all our textures and atlases
     [self loadTextureImage:@"sixcolor.png" materialKey:@"sixcolor"];
@@ -107,14 +117,13 @@
     //[self loadAtlasData:@"countNumber"];
     [self loadAtlasData:@"cubeAction"];
     [self loadAtlasData:@"particleAtlas"];
-    
+    // 加载高分辨率资源与加载低分辨率资源的区别在于这里加载的纹理数据都有个后缀2
     [self loadAtlas_TexturePacker_Data:@"home_element2"];
     [self loadAtlas_TexturePacker_Data:@"learn_element2"];
     [self loadAtlas_TexturePacker_Data:@"number2"];
 }
 
 
-// load the atlas data and load the atlas texture
 -(void)loadAtlasData:(NSString*)atlasName
 {
 	NSAutoreleasePool * apool = [[NSAutoreleasePool alloc] init];	
@@ -136,6 +145,7 @@
 	
 	[apool release];
 }
+
 -(void)loadAtlas_TexturePacker_Data:(NSString *)atlasName{
     NSAutoreleasePool * apool = [[NSAutoreleasePool alloc] init];
     
@@ -162,13 +172,22 @@
 	
 	[apool release];
 }
-// just a handy way to get a pre-defined quad
+
+/**
+ * just a handy way to get a pre-defined quad
+ *
+ *  获知atlasKey对应的区块
+ */
 -(MCTexturedQuad*)quadFromAtlasKey:(NSString*)atlasKey
 {
 	return [quadLibrary objectForKey:atlasKey];
 }
 
-// a handy way to get an animation that is composed of quads
+/**
+ * a handy way to get an animation that is composed of quads
+ *
+ *  获知atlasKeys对应的动画区块
+ */
 -(MCAnimatedQuad*)animationFromAtlasKeys:(NSArray*)atlasKeys
 {
 	MCAnimatedQuad * animation = [[MCAnimatedQuad alloc] init];
@@ -178,7 +197,6 @@
 	return [animation autorelease];
 }
 
-// build a textured quad from a dictionary
 -(MCTexturedQuad*)texturedQuadFromAtlasRecord:(NSDictionary*)record 
                                     atlasSize:(CGSize)atlasSize
                                   materialKey:(NSString*)key;
@@ -216,6 +234,7 @@
 	
 	return [quad autorelease];
 }
+
 -(MCTexturedQuad *)texturedQuadFrom_TexturePacker_AtlasRecord:(NSDictionary *)record atlasSize:(CGSize)atlasSize materialKey:(NSString *)key{
     MCTexturedQuad * quad = [[MCTexturedQuad alloc] init];
 	
@@ -252,20 +271,29 @@
 }
 
 
-// grabs the openGL texture ID from the library and calls the openGL bind texture method
+/**
+ * grabs the openGL texture ID from the library and calls the openGL bind texture method
+ *
+ *  获取materialKey在materialLibrary中对应的NSNumber，并作为openGL的编号进行渲染。
+ */
 -(void)bindMaterial:(NSString*)materialKey
 {
 	NSNumber * numberObj = [materialLibrary objectForKey:materialKey];
 	if (numberObj == nil) return;
     GLuint textureID = [numberObj unsignedIntValue];
-    glEnable(GL_TEXTURE_2D); 	
+    glEnable(GL_TEXTURE_2D);
+ 	// 将textureID对应的纹理绑定到GL_TEXTURE_2D上。也即将对应的纹理变成二维的纹理
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
-
-// does the heavy lifting for getting a named image into a texture
-// that is loaded into openGL
-// this is a modified version of the way Apple loads textures in their sample code
+/**
+ * does the heavy lifting for getting a named image into a texture
+ * that is loaded into openGL
+ * this is a modified version of the way Apple loads textures in their sample code
+ *
+ *  将名字对应的图像加载到openGL的纹理上。
+ *  参照Apple的范例。
+ */
 -(CGSize)loadTextureImage:(NSString*)imageName materialKey:(NSString*)materialKey
 {
 	CGContextRef spriteContext;
@@ -315,7 +343,11 @@
 			outPixel16 = (unsigned short*)tempData;
 			NSUInteger i;
 			for(i = 0; i < width * height; ++i, ++inPixel32)
-				*outPixel16++ = ((((*inPixel32 >> 0) & 0xFF) >> 4) << 12) | ((((*inPixel32 >> 8) & 0xFF) >> 4) << 8) | ((((*inPixel32 >> 16) & 0xFF) >> 4) << 4) | ((((*inPixel32 >> 24) & 0xFF) >> 4) << 0);
+				*outPixel16++ =
+                ((((*inPixel32 >> 0) & 0xFF) >> 4) << 12) |
+                ((((*inPixel32 >> 8) & 0xFF) >> 4) << 8) |
+                ((((*inPixel32 >> 16) & 0xFF) >> 4) << 4) |
+                ((((*inPixel32 >> 24) & 0xFF) >> 4) << 0);
 			
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, tempData);
 			free(tempData);

@@ -17,12 +17,18 @@
 #import "xyzCoordinateIndicator.h"
 #import "MCBackGroundTexMesh.h"
 #import "MCFonts.h"
+
 @implementation MCNormalPlaySceneController
 @synthesize magicCube;
 @synthesize playHelper;
 @synthesize tipsLabel = _tipsLabel;
 @synthesize isShowQueue;
-//@synthesize rotation_per_second;
+
+/**
+ *	产生学习模式场景控制器的单件
+ *
+ *	@return	一个指向单件的指针
+ */
 +(MCNormalPlaySceneController*)sharedNormalPlaySceneController{
     static MCNormalPlaySceneController *sharedNormalPlaySceneController;
     @synchronized(self)
@@ -33,17 +39,18 @@
 	return sharedNormalPlaySceneController;
 }
 
+/**
+ *	加载场景
+ */
 -(void)loadScene{
     needToLoadScene = NO;
 	RANDOM_SEED();
 	// this is where we store all our objects
 	if (sceneObjects == nil) sceneObjects = [[NSMutableArray alloc] init];
 	
-    //float scale = 60.0;
     isShowQueue = NO;
 	magicCube = [[MCMagicCube magicCube]retain];
     playHelper = [[MCPlayHelper playerHelperWithMagicCube:self.magicCube]retain];
-    //[playHelper applyRules];
     //背景
     MCBackGroundTexMesh* background = [[MCBackGroundTexMesh alloc]init];
     background.pretranslation = MCPointMake(0, 0, -246);
@@ -58,15 +65,6 @@
     [magicCubeUI setStepcounterMinusAction:@selector(stepcounterMinus)];
     [self addObjectToScene:magicCubeUI];
     [magicCubeUI release];
-    /*
-    //加载坐标系
-    xyzCoordinateIndicator * xyz_CoorInd = [[xyzCoordinateIndicator alloc]init];
-    [xyz_CoorInd setScale:MCPointMake(67,67,67)];
-    [xyz_CoorInd setTranslation:MCPointMake(0, 0, 0)];
-    [xyz_CoorInd setRotation:MCPointMake(30,-45,0)];
-    [self addObjectToScene:xyz_CoorInd];
-    [xyz_CoorInd release];
-    */
     //提示标签
     [self setTipsLabel: [[[UILabel alloc]initWithFrame:CGRectMake(800,100,220,160)] autorelease]];
     [[self tipsLabel] setText:@""];
@@ -88,10 +86,10 @@
 	[inputController loadInterface];
     
 }
-//-(void)setRotation_per_second:(float)rotation_per_second2{
-//    [magicCubeUI setTIME_PER_ROTATION:rotation_per_second];
-//    rotation_per_second = rotation_per_second2;
-//}
+
+/**
+ *	重新加载场景，只加载大魔方
+ */
 -(void)reloadScene{
     //[super removeAllObjectFromScene];
     
@@ -101,59 +99,82 @@
     
 }
 
+/**
+ *	重置计步器
+ */
 -(void)stepcounterReset{
     MCMultiDigitCounter *tmp = [(MCNormalPlayInputViewController*)inputController stepcounter];
     [tmp reset];
 }
+
+/**
+ *	计步器加一
+ */
 -(void)stepcounterAdd{
     MCMultiDigitCounter *tmp = [(MCNormalPlayInputViewController*)inputController stepcounter];
     [tmp addCounter];
 }
+
+/**
+ *	计步器减一
+ */
 -(void)stepcounterMinus{
     MCMultiDigitCounter *tmp = [(MCNormalPlayInputViewController*)inputController stepcounter];
     [tmp minusCounter];
 }
 
+/**
+ *	重置魔方到上次状态。。。
+ */
 -(void)reloadLastTime{
-        //重置魔方到上次状态。。。
     [magicCubeUI flashWithState:[ magicCube getColorInOrientationsOfAllCubie]];
    
      
 }
 
+/**
+ *	根据魔方公式的旋转类型进行旋转
+ *
+ *	@param	rotateType	魔方公式中的旋转类型
+ */
 -(void)rotate:(RotateType *)rotateType{
     //流程1，通知数据模型UI已经旋转
    //本次转动notation
     [playHelper rotateWithSingmasterNotation:[rotateType notation]];
     
-    
     //是否更新队列
     if (isShowQueue) {
         [self showQueue];
-        
     }
     
     [magicCubeUI flashWithState:[ magicCube getColorInOrientationsOfAllCubie]];
     
-    
-    
     SoundSettingController *soundsetting = [SoundSettingController sharedsoundSettingController];
-    [soundsetting playSoundForKey:Audio_RotateSound_Ding_key];
+    [soundsetting playSoundForKey:Audio_RotateSound_Ding_key withSoundType:nil];
     
     [self checkIsOver];
-
 }
 
-- (void) rotateOnAxis : (AxisType)axis onLayer: (int)layer inDirection: (LayerRotationDirectionType)direction isTribleRotate:(BOOL)is_trible_roate{
-    
+/**
+ *	根据要求旋转
+ *
+ *	@param	axis	旋转轴
+ *	@param	layer	旋转层
+ *	@param	direction	旋转方向
+ *	@param	is_trible_roate	旋转是否是无效的，只能是有效的
+ */
+- (void) rotateOnAxis : (AxisType)axis onLayer: (int)layer
+           inDirection: (LayerRotationDirectionType)direction isTribleRotate:(BOOL)is_trible_roate{
     //[playHelper rotateWithSingmasterNotation:notation];
-    
     [magicCubeUI rotateOnAxis:axis onLayer:layer inDirection:direction isTribleRotate:NO isTwoTimes:NO];
     
     
 }
+
+/**
+ *	处理旋转操作，看是否在正确的道路上，显示tips等等。
+ */
 -(void)showQueue{
-          
     MCNormalPlayInputViewController* input_C = (MCNormalPlayInputViewController*)inputController;
     //如果队列为空 先applyRules
     if ([[input_C actionQueue] isQueueEmpty]) {
@@ -274,21 +295,35 @@
     [magicCubeUI nextSpaceIndicatorWithRotateNotationType:nextRotateType];
     
 };
-//关闭空间指示器，置乱时使用
+
+/**
+ *	关闭空间指示器，置乱时使用
+ */
 -(void)closeSpaceIndicator{
     [magicCubeUI closeSpaceIndicator];
 };
-//检测是否结束
+
+/**
+ *	检测学习过程是否结束
+ */
 -(void)checkIsOver{
     if ([[self playHelper] isOver]) {
         [((MCNormalPlayInputViewController*)[self inputController])showFinishView];
         NSLog(@"END form Scene");
     } 
 };
+
+/**
+ *	回退到前一步
+ */
 -(void)previousSolution{
     NSLog(@"mc previousSolution");
     [magicCubeUI performSelector:@selector(previousSolution)];
 }
+
+/**
+ *	前进到下一步
+ */
 -(void)nextSolution{
     NSLog(@"mc nextSolution");
     [magicCubeUI performSelector:@selector(nextSolution)];

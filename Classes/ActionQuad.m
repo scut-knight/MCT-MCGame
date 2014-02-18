@@ -19,12 +19,15 @@
     }
     return self;
 }
+
 -(void)awake{
     self.mesh = aQuad;
 }
+
 - (void)update{
     [super update];
 }
+
 - (void)dealloc{
     [aQuad release];
 	[super dealloc];

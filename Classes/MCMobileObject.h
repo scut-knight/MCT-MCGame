@@ -7,9 +7,17 @@
 //
 
 #import "MCSceneObject.h"
-
+/**
+ *	可移动的场景对象
+ */
 @interface MCMobileObject : MCSceneObject {
+	/**
+	 *	平移速度
+	 */
 	MCPoint speed;
+	/**
+	 *	旋转速度
+	 */
 	MCPoint rotationalSpeed;
 }
 

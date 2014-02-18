@@ -8,10 +8,14 @@
 
 #import "PlatformDetect.h"
 #include <sys/sysctl.h>
+
 @implementation PlatformDetect
+/**
+ *	Gets a string with the device model
+ *
+ *	@return	(NSString*)the string respond to device model
+ */
 +(NSString *)platformString{
-    
-    // Gets a string with the device model
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
     char *machine = (char *)malloc(size);

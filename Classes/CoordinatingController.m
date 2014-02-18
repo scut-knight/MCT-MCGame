@@ -16,7 +16,9 @@
 #import "MCNormalPlayInputViewController.h"
 #import "MCRandomSolveViewInputControllerViewController.h"
 #import "SVProgressHUD.h"
+
 @implementation CoordinatingController
+
 @synthesize _mainSceneController,_countingPlaySceneController;
 @synthesize  currentController;
 @synthesize needToReload;
@@ -25,6 +27,7 @@
 @synthesize window;
 @synthesize _randomSolveSceneController;
 @synthesize _systemSettingViewController;
+
 + (CoordinatingController*)sharedCoordinatingController{
     static CoordinatingController *sharedCoordinatingController;
     @synchronized(self)
@@ -46,10 +49,19 @@
     }
     return self;
 }
+
 #pragma mark -
 #pragma mark a method for view transitions
+/**
+ *	根据不同的信号类型，选择不同的加载动作
+ *
+ *	@param	type	加载信号的类型
+ *
+ *  @see MCConfiguration#ViewTransitionTag
+ */
 -(void)requestViewChangeByObject:(int)type{
     switch (type) {
+            // 加载竞速场景
         case kCountingPlay:
         {
             //log
@@ -61,6 +73,7 @@
     
         }
         break;
+            // 加载主场景
         case kMainMenu:
         {
             NSLog(@"requestViewChangeByObject:kMainMenu");
@@ -75,6 +88,7 @@
        
         }
             break;
+            // 从分数统计到主场景
         case kScoreBoard2MainMenu:
         {
             NSLog(@"requestViewChangeByObject:kScoreBoard2MainMenu");
@@ -83,7 +97,8 @@
             [currentController.inputController dismissModalViewControllerAnimated:YES];
             
         }
-        break;
+            break;
+            // 从设置到主场景
         case kSystemSetting2MainMenu:
         {
             NSLog(@"requestViewChangeByObject:kSystemSetting2MainMenu");
@@ -93,6 +108,7 @@
             
         }
             break;
+            // 加载学习场景
         case kNormalPlay:
         {
             
@@ -105,6 +121,7 @@
 
         }
         break;
+            // 加载求解场景
         case kRandomSolve:
         {
             NSLog(@"requestViewChangeByObject:kRandomSolve");
@@ -114,15 +131,15 @@
             [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(loadRandomSolveScene) userInfo:nil repeats:NO];
         }
         break;
+            // 加载用户管理场景
         case kHeroBoard:
         {
             NSLog(@"requestViewChangeByObject:kHeroBoard");
             userManagerSystemViewController = [[[UserManagerSystemViewController alloc] initWithNibName:@"UserManagerSystemViewController" bundle:nil] autorelease];
             [[currentController inputController] presentModalViewController:userManagerSystemViewController animated:YES];
-            //[currentController.inputController resignFirstResponder];
-            
         }
         break;
+            // 加载设置场景
         case kSystemSetting:{
             NSLog(@"requestViewChangeByObject:kSystemSetting");
             _systemSettingViewController = [[[MCSystemSettingViewController alloc] initWithNibName:@"MCSystemSettingViewController" bundle:nil] autorelease];
@@ -130,14 +147,15 @@
 
         }
         break;
+            
         default:
             break;
     }
 }
 
+#pragma mark load each scene
 -(void)loadCountingPlayScene{
     [SVProgressHUD dismiss];
-    //[SVProgressHUD dismiss];
     [currentController stopAnimation];
     _countingPlaySceneController = [MCCountingPlaySceneController sharedCountingPlaySceneController];
     MCCountingPlayInputViewController * countingInputController = [[MCCountingPlayInputViewController alloc] initWithNibName:nil bundle:nil];
@@ -162,6 +180,7 @@
     //sleep(1);
     
 }
+
 -(void)loadRandomSolveScene{
     [SVProgressHUD dismiss];
     //[SVProgressHUD dismiss];
@@ -215,6 +234,7 @@
     //sleep(1);
     
 }
+
 -(void)loadMainMenuScene{
     [SVProgressHUD dismiss];
     [currentController stopAnimation];
@@ -239,9 +259,12 @@
     [currentController startAnimation];
     [SVProgressHUD dismiss];
 }
+
 #pragma mark -
 #pragma mark MBProgressHUDDelegate methods
-
+/**
+ *  当HUD不再需要时，移除它
+ */
 - (void)hudWasHidden:(MBProgressHUD *)hud {
     // Remove HUD from screen when the HUD was hidded
     [HUD removeFromSuperview];

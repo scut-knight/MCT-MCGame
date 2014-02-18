@@ -16,6 +16,14 @@
 @synthesize speedLabel;
 @synthesize scoreLabel;
 
+/**
+ *	初始化单元格对象
+ *
+ *	@param	style	单元格类型
+ *	@param	reuseIdentifier	重用标识，当一个单元格滑出屏幕时，可以通过重用标识在另一边重用该单元格。
+ *
+ *	@return	自定义的单元格对象
+ */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -25,6 +33,9 @@
     return self;
 }
 
+/**
+ *  处理被选中事件
+ */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -42,6 +53,16 @@
     [super dealloc];
 }
 
+/**
+ *	填充表格栏内容
+ *
+ *	@param	_rank	排名
+ *	@param	_name	用户
+ *	@param	_move	步数
+ *	@param	_time	时间
+ *	@param	_speed	速度
+ *	@param	_score	总分
+ */
 -(void)setCellWithRank:(NSString *)_rank Name:(NSString *)_name Move:(NSString *)_move Time:(NSString *)_time Speed:(NSString *)_speed Score:(NSString *)_score
 {
     rankLabel.text = _rank;

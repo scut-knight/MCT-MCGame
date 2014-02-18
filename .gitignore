@@ -16,6 +16,7 @@ DerivedData
 .idea/
 *.hmap
 *.xccheckout
-
+MCGame.xcodeproj/xcuserdata/kwanterry.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+Breakpoints.xcbkptlist
 #CocoaPods
 Pods

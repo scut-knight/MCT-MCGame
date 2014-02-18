@@ -10,6 +10,13 @@
 #import "CoordinatingController.h"
 @implementation MCTimer
 @synthesize totalTime;
+/**
+ *	初始化，加载一系列纹理
+ *
+ *	@param	texturekeys	计时器各部分的纹理
+ *
+ *	@return	计时器实例
+ */
 - (id) initWithTextureKeys:(NSString *[])texturekeys{
     self = [super init];
 	if (self != nil) {
@@ -20,12 +27,15 @@
         m_second = [[MCMultiDigitCounter alloc]initWithNumberOfDigit:2 andKeys:texturekeys];
         separater11 = [[MCDotSeparater alloc]initWithUpKeyS:@"dot2"];
         m_millisecond = [[MCMultiDigitCounter alloc]initWithNumberOfDigit:3 andKeys:texturekeys];
-        //m_nstimer = [[NSTimer alloc]init];
         totalTime = 0;
         isStop = YES;
     }
 	return self;
 }
+
+/**
+ *	重置计时器
+ */
 -(void)reset{
     [m_hour reset];
     [m_millisecond reset];
@@ -33,6 +43,7 @@
     [m_second reset];
     totalTime = 0;
 };
+
 -(void)setScale:(MCPoint)scales{
     [super setScale:scales];
     MCPoint per = MCPointMake(scales.x/30, scales.y, scales.z);
@@ -44,6 +55,7 @@
     [separater11 setScale:per];
     [m_millisecond setScale:MCPointMake(per.x*9, per.y, per.z)];
 }
+
 -(void)setTranslation:(MCPoint)translations{
     [super setTranslation:translations];
     MCPoint perscale = separater11.scale;
@@ -57,6 +69,10 @@
 
 }
 
+/**
+ *	时间单位的进位
+ *  最多可以是59时59分59.999秒
+ */
 -(void)carryLogic{
     if (m_millisecond.m_counterValue>=999) {
         [m_millisecond reset];
@@ -74,21 +90,26 @@
         [m_hour reset];
     }
 }
+
+/**
+ *	用一定的时间来刷新计时器
+ *
+ *	@param	milisec	以毫秒为单位的时间
+ */
 -(void)addTimerWithMilisec:(int)milisec{
-    totalTime+=milisec;
+    totalTime += milisec;
     for (int i = 0; i<milisec; i++) {
         [m_millisecond addCounter];
         [self carryLogic];
     }
 }
+
 -(void)startTimer{
     isStop = NO;
-   //m_nstimer = [NSTimer scheduledTimerWithTimeInterval:Interval target:self selector:@selector(addTimer) userInfo:nil repeats:YES];
 }
+
 -(void)stopTimer{
     isStop = YES;
-    //[m_nstimer invalidate];
-    //m_nstimer = nil;
 }
 
 
@@ -103,6 +124,9 @@
     [super awake];
 }
 
+/**
+ *	更新计时器画面，并且用已过去的时间来刷新计时器
+ */
 -(void)update{
     if (!isStop) {
         CGFloat deltaTime = [[[CoordinatingController sharedCoordinatingController] currentController] deltaTime];
@@ -117,6 +141,7 @@
     [separater22 update];
     [super update];
 }
+
 -(void)render{
     [m_hour render];
     [m_minute render];
@@ -128,6 +153,7 @@
     [super update];
     
 }
+
 -(void)setActive:(BOOL)actives{
     [m_hour setActive:actives];
     [m_minute setActive:actives];
@@ -140,7 +166,6 @@
 }
 
 - (void)dealloc{
-    //[m_nstimer release];
     [m_hour release];
     [m_minute release];
     [m_second release];
@@ -151,7 +176,11 @@
     [super dealloc];
 };
 
-
+/**
+ *	以00:00:00的形式获得计时器时间的描述
+ *
+ *	@return	hh:mm:ss
+ */
 - (NSString *)description{
     return [NSString stringWithFormat:@"%02d:%02d:%02d", m_hour.m_counterValue, m_minute.m_counterValue, m_second.m_counterValue];
 }

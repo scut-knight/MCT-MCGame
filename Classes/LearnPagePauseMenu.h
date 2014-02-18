@@ -10,12 +10,20 @@
 #import "sceneController.h"
 #import "InputController.h"
 #import "CoordinatingController.h"
+
+/**
+ *	学习模式的暂停对话框的选项类型
+ */
 typedef enum _LearnPagePauseSelectType {
     kLearnPagePauseSelect_GoOn  = 0,
     kLearnPagePauseSelect_GoBack,
     kLearnPagePauseSelect_Restart,
     kLearnPagePauseSelect_default
 } LearnPagePauseSelectType;
+
+/**
+ *	学习模式的暂停菜单
+ */
 @interface LearnPagePauseMenu : UATitledModalPanel{
     LearnPagePauseSelectType learnPagePauseSelectType;
     IBOutlet UIView	*viewLoadedFromXib;

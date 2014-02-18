@@ -26,6 +26,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+/**
+ *	开源项目，又一种HUD效果的实现，以下是介绍：
+ *  @see    https://github.com/jdg/MBProgressHUD
+ *  @see    http://blog.csdn.net/ryantang03/article/details/7877120
+ */
 #import <UIKit/UIKit.h>
 
 @protocol MBProgressHUDDelegate;

@@ -24,6 +24,9 @@
 
 @synthesize window;
 
+/**
+ *	返回一个游戏App类的单件，确保只有一个实例被创建
+ */
 + (MCGameAppDelegate*)sharedMCGameAppDelegate{
     static MCGameAppDelegate *sharedMCGameAppDelegate;
     @synchronized(self)
@@ -34,14 +37,17 @@
 	return sharedMCGameAppDelegate;
 }
 
-
+/**
+ *	初始化应用场景
+ */
 - (void)applicationDidFinishLaunching:(UIApplication *)application 
 {   
-    //laod external OBJ 3D model into appliaction
+    //load external OBJ 3D model into appliaction
     NSString *filename = [[NSBundle mainBundle] pathForResource:@"RadiusOneCubeWithPic" ofType:@"obj"];
     MCOBJLoader *tmp = [MCOBJLoader sharedMCOBJLoader];
     [tmp loadObjFromFile:filename objkey:nil];
     
+    // load soundsetting
     SoundSettingController * soundcontroller = [SoundSettingController sharedsoundSettingController];
     [soundcontroller loadSounds];
     [soundcontroller loadSoundConfiguration];
@@ -50,13 +56,11 @@
     
     //场景对象控制器
 	MCSceneController * sceneController = [MCSceneController sharedSceneController];
-	//MCCountingPlaySceneController * sceneController = [MCCountingPlaySceneController sharedCountingPlaySceneController];
     [[CoordinatingController sharedCoordinatingController] setCurrentController: sceneController];
     [[CoordinatingController sharedCoordinatingController] setWindow:window];
     //创建输入控制器，并绑定到场景控制器
 	// make a new input view controller, and save it as an instance variable
 	MCInputViewController * anInputController = [[MCInputViewController alloc] initWithNibName:nil bundle:nil];
-    //MCCountingPlayInputViewController * anInputController = [[MCCountingPlayInputViewController alloc] initWithNibName:nil bundle:nil];
 	sceneController.inputController = anInputController;
 	[anInputController release];
 	
@@ -71,7 +75,6 @@
 	
 	// set our view as the first window view
     [window setRootViewController:sceneController.inputController];
-	//[window addSubview:sceneController.inputController.view];
     
 	[window makeKeyAndVisible];
 	

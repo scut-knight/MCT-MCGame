@@ -41,6 +41,10 @@ static BOOL _isInitFinished = NO;
 @synthesize menuItems = _menuItems;
 @synthesize stepcounter;
 @synthesize actionQueue;
+
+/**
+ *	加载场景
+ */
 -(void)loadInterface{
     [super loadInterface];
     
@@ -190,6 +194,7 @@ static BOOL _isInitFinished = NO;
     // Init for two phase solver
     // Begin
     if (!_isInitFinished) {
+        // 异步初始化
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             // Doing
@@ -209,7 +214,10 @@ static BOOL _isInitFinished = NO;
     
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(askReload) userInfo:nil repeats:NO];
 }
-//撤销
+
+/**
+ *	按下了上一步按钮，撤销操作
+ */
 -(void)previousSolutionBtnUp{
     if (currentMove<0) {
         return;
@@ -217,7 +225,7 @@ static BOOL _isInitFinished = NO;
     MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController];
     [c flashSecne];
     [actionQueue shiftLeft];
-    [stepcounter addCounter];
+    [stepcounter addCounter]; // 注意求解时步数是递减
     
     SingmasterNotation notation_Invert = (SingmasterNotation)[[singmasternotations objectAtIndex:currentMove]integerValue];
     SingmasterNotation notation = [MCTransformUtil getContrarySingmasterNotation:notation_Invert];
@@ -231,9 +239,14 @@ static BOOL _isInitFinished = NO;
     //[c nextSingmasterNotation: (SingmasterNotation)[[singmasternotations objectAtIndex:currentMove-1]integerValue]];
     //[[c playHelper]rotateWithSingmasterNotation:notation];
 };
+/**
+ *	空的方法，为了配合previousSolutionBtnUp而存在，不要删掉。
+ */
 -(void)previousSolutionBtnDown{};
 
-//恢复
+/**
+ *	按下了下一步按钮，恢复操作
+ */
 -(void)nextSolutionBtnUp{
     if (currentMove==totalMove-1) {
         return;
@@ -256,11 +269,19 @@ static BOOL _isInitFinished = NO;
 
     
 };
+/**
+ *	空的方法，为了配合nextSolutionBtnUp而存在，不要删掉。
+ */
 -(void)nextSolutionBtnDown{};
 
+/**
+ *	空的方法，为了配合qSolveBtnUp而存在，不要删掉。
+ */
 -(void)qSolveBtnDown{
 }
-
+/**
+ *	按下求解按钮开始求解
+ */
 -(void)qSolveBtnUp{
     MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController ];
     if (!_isInitFinished) {
@@ -278,6 +299,9 @@ static BOOL _isInitFinished = NO;
     NSLog(@"mainMenuPlayBtnDown");
 }
 
+/**
+ *	保存魔方状态，并把控制权交由场景迁徙协调控制器。
+ */
 -(void)mainMenuBtnUp{
     NSLog(@"mainMenuPlayBtnUp");
     
@@ -294,8 +318,13 @@ static BOOL _isInitFinished = NO;
     [coordinatingController_ requestViewChangeByObject:kMainMenu];
 }
 
+/**
+ *	空的方法，为了配合pauseSolutionBtnUp而存在，不要删掉。
+ */
 -(void)pauseSolutionBtnDown{}
-
+/**
+ *	按下暂停按钮，开始暂停操作。
+ */
 -(void)pauseSolutionBtnUp{
     NSLog(@"pauseSolutionBtnUp");
     //停止计时器
@@ -313,7 +342,12 @@ static BOOL _isInitFinished = NO;
 	[solvePagePauseMenuView showFromPoint:CGPointMake(512,384)];
 }
 
-
+/**
+ *	触碰开始，如果是单指触碰，显示纹理选择器。如果纹理选择器已存在，则不作处理
+ *
+ *	@param	touches	触控点集合
+ *	@param	event	UI事件
+ */
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     //do something
     if (_selectMenu.expanding) return;
@@ -330,6 +364,12 @@ static BOOL _isInitFinished = NO;
     isWantShowSelectView = YES;
 }
 
+/**
+ *	触碰结束。展现纹理选择器，并锁定要上色的目标立方体
+ *
+ *	@param	touches	触控点集合
+ *	@param	event	UI事件
+ */
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     BOOL isSelectOneFace = NO;
     if (!_selectMenu.expanding){
@@ -382,25 +422,40 @@ static BOOL _isInitFinished = NO;
     }
 }
 
-
+/**
+ *	根据所选取的纹理颜色给被选择的面上色
+ *
+ *	@param	menu	没用到
+ *	@param	color	颜色
+ *
+ *  @see QuadCurveMenu
+ */
 - (void)quadCurveMenu:(QuadCurveMenu *)menu didSelectColor:(FaceColorType)color{
-    MCRandomSolveSceneController * secencontroller = [MCRandomSolveSceneController sharedRandomSolveSceneController];
+    MCRandomSolveSceneController * secenecontroller = [MCRandomSolveSceneController sharedRandomSolveSceneController];
     //选择的小块0-26
-    int selected_cube_index = [secencontroller selected_index];
+    int selected_cube_index = [secenecontroller selected_index];
     //选择到面+++上下前后左右012345
-    int selected_face_index = [secencontroller selected_face_index];
+    int selected_face_index = [secenecontroller selected_face_index];
     //给magicCube填上颜色
     
-    NSObject<MCCubieDelegate> *targetCubie = [[[MCRandomSolveSceneController sharedRandomSolveSceneController] magicCube] cubieWithColorCombination:(ColorCombinationType)selected_cube_index];
+    MCMagicCube *temp = [[MCRandomSolveSceneController sharedRandomSolveSceneController] magicCube];
+    NSObject<MCCubieDelegate> *targetCubie = [temp cubieWithColorCombination:(ColorCombinationType)selected_cube_index];
     [targetCubie setFaceColor:color inOrientation:(FaceOrientationType)selected_face_index];
     
     
     //刷新magicCubeUI
-    [secencontroller flashSecne];
+    [secenecontroller flashSecne];
     
 }
 
-
+/**
+ *	检查特定的立方体的可允许的颜色数量，并以此设定纹理选择器提供的纹理数目
+ *
+ *  @see MCCubieColorConstraintUtil#avaiableColorsOfCubie:inOrientation
+ *
+ *	@param	cubie	立方块
+ *	@param	orientation	表面朝向
+ */
 - (void)checkConstraintAtCubie:(NSObject<MCCubieDelegate> *)cubie inOrientation:(FaceOrientationType)orientation{
     NSMutableArray *avaiableColors = [MCCubieColorConstraintUtil avaiableColorsOfCubie:cubie
                                                                          inOrientation:orientation];
@@ -414,7 +469,11 @@ static BOOL _isInitFinished = NO;
     [_selectMenu setMenusArray:loadMenuItems];
 }
 
-
+/**
+ *	求解魔方
+ *
+ *	@return	无法求解(未填满,etc)则返回NO，求解成功返回YES
+ */
 - (BOOL)solveMagicCube{
     MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController ];
     
@@ -424,7 +483,7 @@ static BOOL _isInitFinished = NO;
     if (![magicCube hasAllFacesBeenFilledWithColors]) {
         NSLog(@"Fill all faces firstly!");
         [[c tipsLabel] setText:@"请先将所有面填满..."];
-        [SVProgressHUD dismiss];
+        [SVProgressHUD dismiss]; // 这个可以拿出来，放到qSolveBtnUp的最下面去 TODO
         return NO;
     }
     
@@ -457,11 +516,12 @@ static BOOL _isInitFinished = NO;
             NSString *resultString = [NSString stringWithUTF8String:Search::solution([stateString UTF8String], 24, 1000, true).c_str()];
             
             // Check error
-            if ([resultString hasPrefix:@"Error"]) {
+            if ([resultString hasPrefix:@"Error"]) { // 错误码由二阶段算法产生
                 // Set flag yes
                 _errorFlag = YES;
                 [SVProgressHUD dismiss];
-                if ([resultString hasSuffix:@"1"]) {
+
+                if ([resultString hasSuffix:@"1"]) { // Error 1 , others are so on
                     NSLog(@"%@", @"There are not exactly nine facelets of each color!");
                     [[c tipsLabel] setText:@"有些颜色被输入超过9次..."];
                 } else if ([resultString hasSuffix:@"2"]) {
@@ -501,7 +561,7 @@ static BOOL _isInitFinished = NO;
                     NSString *component = [resultStringComponents objectAtIndex:i];
                     [tags addObject:[MCTransformUtil getRotationTagFromSingmasterNotation:
                                      [MCTransformUtil singmasternotationFromStringTag:component]]];
-                    //[singmasternotations addObject:[[MCTransformUtil singmasternotationFromStringTag:component]];
+
                     [singmasternotations addObject:[NSNumber numberWithInteger:[MCTransformUtil singmasternotationFromStringTag:component]]];
                 }
                 totalMove = [singmasternotations count];
@@ -533,36 +593,49 @@ static BOOL _isInitFinished = NO;
 }
 #pragma mark - UAModalDisplayPanelViewDelegate
 
-// Optional: This is called before the open animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called before the open animations.
+ *   Only used if delegate is set.
+ */
 - (void)willShowModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"willShowModalPanel called with modalPanel: %@", modalPanel);
 }
 
-// Optional: This is called after the open animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called after the open animations.
+ *   Only used if delegate is set.
+ */
 - (void)didShowModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"didShowModalPanel called with modalPanel: %@", modalPanel);
 }
 
-// Optional: This is called when the close button is pressed
-//   You can use it to perform validations
-//   Return YES to close the panel, otherwise NO
-//   Only used if delegate is set.
+/**
+ * Optional: This is called when the close button is pressed
+ *   You can use it to perform validations
+ *   Return YES to close the panel, otherwise NO
+ *   Only used if delegate is set.
+ */
 - (BOOL)shouldCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"shouldCloseModalPanel called with modalPanel: %@", modalPanel);
 	return YES;
 }
 
-// Optional: This is called before the close animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called before the close animations.
+ *   Only used if delegate is set.
+ */
 - (void)willCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"willCloseModalPanel called with modalPanel: %@", modalPanel);
 }
 
 
-// Optional: This is called after the close animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called after the close animations.
+ *   Only used if delegate is set.
+ *
+ *  根据模态对话框的不同选项进行不同的操作。
+ *  在模态对话框关闭后执行。
+ */
 - (void)didCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"didCloseModalPanel called with modalPanel: %@", modalPanel);
     if (askReloadView) {
@@ -574,11 +647,12 @@ static BOOL _isInitFinished = NO;
             NSString *filePath = [path stringByAppendingPathComponent:TmpInputMagicCubeData];
             
             MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController ];
-            c.magicCube=[[MCMagicCube unarchiveMagicCubeWithFile:filePath] retain];
+            c.magicCube=[MCMagicCube unarchiveMagicCubeWithFile:filePath];
             [c flashSecne];
             [c closeSingmasterNotation];
+
             //更新UI模型
-            if (!_isInitFinished) {
+            if (!_isInitFinished) { // 重复的东西也未免太多了吧
                 [[c tipsLabel] setText:@"求解系统正在初始化...\n请等待..."];
             }else{
                 [[c tipsLabel] setText:@"求解系统初始化完成!\n可点击求解按钮."];
@@ -590,7 +664,7 @@ static BOOL _isInitFinished = NO;
             //Default
             MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController ];
             //[c.magicCube release];
-            c.magicCube = [[MCMagicCube magicCubeOnlyWithCenterColor]retain];
+            c.magicCube = [MCMagicCube magicCubeOnlyWithCenterColor];
             [c flashSecne];
             [c closeSingmasterNotation];
             if (!_isInitFinished) {
@@ -628,6 +702,7 @@ static BOOL _isInitFinished = NO;
             //save and return
             [self mainMenuBtnUp];
         }else if([solvePagePauseMenuView solvePagePauseSelectType]==kSolvePagePauseSelect_GoBack_Directly){
+            // 直接离开和保存后离开的区别在于，直接离开不用NSKeyedArchiver保存魔方状态，如果之后又继续上次，那么就会继续上上次的状态
             MCRandomSolveSceneController *c = [MCRandomSolveSceneController sharedRandomSolveSceneController];
             if (![[c tipsLabel]isHidden]) {
                 [[c tipsLabel]setHidden:YES];
@@ -643,6 +718,10 @@ static BOOL _isInitFinished = NO;
     }
     
 }
+
+/**
+ *	在重新加载场景时弹出的对话框
+ */
 -(void)askReload{
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *fileName = [path stringByAppendingPathComponent:TmpInputMagicCubeData];

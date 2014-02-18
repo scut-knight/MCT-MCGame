@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "MCSceneObject.h"
+/**
+ *	显示动作名的区域
+ */
 @interface ActionQuad : MCSceneObject{
     MCTexturedQuad *aQuad;
     NSString * name;

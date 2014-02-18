@@ -16,7 +16,9 @@
 #import "MCLabel.h"
 @implementation MCInputViewController
 
-
+/**
+ *	加载主场景
+ */
 -(void)loadInterface
 {
 	if (interfaceObjects == nil) interfaceObjects = [[NSMutableArray alloc] init];
@@ -24,6 +26,7 @@
     
     //apptitle lebel
     //UI UI step counter label
+    // 加载应用名“魔方大师”
     MCLabel *apptitleLabel= [[MCLabel alloc]initWithNstring:TextureKey_appTitle];
     apptitleLabel.scale =  MCPointMake(546, 151, 1);
     [apptitleLabel setTranslation :MCPointMake(0, 285, 0.0)];
@@ -33,7 +36,8 @@
     [apptitleLabel release];
     
     
-	CGFloat yBased = -262;
+	CGFloat yBased = -262;  // 所有的按钮在同一个Y轴坐标上
+    
    	// normalPlayBtn
 	MCTexturedButton * normalPlayBtn = [[MCTexturedButton alloc] initWithUpKey:TextureKey_learnButtonUp downKey:TextureKey_learnButtonDown];
 	normalPlayBtn.scale =  MCPointMake(174, 174, 1);
@@ -84,6 +88,7 @@
 	[systemSettingBtn release];
 	
 	// heroBoardBtn
+    // 排行
 	MCTexturedButton * heroBoardBtn = [[MCTexturedButton alloc] initWithUpKey:TextureKey_rankButtonUp downKey:TextureKey_rankButtonDown];
 	heroBoardBtn.scale =  MCPointMake(120, 120, 1);
 	heroBoardBtn.translation = MCPointMake(300, yBased, 0.0);
@@ -98,14 +103,19 @@
     [super loadInterface];
 }
 
+#pragma mark - button up and down
+// 所有的Down会在命令行输出对应信息
+// 所有的Up会加载对应的控制器
+-(void)normalPlayBtnDown{
+    NSLog(@"normalPlayBtnDown");
+}
 
-
--(void)normalPlayBtnDown{NSLog(@"normalPlayBtnDown");}
 -(void)normalPlayBtnUp{
     NSLog(@"normalPlayBtnUp");  
     CoordinatingController *coordinatingController_ = [CoordinatingController sharedCoordinatingController];
     [coordinatingController_ requestViewChangeByObject:kNormalPlay];
 }
+
 -(void)countingPlayBtnDown{
     NSLog(@"countingPlayBtnDown");
     
@@ -115,14 +125,21 @@
     CoordinatingController *coordinatingController_ = [CoordinatingController sharedCoordinatingController];
     [coordinatingController_ requestViewChangeByObject:kCountingPlay];
 }
--(void)randomSolveBtnDown{NSLog(@"randomSolveBtnDown");}
+
+-(void)randomSolveBtnDown{
+    NSLog(@"randomSolveBtnDown");
+}
+
 -(void)randomSolveBtnUp{
     NSLog(@"randomSolveBtnUp");
     CoordinatingController *coordinatingController_ = [CoordinatingController sharedCoordinatingController];
     [coordinatingController_ requestViewChangeByObject:kRandomSolve];
     
 }
--(void)systemSettingBtnDown{NSLog(@"systemSettingBtnDown");}
+
+-(void)systemSettingBtnDown{
+    NSLog(@"systemSettingBtnDown");
+}
 -(void)systemSettingBtnUp{
     NSLog(@"systemSettingBtnUp");
     CoordinatingController *coordinatingController_ = [CoordinatingController sharedCoordinatingController];

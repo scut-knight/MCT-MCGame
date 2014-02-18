@@ -15,11 +15,12 @@
 
 
 @implementation MCSceneObject
+
 @synthesize prerotation,pretranslation;
 @synthesize translation,rotation,scale,active,mesh,matrix,meshBounds;
 //@synthesize m_orientation;
 @synthesize quaRotation,quaPreviousRotation,start_quaRotation,finish_quaRotation;
-@synthesize collider;
+
 - (id) init
 {
 	self = [super init];
@@ -32,7 +33,7 @@
 		matrix = (CGFloat *) malloc(16 * sizeof(CGFloat));
 		active = NO;
 		meshBounds = CGRectZero;
-		//self.collider = nil;
+        // 注意mesh没有被初始化。
 	}
 	return self;
 }
@@ -40,16 +41,23 @@
 -(CGRect) meshBounds
 {
 	if (CGRectEqualToRect(meshBounds, CGRectZero)) {
+        // 在这里设置meshBounds
 		meshBounds = [MCMesh meshBounds:mesh scale:scale];
 	}
 	return meshBounds;
 }
-// called once when the object is first created.
+
+/**
+ * called once when the object is first created.
+ */
 -(void)awake
 {
+    // do nothing
 }
 
-// called once every frame
+/*
+ * called once every frame
+ */
 -(void)update
 {
 	glPushMatrix();
@@ -58,6 +66,7 @@
 	// move to my position
 	glTranslatef(pretranslation.x, pretranslation.y, pretranslation.z);
 	
+    // 以四元数来进行旋转
    	mat4 matRotation = quaRotation.ToMatrix();
     glMultMatrixf(matRotation.Pointer());
     
@@ -65,6 +74,7 @@
 
         
     // rotate
+    // 向三个方向旋转对应的prerotation度数
 	glRotatef(prerotation.x, 1.0f, 0.0f, 0.0f);
 	glRotatef(prerotation.y, 0.0f, 1.0f, 0.0f);
 	glRotatef(prerotation.z, 0.0f, 0.0f, 1.0f);
@@ -89,7 +99,9 @@
 	//if (collider != nil) [collider updateCollider:self];   
 }
 
-// called once every frame
+/**
+ * called once every frame
+ */
 -(void)render
 {
     if (!mesh || !active) return; // if we do not have a mesh, no need to render
@@ -97,16 +109,16 @@
 	glPushMatrix();
 	glLoadIdentity();
 	glMultMatrixf(matrix);
+    // use mesh to render itself
 	[mesh render];	
 	glPopMatrix();
 }
 
 - (void) dealloc
 {
-	
-	[mesh release];
-	//[collider release];
-	free(matrix);	
+    if (matrix != NULL) {
+        free(matrix);
+    }
 	[super dealloc];
 
 }

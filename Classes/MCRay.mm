@@ -116,6 +116,7 @@
                 distanceVector.y*distanceVector.y +
                 distanceVector.z*distanceVector.z);
 }
+
 -(vec3)pointIntersectWithTriangleMadeUpOfV0:(float *)V0
                                     V1:(float *)V1
                                     V2:(float *)V2{
@@ -183,14 +184,16 @@
     //u *= fInvDet;
     //v *= fInvDet;
     vec3 distanceVector = vDirection*t;
-    
-    return vOrigin+distanceVector;
+    // 交点坐标为原点坐标加向量化的距离
+    return vOrigin + distanceVector;
 }
+
 -(void)transformWithMatrix:(mat4) matrix{
     vec3 v0 = vOrigin;
     vec3 v1 = vOrigin;
     v1 += vDirection;
     
+    // 使用输入的矩阵来变换向量
     matrix.transform(v0, v0);
     matrix.transform(v1, v1);
     

@@ -15,7 +15,9 @@
 #include "FaceCube.h"
 
 using namespace std;
-
+/**
+ * 包括工具函数 verify(string s) and randomCube()
+ */
 class Tools {
 public:
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -30,6 +32,8 @@ public:
 	//
 	/**
 	 * Check if the cube definition string s represents a solvable cube.
+     *
+     *  验证描述cube的字符串是否表示可解的cube类型
 	 *
 	 * @param s is the cube definition string , see {@link Facelet}
 	 * @return 0: Cube is solvable<br>
@@ -44,6 +48,9 @@ public:
     
     /**
 	 * Generates a random cube.
+     *
+     * 产生一个随机的cube
+     *
 	 * @return A random cube in the string representation. Each cube of the cube space has the same probability.
 	 */
 	static string randomCube();

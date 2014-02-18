@@ -13,10 +13,14 @@
 #import "PauseMenu.h"
 #import "MCStringDefine.h"
 #import "MCLabel.h"
+
 @implementation MCCountingPlayInputViewController
 @synthesize stepcounter;
 @synthesize timer;
 
+/**
+ *	加载场景
+ */
 -(void)loadInterface
 {
 	if (interfaceObjects == nil) interfaceObjects = [[NSMutableArray alloc] init];
@@ -24,6 +28,7 @@
     
   
     //UI step counter
+    // 计步器纹理名
     NSString *counterName[10] = {@"zero2",@"one2",@"two2",@"three2",@"four2",@"five2",@"six2",@"seven2",@"eight2",@"nine2"};
     stepcounter = [[MCMultiDigitCounter alloc]initWithNumberOfDigit:3 andKeys:counterName];
     [stepcounter setScale : MCPointMake(51, 25, 1.0)];
@@ -103,16 +108,26 @@
      [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(askReload) userInfo:nil repeats:NO];
     
 }
+
 #pragma mark - button actions
-//撤销
+
+/**
+ *	按下了上一步按钮，撤销操作
+ */
 -(void)previousSolutionBtnUp{
     NSLog(@"previousSolutionBtnUp");
     MCCountingPlaySceneController *c = [MCCountingPlaySceneController sharedCountingPlaySceneController];
     [c previousSolution];
 }
+
+/**
+ *	空的方法，为了配合previousSolutionBtnUp而存在，不要删掉。
+ */
 -(void)previousSolutionBtnDown{}
 
-//暂停
+/**
+ *	按下暂停按钮，开始暂停操作。
+ */
 -(void)pauseSolutionBtnUp{
     NSLog(@"pauseSolutionBtnUp");
     //停止计时器
@@ -130,18 +145,33 @@
 	// Show the panel from the center of the button that was pressed
 	[puseMenu showFromPoint:CGPointMake(512,384)];
 }
+
+/**
+ *	空的方法，为了配合pauseSolutionBtnUp而存在，不要删掉。
+ */
 -(void)pauseSolutionBtnDown{}
-//恢复
+
+/**
+ *	按下了下一步按钮，恢复操作
+ */
 -(void)nextSolutionBtnUp{
     NSLog(@"nextSolutionBtnUp");
     MCCountingPlaySceneController *c = [MCCountingPlaySceneController sharedCountingPlaySceneController];
     [c nextSolution];
 }
+
+/**
+ *	空的方法，为了配合nextSolutionBtnUp而存在，不要删掉。
+ */
 -(void)nextSolutionBtnDown{}
 
 -(void)mainMenuBtnDown{
     NSLog(@"mainMenuPlayBtnDown");
-   }
+}
+
+/**
+ *	保存魔方状态，并把控制权交由场景迁徙协调控制器。
+ */
 -(void)mainMenuBtnUp{NSLog(@"mainMenuPlayBtnUp");
     
     //保存竞赛页面魔方状态
@@ -159,29 +189,37 @@
 
 #pragma mark - UAModalDisplayPanelViewDelegate
 
-// Optional: This is called before the open animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called before the open animations.
+ *   Only used if delegate is set.
+ */
 - (void)willShowModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"willShowModalPanel called with modalPanel: %@", modalPanel);
 }
 
-// Optional: This is called after the open animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called after the open animations.
+ *   Only used if delegate is set.
+ */
 - (void)didShowModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"didShowModalPanel called with modalPanel: %@", modalPanel);
 }
 
-// Optional: This is called when the close button is pressed
-//   You can use it to perform validations
-//   Return YES to close the panel, otherwise NO
-//   Only used if delegate is set.
+/**
+ * Optional: This is called when the close button is pressed
+ *   You can use it to perform validations
+ *   Return YES to close the panel, otherwise NO
+ *   Only used if delegate is set.
+ */
 - (BOOL)shouldCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"shouldCloseModalPanel called with modalPanel: %@", modalPanel);
 	return YES;
 }
 
-// Optional: This is called before the close animations.
-//   Only used if delegate is set.
+/**
+ * Optional: This is called before the close animations.
+ *   Only used if delegate is set.
+ */
 - (void)willCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"willCloseModalPanel called with modalPanel: %@", modalPanel);
 }
@@ -189,8 +227,16 @@
 -(void)releaseInterface{
     [super releaseInterface];
 };
-// Optional: This is called after the close animations.
-//   Only used if delegate is set.
+
+/**
+ * Optional: This is called after the close animations.
+ *   Only used if delegate is set.
+ *
+ *  根据模态对话框的不同选项进行不同的操作。
+ *  在模态对话框关闭后执行。
+ *
+ *  @see MCNormalPlayInputViewController#didCloseModalPanel
+ */
 - (void)didCloseModalPanel:(UAModalPanel *)modalPanel {
 	UADebugLog(@"didCloseModalPanel called with modalPanel: %@", modalPanel);
     if (askReloadView) {
@@ -202,7 +248,7 @@
             NSString *filePath = [path stringByAppendingPathComponent:TmpCounttingPageMagicCubeData];
             
             MCCountingPlaySceneController *c = [MCCountingPlaySceneController sharedCountingPlaySceneController ];
-            c.magicCube=[[MCMagicCube unarchiveMagicCubeWithFile:filePath] retain];
+            c.magicCube=[MCMagicCube unarchiveMagicCubeWithFile:filePath];
             [c flashScene];
             //更新UI模型
             //[c reloadLastTime];
@@ -253,6 +299,9 @@
 
 }
 
+/**
+ *	竞速模式结束时弹出的对话框
+ */
 -(void)showFinishView{
     
     //停止计时器
@@ -265,7 +314,7 @@
     finishView.alpha = 0.2;
     
     
-    // Set step count and learing time.
+    // Set step count and time cost, with score counted
     finishView.raceStepCountLabel.text = [NSString stringWithFormat:@"%d步", stepcounter.m_counterValue];
     finishView.raceTimeLabel.text = [timer description];
     finishView.lastingTime = timer.totalTime/1000;
@@ -290,6 +339,9 @@
     
 }
 
+/**
+ *	在重新加载场景时弹出的对话框
+ */
 -(void)askReload{
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *fileName = [path stringByAppendingPathComponent:TmpCounttingPageMagicCubeData];

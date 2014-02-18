@@ -1,7 +1,15 @@
 #pragma once
+/**
+ * @file
+ *
+ * 这里定义了openGLES所需的矩阵类型，是十分重要的一部分。
+ */
 #include "Vector.hpp"
 
 template <typename T>
+/**
+ *	2维矩阵
+ */
 struct Matrix2 {
     Matrix2()
     {
@@ -18,6 +26,9 @@ struct Matrix2 {
 };
 
 template <typename T>
+/**
+ *	3维矩阵
+ */
 struct Matrix3 {
     Matrix3()
     {
@@ -49,7 +60,13 @@ struct Matrix3 {
 };
 
 template <typename T>
+/**
+ *	4维矩阵
+ */
 struct Matrix4 {
+    /**
+     *	4维矩阵的默认构造函数，其主对角线被初始化为全1
+     */
     Matrix4()
     {
         x.x = 1; x.y = 0; x.z = 0; x.w = 0;
@@ -97,6 +114,10 @@ struct Matrix4 {
         Matrix4 m = *this * b;
         return (*this = m);
     }
+    
+    /**
+     *	返回一个新的矩阵，含有跟当前矩阵相同的值
+     */
     Matrix4 Transposed() const
     {
         Matrix4 m;
@@ -106,6 +127,10 @@ struct Matrix4 {
         m.w.x = x.w; m.w.y = y.w; m.w.z = z.w; m.w.w = w.w;
         return m;
     }
+    
+    /**
+     *  返回一个三维矩阵，忽略第四个维度
+     */
     Matrix3<T> ToMat3() const
     {
         Matrix3<T> m;
@@ -115,6 +140,12 @@ struct Matrix4 {
         return m;
     }
     
+    /**
+     *	利用矩阵的三个维度变换3维矢量
+     *
+     *	@param	in	用于变换的矢量
+     *	@param	out	输出的矢量
+     */
     void transform(vec3 in, vec3 &out)
     {
         vec3 tmp;
@@ -123,15 +154,30 @@ struct Matrix4 {
         tmp.z = x.z * in.x + y.z * in.y + z.z * in.z;
         out = tmp;
     }
+    
+    /**
+     *  返回一个指向该矩阵的指针
+     */
     const T* Pointer() const
     {
         return &x.x;
     }
+    
+    /**
+     *	静态函数
+     *
+     *	@return	返回一个由Matrix4()构造的默认4*4矩阵
+     */
     static Matrix4<T> Identity()
     {
         return Matrix4();
     }
-    static Matrix4<T> Translate(T x, T y, T z)
+    
+    /**
+     *	转换第四个维度(用于矩阵变换的维度)
+     *	@return	新的四维矩阵
+     */
+    static Matrix4<T> Translate(const T x,const T y,const T z)
     {
         Matrix4 m;
         m.x.x = 1; m.x.y = 0; m.x.z = 0; m.x.w = 0;
@@ -140,6 +186,10 @@ struct Matrix4 {
         m.w.x = x; m.w.y = y; m.w.z = z; m.w.w = 1;
         return m;
     }
+    
+    /**
+     *  缩放
+     */
     static Matrix4<T> Scale(T s)
     {
         Matrix4 m;
@@ -149,7 +199,10 @@ struct Matrix4 {
         m.w.x = 0; m.w.y = 0; m.w.z = 0; m.w.w = 1;
         return m;
     }
-    //z轴旋转
+    
+    /**
+     * z轴旋转
+     */
     static Matrix4<T> Rotate(T degrees)
     {
         T radians = degrees * 3.14159f / 180.0f;
@@ -163,6 +216,14 @@ struct Matrix4 {
         m.w.x =  0; m.w.y = 0; m.w.z = 0; m.w.w = 1;
         return m;
     }
+    
+    /**
+     *  Frustum 平锥头体(又名，视锥体)。
+     *
+     *  透过透射投影的方法，将软件中的3D画面投影成眼前的2D画面。这里软件中的三维坐标相当于平锥头体的底部，屏幕的二维坐标相当于平锥头体的顶面。
+     *
+     *  这里采用了6个参数来构造一个投影矩阵。
+     */
     static Matrix4<T> Frustum(T left, T right, T bottom, T top, T near, T far)
     {
         T a = 2 * near / (right - left);
@@ -178,12 +239,18 @@ struct Matrix4 {
         m.w.x = 0; m.w.y = 0; m.w.z = f; m.w.w = 1;
         return m;
     }
+    /**
+     *	内部有四个public的4维向量
+     */
     vec4 x;
     vec4 y;
     vec4 z;
     vec4 w;
 };
 
+/**
+ *	注意只typedef了float类型的矩阵，说明只用到了float类型
+ */
 typedef Matrix2<float> mat2;
 typedef Matrix3<float> mat3;
 typedef Matrix4<float> mat4;

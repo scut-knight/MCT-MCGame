@@ -12,6 +12,9 @@
 #import "PopChangeUserViewController.h"
 #import "ScoreCell.h"
 
+/**
+ *	用户管理系统视图界面控制器
+ */
 @interface UserManagerSystemViewController : UIViewController
     <UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate>
 {

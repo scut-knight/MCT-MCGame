@@ -32,7 +32,7 @@
 @synthesize faceColors = _faceColors;
 @synthesize orientations = _orientations;
 
-//initial the cube's data by orignal coordinate value
+/// initial the cube's data by orignal coordinate value
 - (id)initRightCubeWithCoordinate:(struct Point3i)value{
     if(self = [self init]){
         // Before initiating, clear data
@@ -116,6 +116,15 @@
     return self;
 }   
 
+/**
+ *	Re-initiate the cube
+ *
+ *	@param	value	original coordinate value
+ *	@param	colors	按顺序排列的颜色组合
+ *	@param	ors	按顺序排列的朝向组合
+ *
+ *	@return	self
+ */
 - (id)redefinedWithCoordinate:(struct Point3i)value orderedColors:(NSArray *)colors orderedOrientations:(NSArray *)ors{
     if([self init]){
         
@@ -176,6 +185,11 @@
     return self;
 }
 
+/**
+ *  Only the center color will be filled, others will be filled with 'NoColor'
+ *
+ *  只有中间的颜色被填充，其他的颜色为无颜色。用于求解模式
+ */
 - (id)initOnlyCenterColor:(struct Point3i)value{
     if(self = [self init]){
         //before initiating, clear data
@@ -324,6 +338,7 @@
     [super dealloc];
 }
 
+/// shift the cube‘s data
 - (void) shiftOnAxis : (AxisType)axis inDirection: (LayerRotationDirectionType)direction{
     int temp;
     FaceOrientationType faceOrientation;
@@ -501,8 +516,9 @@
         default:
             break;
     }
-}   //shift the cube‘s data
+}
 
+/// get the faceColor in specified orientation
 - (FaceColorType) faceColorInOrientation: (FaceOrientationType)orientation{
     int i;
     for (i = 0; i < _skinNum; i++) {
@@ -511,9 +527,9 @@
         }
     }
     return NoColor;
-}   //get the faceColor in specified orientation
+}   
 
-//return wheather the face color on the specified orientation is the specified color
+/// return wheather the face color on the specified orientation is the specified color
 - (BOOL)isFaceColor:(FaceColorType)color inOrientation:(FaceOrientationType)orientation{
     int i;
     for (i = 0; i < _skinNum; i++) {
@@ -524,15 +540,16 @@
     return NO;
 }
 
-
-// Set the face color on the specified orientation.
-// If the cubie has face on this orientation, set the color.
-// Otherwise, return NO.
+/**
+ * Set the face color on the specified orientation.
+ * If the cubie has face on this orientation, set the color.
+ * Otherwise, return NO.
+ */
 - (BOOL)setFaceColor:(FaceColorType)color inOrientation:(FaceOrientationType)orientation{
     int i;
     for (i = 0; i < _skinNum; i++) {
         if (orientation == _orientations[i]) {
-            // Update identity
+            // Update identity,以下部分是为了构造颜色组合
             switch (_faceColors[i]) {
                 case UpColor:
                     _identity = (ColorCombinationType)((int)_identity - 3);
@@ -586,7 +603,7 @@
             
             // Assign face color
             _faceColors[i] = color;
-            
+            // 如果是一个角块，而有两个面已经被填充了，那么补全最后一个面的颜色
             if (_completeFaceNum == 2 && _type == CornerCubie) {
                 int i;
                 for (i = 0; i < _skinNum; i++) {
@@ -606,7 +623,7 @@
 }
 
 
-//clear all data, ready for re-initiate
+/// clear all data, ready for re-initiate
 - (void)clearData{
     coordinateValue.x = 0;
     coordinateValue.y = 0;
@@ -618,7 +635,7 @@
     free(_orientations);
 }
 
-//encode the object
+/// encode the object
 - (void)encodeWithCoder:(NSCoder *)aCoder{
     [aCoder encodeInteger:coordinateValue.x forKey:kCoordinateXKey];
     [aCoder encodeInteger:coordinateValue.y forKey:kCoordinateYKey];
@@ -633,7 +650,7 @@
     }
 }
 
-//decode the object
+/// decode the object
 - (id)initWithCoder:(NSCoder *)aDecoder{
     if (self = [super init]) {
         coordinateValue.x = [aDecoder decodeIntegerForKey:kCoordinateXKey];
@@ -654,6 +671,11 @@
     return self;
 }
 
+/**
+ *	所有的表面颜色
+ *
+ *	@return	包括了表面颜色的NSArray
+ */
 - (NSArray *)allFaceColors{
     NSMutableArray *mutableColors = [NSMutableArray arrayWithCapacity:_skinNum];
     for (int i = 0; i < _skinNum; i++) {
@@ -663,7 +685,11 @@
     return [NSArray arrayWithArray:mutableColors];
 }
 
-
+/**
+ *	所有的朝向
+ *
+ *	@return	包括了朝向的NSArray
+ */
 - (NSArray *)allOrientations{
     NSMutableArray *mutableColors = [NSMutableArray arrayWithCapacity:_skinNum];
     for (int i = 0; i < _skinNum; i++) {
@@ -673,7 +699,10 @@
     return [NSArray arrayWithArray:mutableColors];
 }
 
-
+/**
+ *  Return state in the "format" orientation-facecolor
+ *  All 6 faces will be returned.
+ */
 - (NSDictionary *)getCubieColorInOrientations{
     NSMutableDictionary *state = [NSMutableDictionary dictionaryWithCapacity:6];
     for (int i = 0; i < 6; i++) {
@@ -685,6 +714,9 @@
     return [NSDictionary dictionaryWithDictionary:state];
 }
 
+/**
+ *  Return state in the "format" axis-orientation
+ */
 - (NSDictionary *)getCubieOrientationOfAxis{
     NSMutableDictionary *state = [NSMutableDictionary dictionaryWithCapacity:3];
     for (int i = 0; i < _skinNum; i++) {
@@ -715,7 +747,9 @@
     return [NSDictionary dictionaryWithDictionary:state];
 }
 
-
+/**
+ *	返回一个以Orientation的数值作为键，以faceColor的数值作为值的不可变字典
+ */
 - (NSDictionary *)getCubieColorInOrientationsWithoutNoColor{
     NSMutableDictionary *state = [NSMutableDictionary dictionaryWithCapacity:self.skinNum];
     for (int i = 0; i < self.skinNum; i++) {
@@ -724,7 +758,9 @@
     return [NSDictionary dictionaryWithDictionary:state];
 }
 
-
+/**
+ *  If all faces of this cubie have been filled.
+ */
 - (BOOL)hasAllFacesBeenFilledWithColors{
     return _completeFaceNum == _skinNum;
 }

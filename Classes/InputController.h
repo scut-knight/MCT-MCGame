@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MCConfiguration.h"
 #import "MCParticleSystem.h"
+
+/**
+ *	输入控制器
+ */
 @interface InputController : UIViewController{
 	NSMutableSet* touchEvents;
   	FSM_Interaction_State fsm_Previous_State;
@@ -19,6 +23,7 @@
     CGPoint lastpoint;
    // BOOL isNeededReload;
 }
+
 //@property (nonatomic,assign) BOOL isNeededReload;
 @property (assign) int touchCount;
 @property (retain) NSMutableSet* touchEvents;
@@ -26,6 +31,7 @@
 @property (assign) FSM_Interaction_State fsm_Current_State;
 @property (nonatomic,retain)MCParticleSystem *particleEmitter;
 @property (assign) CGPoint lastpoint;
+
 //10
 - (CGRect)screenRectFromMeshRect:(CGRect)rect atPoint:(CGPoint)meshCenter;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ;

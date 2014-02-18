@@ -10,21 +10,35 @@
 #import "MCBasicElement.h"
 #import "MCMagicCubeDataSouceDelegate.h"
 
+/**
+ *	承诺将会对队列排满的情况进行处理的协议
+ *  @see MCActionPerformer
+ */
 @protocol QueueCompleteDelegate <NSObject>
-
+/**
+ *	Once the queue is complete, the delegate's onQueueComplete will be invoked.
+ */
 - (void)onQueueComplete;
 
 @end
 
-
+/**
+ *	旋转动作的队列类
+ */
 @interface MCApplyQueue : NSObject
 
 @property (nonatomic, retain) NSMutableArray *rotationQueue;
+/**
+ *	临时队列
+ */
 @property (nonatomic, retain) NSMutableArray *extraRotations;
 @property (nonatomic) NSInteger currentRotationQueuePosition;
 @property (nonatomic) SingmasterNotation previousRotation;
+/**
+ *	RotationResult请见Global.h
+ */
 @property (nonatomic) RotationResult previousResult;
-// Once the queue is complete, the delegate's onQueueComplete will be invoked.
+/// Once the queue is complete, the delegate's onQueueComplete will be invoked.
 @property (nonatomic, retain) NSObject<QueueCompleteDelegate> *queueCompleteDelegate;
 
 

@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
+/**
+ *	检测程序运行的平台
+ */
 @interface PlatformDetect : NSObject
 +(NSString *) platformString;
 @end

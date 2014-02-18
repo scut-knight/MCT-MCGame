@@ -12,12 +12,22 @@
 #import "MCMagicCube.h"
 #import "RotateType.h"
 #import "MCMagicCubeUIModelController.h"
+
+/**
+ *	竞速模式场景控制器
+ */
 @interface MCCountingPlaySceneController : sceneController{
+    /**
+     *	魔方模型控制器，它就是中央的大魔方
+     */
     MCMagicCubeUIModelController* magicCubeUI;
+    /**
+     *	魔方数据模型
+     */
     MCMagicCube * magicCube;
 }
 @property (nonatomic,retain)MCMagicCube * magicCube;
-//@property (nonatomic,retain)MCPlayHelper * playHelper;
+
 + (MCCountingPlaySceneController*)sharedCountingPlaySceneController;
 
 -(void)loadScene;

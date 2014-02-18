@@ -15,17 +15,31 @@
 #import "MCPoint.h"
 #import "MCSceneController.h"
 
+/**
+ *	这个类表示一个由顶点包围的，被用于渲染的区域。
+ *  用作基类。
+ */
 @interface MCMesh : NSObject {
 	// mesh data
 	GLfloat * vertexes;
 	GLfloat * colors;
 	
+	/**
+	 *	渲染模式
+	 */
 	GLenum renderStyle;
+    
 	NSInteger vertexCount;
 	NSInteger vertexSize;
 	NSInteger colorSize;	
 	
+	/**
+	 *	中心点
+	 */
 	MCPoint centroid;
+	/**
+	 *	最大半径
+	 */
 	CGFloat radius;
 }
 

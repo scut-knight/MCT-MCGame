@@ -11,7 +11,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MCFonts.h"
 
-#define BLACK_BAR_COMPONENTS_Finish				{ 0.22, 0.22, 0.22, 1.0, 0.07, 0.07, 0.07, 1.0 }
+/**
+ *	FinishView 顶部的黑色框坐标
+ */
+#define BLACK_BAR_COMPONENTS_Finish  { 0.22, 0.22, 0.22, 1.0, 0.07, 0.07, 0.07, 1.0 }
+
 @implementation FinishView
 @synthesize viewLoadedFromXib,finishViewType;
 @synthesize changeUserPopover = _changeUserPopover;
@@ -20,6 +24,14 @@
 @synthesize learningTimeLabel;
 @synthesize learningStepCountLabel;
 
+/**
+ *	初始化对话框视图
+ *
+ *	@param	frame	对话框大小边界
+ *	@param	title	对话框标题
+ *
+ *	@return	学习完成对话框
+ */
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title{
     if ((self = [super initWithFrame:frame])) {
 		
@@ -107,6 +119,11 @@
 
 };
 
+/**
+ *	按下回到游戏按钮
+ *
+ *	@param	sender	回到游戏按钮
+ */
 - (IBAction)goBackBtnPressed:(id)sender{
     if ([self insertRecord]) {
         finishViewType = kFinishView_GoBack;
@@ -119,24 +136,36 @@
     }
 };
 
+/**
+ *	再来一次按钮。不存在该按钮。
+ */
 - (IBAction)oneMoreBtnPressed:(id)sender{
     if ([self insertRecord]) {
         // append here
     }
 };
 
+/**
+ *	去计算按钮。不存在该按钮。
+ */
 - (IBAction)goCountingBtnPressed:(id)sender{
     if ([self insertRecord]) {
         // append here
     }
 };
 
+/**
+ *	分享按钮。不存在该按钮。
+ */
 - (IBAction)shareBtnPressed:(id)sender{
     if ([self insertRecord]) {
         // append here
     }
 };
 
+/**
+ *	修改用户名按钮
+ */
 - (IBAction)changeUserBtn:(id)sender {
     UIButton *tapbtn = (UIButton*)sender;
     
@@ -161,33 +190,51 @@
     [super dealloc];
 }
 
-
+/**
+ *	需要用来处理触屏事件。目前不做任何处理
+ *
+ *	@param	touches	触控点集合
+ *	@param	event	UI事件
+ */
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 }
 
 
 
-/* Called on the delegate when the user has taken action to dismiss the popover. This is not called when -dismissPopoverAnimated: is called directly.
+/** 
+ * Called on the delegate when the user has taken action to dismiss the popover. This is not called when -dismissPopoverAnimated: is called directly.
+ *
+ *  离开弹出对话框时调用，更新用户名
  */
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
     // Update user name
     [self updateUserName];
 }
 
-
+/**
+ *	更新用户名，使用户名为当前用户名。如果没有用户名，默认为anonymity(匿名)
+ */
 - (void)updateUserName{
     // Set current user name
     MCUserManagerController *userManagerController = [MCUserManagerController sharedInstance];
-    if (userManagerController.userModel.currentUser.name == nil || [userManagerController.userModel.currentUser.name compare:@""] != NSOrderedSame) {
+    if (userManagerController.userModel.currentUser.name != nil && [userManagerController.userModel.currentUser.name compare:@""] != NSOrderedSame) {
         self.userNameEditField.text = userManagerController.userModel.currentUser.name;
     }
+    else{
+        self.userNameEditField.text = @"anonymity";
+    }
     
-    // If no user, set change btn invalide.
+    // If only one user, set change btn invalide.
     if ([userManagerController.userModel.allUser count] < 2) {
         [self.changeUserBtn removeFromSuperview];
     }
 }
 
+/**
+ *	输入高分记录
+ *
+ *	@return	NO 如果输入格式不对；YES 如果成功保存到数据库中。
+ */
 - (BOOL)insertRecord{
     if ([self.userNameEditField.text compare:@""] == NSOrderedSame) {
         // Alter nil

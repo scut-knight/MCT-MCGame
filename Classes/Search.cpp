@@ -144,7 +144,7 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
             }
         }
     } catch (exception e) {
-        return "Error 1";
+        return "Error 1"; // here is not exactly one facelet of each colour
     }
     for (int i = 0; i < 6; i++)
         if (count[i] != 9)
@@ -166,7 +166,6 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
     ax[0] = 0;
     flip[0] = c.flip;
     twist[0] = c.twist;
-    parity[0] = c.parity;
     slice[0] = c.FRtoBR / 24;
     URFtoDLF[0] = c.URFtoDLF;
     FRtoBR[0] = c.FRtoBR;
@@ -184,8 +183,8 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
     long tStart = tv.tv_sec * 1000 + tv.tv_usec / 1000;
     
     // +++++++++++++++++++ Main loop ++++++++++++++++++++++++++++++++++++++++++
-    do {
-        do {
+    do {/*0*/
+        do {/*1*/
             if ((depthPhase1 - n > minDistPhase1[n + 1]) && !busy) {
                 
                 if (ax[n] == 0 || ax[n] == 3)// Initialize next move
@@ -194,17 +193,17 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
                     ax[++n] = 0;
                 po[n] = 1;
             } else if (++po[n] > 3) {
-                do {// increment axis
+            /*2*/do {// increment axis
                     if (++ax[n] > 5) {
                         
                         gettimeofday(&tv,NULL);
                         
                         if ((tv.tv_sec * 1000 + tv.tv_usec / 1000) - tStart > timeOut << 10)
-                            return "Error 8";
+                            return "Error 8"; //Timeout, no solution within given time
                         
                         if (n == 0) {
                             if (depthPhase1 >= maxDepth)
-                                return "Error 7";
+                                return "Error 7";// No solution exists for the given maxDepth
                             else {
                                 depthPhase1++;
                                 ax[n] = 0;
@@ -222,10 +221,10 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
                         po[n] = 1;
                         busy = false;
                     }
-                } while (n != 0 && (ax[n - 1] == ax[n] || ax[n - 1] - 3 == ax[n]));
+        /*2*/    } while (n != 0 && (ax[n - 1] == ax[n] || ax[n - 1] - 3 == ax[n]));
             } else
                 busy = false;
-        } while (busy);
+        } while (busy);/*1*/
         
         // +++++++++++++ compute new coordinates and new minDistPhase1 ++++++++++
         // if minDistPhase1 =0, the H subgroup is reached
@@ -234,8 +233,9 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
         twist[n + 1] = CoordCube::twistMove[twist[n]][mv];
         slice[n + 1] = CoordCube::FRtoBR_Move[slice[n] * 24][mv] / 24;
         minDistPhase1[n + 1] = max(CoordCube::getPruning(CoordCube::Slice_Flip_Prun, CoordCube::N_SLICE1 * flip[n + 1]
-                                                             + slice[n + 1]), CoordCube::getPruning(CoordCube::Slice_Twist_Prun, CoordCube::N_SLICE1 * twist[n + 1]
-                                                                                                   + slice[n + 1]));
+                                                             + slice[n + 1]), 
+                                   CoordCube::getPruning(CoordCube::Slice_Twist_Prun, CoordCube::N_SLICE1 * twist[n + 1]
+                                                             + slice[n + 1]));
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         
         if (minDistPhase1[n + 1] == 0 && n >= depthPhase1 - 5) {
@@ -247,7 +247,7 @@ string Search::solution(string facelets, int maxDepth, long timeOut, bool useSep
             }
             
         }
-    } while (true);
+    } while (true);/*0*/
 }
 
 
@@ -262,7 +262,10 @@ int Search::totalDepth(int depthPhase1, int maxDepth) {
     }
     
     if ((d1 = CoordCube::getPruning(CoordCube::Slice_URFtoDLF_Parity_Prun,
-                                   (CoordCube::N_SLICE2 * URFtoDLF[depthPhase1] + FRtoBR[depthPhase1]) * 2 + parity[depthPhase1])) > maxDepthPhase2)
+                                   (CoordCube::N_SLICE2 * URFtoDLF[depthPhase1] 
+                                        + FRtoBR[depthPhase1]) * 2 
+                                        + parity[depthPhase1])
+        )  > maxDepthPhase2)
         return -1;
     
     for (int i = 0; i < depthPhase1; i++) {
@@ -273,9 +276,12 @@ int Search::totalDepth(int depthPhase1, int maxDepth) {
     URtoDF[depthPhase1] = CoordCube::MergeURtoULandUBtoDF[URtoUL[depthPhase1]][UBtoDF[depthPhase1]];
     
     if ((d2 = CoordCube::getPruning(CoordCube::Slice_URtoDF_Parity_Prun,
-                                    (CoordCube::N_SLICE2 * URtoDF[depthPhase1] + FRtoBR[depthPhase1]) * 2 + parity[depthPhase1])) > maxDepthPhase2)
+                                    (CoordCube::N_SLICE2 * URtoDF[depthPhase1] 
+                                        + FRtoBR[depthPhase1]) * 2 
+                                        + parity[depthPhase1])
+        ) > maxDepthPhase2)
         return -1;
-    
+    // if max(d1,d2) == 0
     if ((minDistPhase2[depthPhase1] = max(d1, d2)) == 0)// already solved
         return depthPhase1;
     
@@ -338,11 +344,12 @@ int Search::totalDepth(int depthPhase1, int maxDepth) {
         parity[n + 1] = CoordCube::parityMove[parity[n]][mv];
         URtoDF[n + 1] = CoordCube::URtoDF_Move[URtoDF[n]][mv];
         
-        minDistPhase2[n + 1] = max(CoordCube::getPruning(CoordCube::Slice_URtoDF_Parity_Prun, (CoordCube::N_SLICE2
-                                                                                                  * URtoDF[n + 1] + FRtoBR[n + 1])
-                                                        * 2 + parity[n + 1]), CoordCube::getPruning(CoordCube::Slice_URFtoDLF_Parity_Prun, (CoordCube::N_SLICE2
-                                                                                                                                               * URFtoDLF[n + 1] + FRtoBR[n + 1])
-                                                                                                        * 2 + parity[n + 1]));
+        minDistPhase2[n + 1] = max(CoordCube::getPruning(CoordCube::Slice_URtoDF_Parity_Prun,
+                                                            (CoordCube::N_SLICE2 * URtoDF[n + 1] + FRtoBR[n + 1])
+                                                                 * 2 + parity[n + 1]),
+                                   CoordCube::getPruning(CoordCube::Slice_URFtoDLF_Parity_Prun, 
+                                                            (CoordCube::N_SLICE2 * URFtoDLF[n + 1] + FRtoBR[n + 1])
+                                                                 * 2 + parity[n + 1]));
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         
     } while (minDistPhase2[n + 1] != 0);

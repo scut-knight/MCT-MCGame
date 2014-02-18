@@ -12,13 +12,17 @@
 #import "MCRandomSolveViewInputControllerViewController.h"
 #import "MCBackGroundTexMesh.h"
 #import "MCFonts.h"
-@implementation MCRandomSolveSceneController
 
+@implementation MCRandomSolveSceneController
 @synthesize magicCube;
-//playHelper
 @synthesize selected_face_index;
 @synthesize selected_index;
 
+/**
+ *	产生求解模式场景控制器的单件
+ *
+ *	@return	一个指向单件的指针
+ */
 +(MCRandomSolveSceneController*)sharedRandomSolveSceneController {
     static MCRandomSolveSceneController *sharedRandomSolveSceneController;
     @synchronized(self)
@@ -29,7 +33,9 @@
 	return sharedRandomSolveSceneController;
 }
 
-
+/**
+ *	加载场景
+ */
 -(void)loadScene{
     needToLoadScene = NO;
 	RANDOM_SEED();
@@ -89,25 +95,49 @@
     
 }
 
+/**
+ *	回退到前一步
+ */
 -(void)previousSolution{
     NSLog(@"mc previousSolution");
     [magicCubeUI performSelector:@selector(previousSolution)];
 }
+
+/**
+ *	前进到下一步
+ */
 -(void)nextSolution{
     NSLog(@"mc nextSolution");
     [magicCubeUI performSelector:@selector(nextSolution)];
 }
 
+/**
+ * 将魔方设置为求解教学模式下
+ */
 -(void)turnTheMCUI_Into_SOlVE_Play_MODE{
     [magicCubeUI setUsingMode:SOlVE_Play_MODE];
     [magicCubeUI switchToOrignalPlace];
 }
+
+/**
+ *	根据魔方公式的节点类型进行旋转
+ *
+ *	@param	notation	魔方公式的节点类型
+ *	@param	isStay	无用参数
+ *	@param	isTwoTimes	是否要旋转两次(180度)
+ */
 -(void)rotateWithSingmasterNotation:(SingmasterNotation)notation isNeedStay:(BOOL)isStay isTwoTimes:(BOOL)isTwoTimes{
     //[self flashSecne];
     RotateNotationType rotate = [MCTransformUtil getRotateNotationTypeWithSingmasterNotation:notation];
     [magicCubeUI rotateOnAxis:rotate.axis onLayer:rotate.layer inDirection:rotate.direction isTribleRotate:NO isTwoTimes:isTwoTimes];
     [magicCube rotateWithSingmasterNotation:notation];
 };
+
+/**
+ *	是否选中一个面，如果是，更新选中方块和选中面的记录
+ *
+ *	@param	touchpoint	触碰点的二维坐标
+ */
 -(BOOL)isSelectOneFace:(vec2)touchpoint{
     if ([magicCubeUI isSelectOneFace:touchpoint]) {
         selected_index = [magicCubeUI selected_cube_index];
@@ -116,10 +146,17 @@
     }else
         return NO;
 };
+
+/**
+ *	渲染魔方表面颜色
+ */
 -(void)flashSecne{
     [magicCubeUI flashWithState:[magicCube getColorInOrientationsOfAllCubie]];
 };
 
+/**
+ *	清除所有状态
+ */
 -(void)clearState{
     //[magicCube release];
     magicCube = [[MCMagicCube magicCubeOnlyWithCenterColor]retain];
@@ -128,12 +165,20 @@
 
 }
 
+/**
+ *	根据魔方公式的节点类型，更新空间指示器的旋转方向
+ *
+ *	@param	notation	魔方公式的节点类型
+ */
 -(void)nextSingmasterNotation:(SingmasterNotation)notation{
     //更新下一次spaceindicator方向
     RotateNotationType nextRotateType = [MCTransformUtil getRotateNotationTypeWithSingmasterNotation:notation];
     [magicCubeUI nextSpaceIndicatorWithRotateNotationType:nextRotateType];
 }
 
+/**
+ *	关闭节点提示。
+ */
 -(void)closeSingmasterNotation{
     [magicCubeUI closeSpaceIndicator];
 }

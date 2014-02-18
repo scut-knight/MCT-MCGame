@@ -21,18 +21,33 @@
 #import "MCConfiguration.h"
 #import "MCRay.h"
 //#include "MeshRenderEngine.hpp"
+
 @class MCMesh;
 @class MCCollider;
+/**
+ *	该类用于处理图像渲染
+ */
 @interface MCSceneObject : NSObject {
 	// transform values
+	/**
+	 *	平移前坐标
+	 */
 	MCPoint pretranslation;
+	/**
+	 *	旋转前坐标
+	 */
 	MCPoint prerotation;
     
-
+    /**
+     *	平移后坐标
+     */
     MCPoint translation;
 	MCPoint scale;
+	/**
+	 *	旋转后坐标
+	 */
 	MCPoint rotation;
-    
+    // 旋转用的四元数
     Quaternion quaRotation;
     Quaternion quaPreviousRotation;
     //用来进行校验的四元数
@@ -46,12 +61,7 @@
 	CGFloat * matrix;
 	
 	CGRect meshBounds;
-	
-	MCCollider *collider;//;
-
-    
 }
-@property (retain) MCCollider *collider;
 @property (retain) MCMesh * mesh;
 @property (assign) MCPoint translation;
 @property (assign) MCPoint rotation;
@@ -59,13 +69,12 @@
 @property (assign) CGFloat * matrix;
 @property (assign) MCPoint pretranslation;
 @property (assign) MCPoint prerotation;
-//@property (assign) Quaternion m_orientation;
 @property (assign) Quaternion quaRotation;
 @property (assign) Quaternion quaPreviousRotation;
 @property (assign) Quaternion start_quaRotation;
 @property (assign) Quaternion finish_quaRotation;
 @property (assign) BOOL active;
-@property (assign) CGRect meshBounds;
+@property (readonly) CGRect meshBounds;
 - (id) init;
 - (void) dealloc;
 - (void)awake;

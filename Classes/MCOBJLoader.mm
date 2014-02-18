@@ -16,7 +16,9 @@
 @synthesize texture_key;
 
 
-
+/**
+ *	@return	MCOBJLoader的单件
+ */
 +(MCOBJLoader*)sharedMCOBJLoader
 {
     static MCOBJLoader *sharedMCOBJLoader;
@@ -29,6 +31,7 @@
 }
 
 -(void)loadObjFromFile:(NSString*)filename objkey:(NSString*)objkey {
+    // objkey 并没用上嗯
     vector<float> vertexs;
     vector<float> vertexNormals;
     vector<float> vertexTextures;
@@ -42,6 +45,9 @@
     vertexTextures.resize(m_vertexTextureCount *2);
     faces.resize(m_faceCount * 9);
     
+    // 注意，利用指针来修改vector的方法只适用于占用连续内存空间的vector类型。
+    // 而且一旦vector重新分配内存，指针会指向错误的地址。当然这里vector的内存已经事先分配好，
+    // 不过是在objFile大小可控的前提下，这种做法才是安全的。总之，我不推荐这种做法
     float * v_ptr = &vertexs[0];
     float * vn_ptr = &vertexNormals[0];
     float * vt_ptr = &vertexTextures[0];
@@ -52,20 +58,23 @@
         string c;
         objFile >> c;
         if (c == "v") {
+            // v vertex vertex vertex
             objFile >> *(v_ptr++) >> *(v_ptr++) >> *(v_ptr++);
         }
         else{
             if(c == "vn"){
+            // vn vertexNormal vertexNormal vertexNormal
                 objFile >> *(vn_ptr++) >> *(vn_ptr++) >> *(vn_ptr++);
             }
             else{
                 if(c == "vt"){
+                // vt vertexTexture vertexTexture vertexTexture
                     objFile >> *(vt_ptr++) >> *(vt_ptr++);
                 }
                 else{
                     if(c == "f"){
                         char d ;
-                        
+                        // f face/face/face ...
                         objFile >> *(faces_ptr++) >> d >> *(faces_ptr++) >> d >> *(faces_ptr++);
                         objFile >> *(faces_ptr++) >> d >> *(faces_ptr++) >> d >> *(faces_ptr++);
                         objFile >> *(faces_ptr++) >> d >> *(faces_ptr++) >> d >> *(faces_ptr++);
@@ -73,9 +82,10 @@
                 }
             }
         }
-        objFile.ignore(80, '\n');
+        // 忽略剩下的内容
+        objFile.ignore(MaxLineSize, '\n');
     }
-    
+    objFile.close();
     
     
     Cube_vertex_array_size = m_faceCount*3;
@@ -118,6 +128,11 @@
     
 }
 
+/**
+ *	读取obj文件，并且计算vertex/vertexNormal/face的个数
+ *
+ *	@param	filename	.obj文件，在Resource包下面
+ */
 -(void) getAllCount:(NSString*)filename
 {
     ifstream objFile([filename UTF8String]);
@@ -145,6 +160,14 @@
             
         objFile.ignore(MaxLineSize, '\n');
     }
+    objFile.close();
 }
 
+-(void)dealloc
+{
+    delete[] Cube_vertex_coordinates;
+    delete[] Cube_normal_vectors;
+    delete[] Cube_texture_coordinates;
+    [super dealloc];
+}
 @end

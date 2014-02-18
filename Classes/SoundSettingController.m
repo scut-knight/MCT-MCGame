@@ -11,12 +11,14 @@
 #import "MCSoundBoard.h"
 #import "MCStringDefine.h"
 #import "MCStringDefine.h"
+
 @implementation SoundSettingController
 @synthesize backgroundPlayer;
 @synthesize _BackGroundMusicValume;
 @synthesize _RotateEffectValume;
 @synthesize _RotateEffectSwitch;
 @synthesize _BackGroundMusicSwitch;
+
 +(SoundSettingController *)sharedsoundSettingController{
     static SoundSettingController * sharedsoundSettingController;
     @synchronized(self){
@@ -26,7 +28,10 @@
     }
     return sharedsoundSettingController;
 }
-//加载声音配置
+
+/**
+ *	加载声音配置
+ */
 -(void)loadSoundConfiguration{
     NSString * filepath = [self filePath];
     if ([[NSFileManager defaultManager]fileExistsAtPath:filepath]) {
@@ -51,7 +56,10 @@
         [MCSoundBoard playAudioForKey:Audio_BackGroundSound_Loop_key fadeInInterval:2.0 maxVolume:maxvolume];
     }
 };
-//restore sound config
+
+/**
+ *	保存声音配置
+ */
 -(void)restoreSoundConfiguration{
     NSMutableDictionary * dic = [[NSMutableDictionary alloc]init];
     [dic setObject:[self _BackGroundMusicValume] forKey:S_L_BackGroundMusicValume];
@@ -61,11 +69,20 @@
     [dic writeToFile:[self filePath] atomically:YES];
     [dic release];
 };
+
+/**
+ *	返回声音配置文件(soundconfig.plist)的路径
+ */
 -(NSString*)filePath{
     NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     return [documentsDirectory stringByAppendingPathComponent:Congig_Sound_File];
+    // Congig_Sound_File is defined for @"soundconfig.plist" in the MCStringDefine.h
 };
+
+/**
+ *	加载声音
+ */
 -(void)loadSounds{
     [MCSoundBoard addSoundAtPath:[[NSBundle mainBundle] pathForResource:Audio_RotateSound_Ding ofType:nil] forKey:Audio_RotateSound_Ding_key];
     
@@ -73,30 +90,67 @@
     
     backgroundPlayer = [MCSoundBoard audioPlayerForKey:Audio_BackGroundSound_Loop_key];
 };
+
+/**
+ *	set volume for background sound and restore it in soundConfiguration.
+ *
+ *  设置背景音量并存储在音量配置中
+ *
+ *	@param	volume	:(float)
+ */
 -(void)setBackgroundPlayer_Volume:(float)volume{
     [self set_BackGroundMusicValume:[[[NSNumber alloc] initWithFloat:volume] autorelease]];
     backgroundPlayer.volume = volume;
     [self restoreSoundConfiguration];
 };
--(void)playSoundForKey:(NSString*)key{
-    if ((![self _RotateEffectSwitch])&&[key isEqualToString:Audio_RotateSound_Ding_key]) {
+
+/**
+ *	设置旋转音效的音量并存储在音量配置中
+ *
+ *	@param	volume	float类型音量大小
+ */
+-(void)setRotateEffectVolume:(float)volume{
+    [self set_RotateEffectValume:[[[NSNumber alloc] initWithFloat:volume] autorelease ]];
+    [self restoreSoundConfiguration];
+};
+/**
+ *	如果需要播放的音效存在，那么就播放音效。
+ *
+ *	@param	key	音效名
+ *  @param  soundType 音效类型，同一种类型的音量是一样的
+ */
+-(void)playSoundForKey:(NSString*)key withSoundType:(NSNumber *)soundType{
+    if ( ![self _RotateEffectSwitch] || ![key isEqualToString:Audio_RotateSound_Ding_key]) {
         return;
     }
-    [MCSoundBoard playSoundForKey:key];
+    if (soundType == nil) {
+        soundType = _RotateEffectValume;
+    }
+    [MCSoundBoard playSoundForKey:key withVolume:soundType];
 };
+
+/**
+ *	以指定的最大音量播放音乐
+ *
+ *	@param	key	音乐名
+ *	@param	maxvolume	最大音量
+ */
 -(void)playAudioForKey:(NSString*)key maxVolume:(NSNumber *)maxvolume{
      [MCSoundBoard playAudioForKey:key maxVolume:[[[NSNumber alloc]initWithFloat:1.0] autorelease]];
 };
+
 -(void)pauseAudioForKey:(NSString*)key fadeOutInterval:(NSTimeInterval)fadetime{
     [MCSoundBoard pauseAudioForKey:key fadeOutInterval:fadetime];
 };
 
 -(void)playAudioForKey:(NSString*)key fadeInInterval:(NSTimeInterval)fadetime maxVolume:(NSNumber*)maxvolume{
     [MCSoundBoard playAudioForKey:key fadeInInterval:fadetime maxVolume:maxvolume];
-    
 };
+
+/**
+ *	循环播放背景音乐，使声音周期性地变大变小
+ */
 -(void)loopBackGroundAudioFlipSwitch{
-    
     backgroundPlayer.numberOfLoops = -1;  // Endless
     if (backgroundPlayer.playing) {
         [MCSoundBoard pauseAudioForKey:Audio_BackGroundSound_Loop_key fadeOutInterval:2.0];
@@ -108,7 +162,12 @@
         [self restoreSoundConfiguration];
     }
 };
+
+/**
+ *	旋转声音开关
+ */
 -(void)rotateSoundFlipSwitch{
+    // reverse the _RotateEffectSwitch
     NSNumber *flip = [[NSNumber alloc]initWithBool:(![[self _RotateEffectSwitch] boolValue])];
     [self set_RotateEffectSwitch:flip];
     [flip release];

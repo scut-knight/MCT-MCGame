@@ -12,7 +12,9 @@
 #import "MCScore.h"
 #import "MCUserManagerModel.h"
 #import "MCUserCalculator.h"
-
+/**
+ *	用户系统管理控制类
+ */
 @interface MCUserManagerController : NSObject{
     
 }

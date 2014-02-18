@@ -24,7 +24,9 @@
     return [[[MCInferenceEngine alloc] iniInferenceEngineWithWorkingMemory:wm] autorelease];
 }
 
-//refresh state and rules
+/**
+ * initialize and refresh state and rules
+ */
 - (id)iniInferenceEngineWithWorkingMemory:(MCWorkingMemory *)wm{
     if (self = [super init]) {
         // Set the working memory
@@ -35,7 +37,7 @@
         self.actionPerformer = [MCActionPerformer actionPerformerWithWorkingMemory:self.workingMemory];
         
         // Load the state list.
-        self.states = [NSDictionary dictionaryWithDictionary:[[MCKnowledgeBase getSharedKnowledgeBase] getStatesOfMethod:ETFF]];
+        self.states = [NSDictionary dictionaryWithDictionary:[[MCKnowledgeBase getSharedKnowledgeBase] getStatesOfMethod:ETFF]];// ETFF规则
     }
     return self;
 }
@@ -81,7 +83,12 @@
     [loopPool release];
 }
 
-//Apply the pattern and return result
+/**
+ * Apply the pattern and return result,
+ * 根据对应的模式调用treeNodesApply:
+ *
+ * @param type AppliedRuleType枚举类型定义于Global.h，有两种，分别是General和Special，对应两种模式
+ */
 - (BOOL)applyPatternWihtPatternName:(NSString *)name ofType:(AppliedRuleType)type{
     
     // Get the pattern named 'name'
@@ -107,8 +114,33 @@
     }
 }
 
-
+/**
+ *	根据所给的root节点类型进行解析。
+ *
+ *  处理所有的节点类型
+ *
+ *  如果是ExpNode，调用以下三个子函数继续解析：
+ *
+ *  1.(BOOL)andNodeApply:(MCTreeNode *)root withDeep:(NSInteger)deep
+ *
+ *  2.(BOOL)orNodeApply:(MCTreeNode *)root withDeep:(NSInteger)deep
+ *
+ *  3.(BOOL)notNodeApply:(MCTreeNode *)root withDeep:(NSInteger)deep
+ *
+ *  这三个子函数类似于treeNodesApply，当然具体细节上有些不同
+ *
+ *	@param	root	需要解析的树的根节点
+ *	@param	deep	传递为子函数的withDeep参数
+ *
+ *	@return	(NSInteger)NO if error occurs; Yes if successed
+ *
+ * @see MCActionPerformer#treeNodesApply:
+ * @see MCExplanationSystem#treeNodesApply:
+ *
+ * 注意与MCExplanationSystem#treeNodesApply:的区别
+ */
 - (NSInteger)treeNodesApply:(MCTreeNode *)root withDeep:(NSInteger)deep{
+    // current MCMagicCube
     NSObject<MCMagicCubeDataSouceDelegate> *mcDataSource = self.workingMemory.magicCube;
     
     switch (root.type) {
@@ -135,8 +167,10 @@
             }
         }
             break;
+            
         case PatternNode:
         {
+            
             switch (root.value) {
                 case Home:
                 {
@@ -150,16 +184,19 @@
                     }
                 }
                     break;
+                    
                 case Check:
                 {
                     ColorCombinationType targetCubie = ColorCombinationTypeBound;
                     for (MCTreeNode *subPattern in root.children) {
+                        
                         switch (subPattern.value) {
                             case At:
                             {
                                 targetCubie = (ColorCombinationType)[self treeNodesApply:[subPattern.children objectAtIndex:0] withDeep:deep+1];
                                 ColorCombinationType targetPosition = (ColorCombinationType)[self treeNodesApply:[subPattern.children objectAtIndex:1] withDeep:deep+1];
                                 struct Point3i coorValue = [mcDataSource coordinateValueOfCubieWithColorCombination:(ColorCombinationType)targetCubie];
+                                // if the position of targetCube is not the targetPosition
                                 if (coorValue.x + coorValue.y*3 + coorValue.z * 9 + 13 != targetPosition) {
                                     root.result = NO;
                                     return root.result;
@@ -169,6 +206,7 @@
                             case ColorBindOrientation:
                             {
                                 NSObject<MCCubieDelegate> *cubie = nil;
+                                // cubie will be the special cube in appropriate place
                                 FaceOrientationType targetOrientation = (FaceOrientationType)[self treeNodesApply:[subPattern.children objectAtIndex:0] withDeep:deep+1];
                                 FaceColorType targetColor = (FaceColorType)[self treeNodesApply:[subPattern.children objectAtIndex:1] withDeep:deep+1];
                                 if ([subPattern.children count] > 2) {
@@ -185,6 +223,7 @@
                                 targetCubie = (ColorCombinationType)[self treeNodesApply:[subPattern.children objectAtIndex:0] withDeep:deep+1];
                                 ColorCombinationType targetPosition = (ColorCombinationType)[self treeNodesApply:[subPattern.children objectAtIndex:1] withDeep:deep+1];
                                 struct Point3i coorValue = [mcDataSource coordinateValueOfCubieWithColorCombination:(ColorCombinationType)targetCubie];
+                                // if the position of targetCube is the targetPosition
                                 if (coorValue.x + coorValue.y*3 + coorValue.z * 9 + 13 == targetPosition) {
                                     root.result = NO;
                                     return root.result;
@@ -200,6 +239,7 @@
                     }
                 }
                     break;
+                    
                 case CubiedBeLocked:
                 {
                     int index = 0;
@@ -221,12 +261,15 @@
             }
         }
             break;
+            
         case InformationNode:
+            
             switch (root.value) {
                 case getCombinationFromOrientation:
                 {
                     int x=1, y=1, z=1;
                     for (MCTreeNode *child in root.children) {
+                        
                         switch ([mcDataSource centerMagicCubeFaceInOrientation:(FaceOrientationType)child.value]) {
                             case Up:
                                 y = 2;
@@ -259,6 +302,7 @@
                 {
                     int x=1, y=1, z=1;
                     for (MCTreeNode *child in root.children) {
+                        
                         switch ((FaceColorType)[self treeNodesApply:child withDeep:deep+1]) {
                             case UpColor:
                                 y = 2;
@@ -292,6 +336,7 @@
                     FaceColorType color;
                     FaceOrientationType orientation = (FaceOrientationType)[(MCTreeNode *)[root.children objectAtIndex:0] value];
                     if ([root.children count] == 1) {
+                        
                         switch ([mcDataSource centerMagicCubeFaceInOrientation:orientation]) {
                             case Up:
                                 color = UpColor;
@@ -346,6 +391,7 @@
                     break;
             }
             break;
+            
         case ElementNode:
             return root.value;
         default:
@@ -359,7 +405,9 @@
     return root.result;
 }
 
-
+/**
+ * @see MCInferenceEngine#treeNodesApply:
+ */
 - (BOOL)andNodeApply:(MCTreeNode *)root withDeep:(NSInteger)deep{
     for (MCTreeNode *node in root.children) {
         //Being a 'and' node,
@@ -373,7 +421,9 @@
     return root.result;
 }
 
-
+/**
+ * @see MCInferenceEngine#treeNodesApply:
+ */
 - (BOOL)orNodeApply:(MCTreeNode *)root withDeep:(NSInteger)deep{
     for (MCTreeNode *node in root.children) {
         if ([self treeNodesApply:node withDeep:deep+1]) {
@@ -385,7 +435,9 @@
     return root.result;
 }
 
-
+/**
+ * @see MCInferenceEngine#treeNodesApply:
+ */
 - (BOOL)notNodeApply:(MCTreeNode *)root withDeep:(NSInteger)deep{
     root.result = ![self treeNodesApply:[root.children objectAtIndex:0] withDeep:deep+1];
     return root.result;
@@ -394,7 +446,7 @@
 
 - (NSString *)checkStateFromInit:(BOOL)isCheckStateFromInit;{
     NSString *goStr;
-    //to check from init or not
+    //to check from init or not(是否需要初始化)
     if (isCheckStateFromInit) {
         goStr = START_STATE;
         [self.workingMemory unlockAllCubies];
@@ -405,8 +457,10 @@
     //check state
     MCState *tmpState = [states objectForKey:goStr];
     for (; tmpState != nil && [self treeNodesApply:[tmpState root] withDeep:0]; tmpState = [states objectForKey:goStr]) {
+        // 更新goStr
         goStr = tmpState.afterState;
     }
+    // if goStr != magicCubeState
     if ([goStr compare:_workingMemory.magicCubeState] != NSOrderedSame) {
         _workingMemory.magicCubeState = goStr;
         [self.workingMemory unlockCubieAtIndex:0];

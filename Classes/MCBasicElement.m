@@ -8,8 +8,12 @@
 
 #import "MCBasicElement.h"
 
+/**
+ *  getToken中，得不到token时的默认值，表示错误
+ */
 #define END_TOKEN -999
-#define LOCKED_CUBIE_TOKEN 999
+
+//#define LOCKED_CUBIE_TOKEN 999
 
 //tree node
 @implementation MCTreeNode
@@ -19,6 +23,11 @@
 @synthesize value;
 @synthesize result;
 
+/**
+ *	初始化，并且建立一个空的子节点数组
+ *
+ *	@return	self
+ */
 -(id)init{
     if (self = [super init]) {
         self.children = [NSMutableArray array];
@@ -26,13 +35,17 @@
     return self;
 }
 
+/**
+ *	调用init初始化，并且给type赋值
+ *
+ *	@return	self
+ */
 -(id)initNodeWithType:(NodeType)typ{
     if (self = [self init]) {
         self.type = typ;
     }
     return self;
 }
-
 
 
 -(void)dealloc{
@@ -57,7 +70,13 @@
 @synthesize errorFlag;
 @synthesize errorPosition;
 
-
+/**
+ *	通过字符串构造一棵语法树
+ *
+ *	@param	patternStr	字符串，类似于"token1,token2"的形式
+ *
+ *	@return	如果发生错误，self.root == nil，否则self.root就是对应的模式
+ */
 -(id)initWithString:(NSString *)patternStr{
     if (self = [self init]) {
         NSMutableArray *mutableElements = [[NSMutableArray alloc]init];
@@ -86,20 +105,32 @@
     [super dealloc];
 }
 
+/**
+ *	初始化elements 和 enumerator
+ *
+ *	@param	array	NSArray contains tokens
+ */
 -(void)tokenInit:(NSMutableArray *)array{
     elements = [NSArray arrayWithArray:array];
+    // 注意这里进行了一次retain
     [elements retain];
     enumerator = [elements objectEnumerator];
     errorFlag = NO;
     errorPosition = -1;
 }
 
+/**
+ *	release tokens 并且将elements 和 enumerator归为nil
+ */
 -(void)tokenRelease{
     [elements release];
     elements = nil;
     enumerator = nil;
 }
 
+/**
+ *	遍历elements，token等于elements里的最新的元素
+ */
 -(void)getToken{
     NSNumber *t;
     if (t = [enumerator nextObject]) {
@@ -116,27 +147,44 @@
     NSLog(@"%@", errorMsg);
 }
 
+/**
+ *	得到tokens后，转交给parseBoolExp进行解析
+ *
+ *	@return	node节点
+ */
 -(MCTreeNode *)parsePattern{
 	[self getToken];
 	return [self parseBoolExp];
 }
 
+/**
+ *  最高层的表达式解析
+ *	处理或运算
+ */
 -(MCTreeNode *)parseBoolExp{
     //if error occurred, return nil
     if (errorFlag) return nil;
     //if no error, continue
+    
+    // 交由parseBterm 解析开头一段
 	MCTreeNode * node = [self parseBterm];
     //if error occurred, return node
     if (errorFlag) return node;
+    // 虽然即使发生了错误，上面还是返回了结点。
+    // 但是由于错误的发生会导致self.root被设为nil，所以返回什么并不关键
+    
     //if no error, continue
+    // 第一个为or的标记
 	if (token==Token_Or)
 	{
+        // 构造ExpNode类型的节点
 		MCTreeNode * orNode = [[MCTreeNode alloc] initNodeWithType:ExpNode];
         orNode.value = Or;
+        // 事实上在赋值之前应该检查orNode是否为nil
 		if (orNode != nil) {
 			[orNode addChild:node];
 			[self getToken];
-			[orNode addChild:[self parseBterm]];
+			[orNode addChild:[self parseBterm]];// 解析下一层
             node = orNode;
             [node autorelease];
 		}
@@ -144,6 +192,8 @@
     //if error occurred, return node
     if (errorFlag) return node;
     //if no error, continue
+    
+    // 之后的标记为or
     while (token == Token_Or) {
         [self getToken];
         [node addChild:[self parseBterm]];
@@ -154,14 +204,24 @@
 	return node;
 }
 
+/**
+ *  次高层的表达式解析
+ *	处理与运算
+ */
 -(MCTreeNode *)parseBterm{
     //if error occurred, return nil
     if (errorFlag) return nil;
     //if no error, continue
+    
+    // 交由parseBfactor解析开头一段
     MCTreeNode * node = [self parseBfactor];
     //if error occurred, return node
     if (errorFlag) return node;
     //if no error, continue
+    // 虽然即使发生了错误，上面还是返回了结点。
+    // 但是由于错误的发生会导致self.root被设为nil，所以返回什么并不关键
+    
+    // 同parseBExp，只是Token_Or变成Token_And
     if (token == Token_And) {
         MCTreeNode * andNode = [[MCTreeNode alloc] initNodeWithType:ExpNode];
         andNode.value = And;
@@ -177,6 +237,7 @@
     //if error occurred, return node
     if (errorFlag) return node;
     //if no error, continue
+    
 	while (token==Token_And)
 	{
         [self getToken];
@@ -189,14 +250,22 @@
 	return node;
 }
 
+/**
+ *	解析具体的patterns
+ *  新建并返回一个MCTreeNode*，如果发生错误，生成错误报告
+ *  patterns的类型请见Global.h中的PatternType
+ */
 -(MCTreeNode *)parseBfactor{
     //if error occurred, return nil
     if (errorFlag) return nil;
     //if no error, continue
+    
     MCTreeNode * node = nil;
+    // pattern_type 请见Global.h
 	switch (token) {
         case Home:
         {
+            // 构造PatternNode类型的节点
             node = [[MCTreeNode alloc] initNodeWithType:PatternNode];
             node.value = Home;
             [self getToken];
@@ -239,6 +308,7 @@
             [self getToken];
         }
             break;
+            
         case Check:
         {
             node = [[MCTreeNode alloc] initNodeWithType:PatternNode];
@@ -339,6 +409,7 @@
             [self getToken];
         }
             break;
+            
         case CubiedBeLocked:
         {
             node = [[MCTreeNode alloc] initNodeWithType:PatternNode];
@@ -366,6 +437,7 @@
             [self getToken];
         }
             break;
+            
         case Token_LeftParentheses:
         {
             [self getToken];
@@ -393,13 +465,20 @@
 	return [node autorelease];
 }
 
+/**
+ *	类似于parseBfactor，不过解析具体的informations
+ *  新建并返回一个MCTreeNode*，如果发生错误，生成错误报告
+ *  informations的类型请见Global.h中的InformationType
+ */
 - (MCTreeNode *)parseInformationItem{
     //if error occurred, return nil
     if (errorFlag) return nil;
     //if no error, continue
+    
     MCTreeNode * node = nil;
 	switch (token) {
         case getCombinationFromOrientation:
+            // 构造InformationNode类型的节点
             node = [[MCTreeNode alloc] initNodeWithType:InformationNode];
             node.value = getCombinationFromOrientation;
             [self getToken];
@@ -525,6 +604,13 @@
 
 @synthesize afterState;
 
+/**
+ *	使用patternStr进行初始化
+ *
+ *	@param	patternStr	调用initWithString:初始化
+ *  @see MCPattern#initWithString
+ *	@param	state	用字符串形式的state来给afterState赋值
+ */
 - (id)initWithPatternStr:(NSString *)patternStr andAfterState:(NSString *)state{
     if (self = [self initWithString:patternStr]) {
         self.afterState = state;
@@ -551,6 +637,15 @@
 @synthesize errorFlag;
 @synthesize errorPosition;
 
+/**
+ *	通过字符串构造一棵语法树
+ *
+ *	@param	patternStr	字符串，类似于"token1,token2"的形式
+ *
+ *	@return	如果发生错误，self.root == nil，否则self.root就是对应的规则(self setRoot:[self parseRule])
+ *
+ *  @see MCPattern#initWithString:(NSString *)patternStr
+ */
 - (id)initWithString:(NSString *)patternStr{
     if (self = [self init]) {
         NSMutableArray *mutableElements = [[NSMutableArray alloc]init];
@@ -609,15 +704,25 @@
     NSLog(@"%@", errorMsg);
 }
 
+/**
+ *	得到tokens后，转交给parseSequenceExp进行解析
+ *
+ *	@return	node节点
+ */
 - (MCTreeNode *)parseRule{
 	[self getToken];
 	return [self parseSequenceExp];
 }
 
+/**
+ *	处理由动作结点(ActionNode)构成的序列
+ */
 - (MCTreeNode *)parseSequenceExp{
     //if error occurred, return nil
     if (errorFlag) return nil;
     //if no error, continue
+    
+    // 构造ExpNode类型节点
 	MCTreeNode * node = [[MCTreeNode alloc] initNodeWithType:ExpNode];
     node.value = Sequence;
     MCTreeNode * childNode;
@@ -630,14 +735,21 @@
     return [node autorelease];
 }
 
+/**
+ *	解析具体的ActionType
+ *  新建并返回一个MCTreeNode*，如果发生错误，生成错误报告
+ *  ActionType的类型请见Global.h中的ActionType
+ */
 - (MCTreeNode *)parseItem{
     //if error occurred, return nil
     if (errorFlag) return nil;
     //if no error, continue
+    
     MCTreeNode * node = nil;
 	switch (token) {
         case Rotate:
         {
+            // 构造ActionNode类型的节点
             node = [[MCTreeNode alloc] initNodeWithType:ActionNode];
             node.value = Rotate;
             [self getToken];
@@ -734,13 +846,23 @@
 	return [node autorelease];
 }
 
+/**
+ *	跟MCPattern中的同名函数完全一样
+ *  解析具体的informations
+ *  新建并返回一个MCTreeNode*，如果发生错误，生成错误报告
+ *  informations的类型请见Global.h中的InformationType
+ *
+ *  @see MCPattern
+ */
 - (MCTreeNode *)parseInformationItem{
     //if error occurred, return nil
     if (errorFlag) return nil;
     //if no error, continue
+    
     MCTreeNode * node = nil;
 	switch (token) {
         case getCombinationFromOrientation:
+            // 构造InformationNode类型的节点
             node = [[MCTreeNode alloc] initNodeWithType:InformationNode];
             node.value = getCombinationFromOrientation;
             [self getToken];

@@ -7,6 +7,7 @@
 //
 
 #import "MCBackGroundTexMesh.h"
+
 float background_vertex_coordinates []={
     -5.12,3.84,0,
     -5.12,-3.84,0,
@@ -32,7 +33,9 @@ float background_normal_vectors [] = {
     0.0,0.0,1.0,
     0.0,0.0,1.0
 };
+
 @implementation MCBackGroundTexMesh
+
 -(id)init{
     if (self = [super init]) {
         
@@ -56,5 +59,9 @@ float background_normal_vectors [] = {
 	glMultMatrixf(matrix);
 	[mesh render];
 	glPopMatrix();
+}
+
+-(void)dealloc{
+    [super dealloc];
 }
 @end

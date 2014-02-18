@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+/**
+ *	背景音乐控制类
+ */
 @interface SoundSettingController : NSObject{
     AVAudioPlayer *backgroundPlayer;
 }
@@ -21,12 +24,13 @@
 //prtload all sounds
 -(void)loadSounds;
 
--(void)playSoundForKey:(NSString*)key;
+-(void)playSoundForKey:(NSString*)key withSoundType:(NSNumber *)soundType;
 -(void)playAudioForKey:(NSString*)key maxVolume:(NSNumber*)maxvolume;
 -(void)pauseAudioForKey:(NSString*)key fadeOutInterval:(NSTimeInterval)fadetime;
 -(void)playAudioForKey:(NSString*)key fadeInInterval:(NSTimeInterval)fadetime maxVolume:(NSNumber*)maxvolume;
 
 -(void)setBackgroundPlayer_Volume:(float)volume;
+-(void)setRotateEffectVolume:(float)volume;
 //循环背景音乐开关
 -(void)loopBackGroundAudioFlipSwitch;
 //旋转音效开关
